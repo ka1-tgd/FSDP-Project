@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OCBC PayNow - Enter Amount</title>
+    <link rel="stylesheet" href="../css/transferamount.css">
+    <script src="../js/transferamount.js" defer></script>
+</head>
+
+<body>
+    <main class="phone-screen">
+        <header class="header">
+            <button class="back-button" id="backButton" aria-label="Go back">
+                ‹
+            </button>
+            <span class="guided-label">Guided mode</span>
+            <h1>PayNow</h1>
+        </header>
+
+
+        <div class="progress-container">
+            <div class="progress-bar active"></div>
+            <div class="progress-bar active"></div>
+            <div class="progress-bar"></div>
+            <div class="progress-bar"></div>
+        </div>
+
+
+        <!-- enter amount -->
+        <section class="content">
+            <p class="step-title">
+                <span>Step 2 of 4</span> · Enter amount
+            </p>
+
+            <!-- details of recipient -->
+            <div class="recipient-section">
+                <p class="section-label">Pay to</p>
+                <h2 id="recipientName">Alex Tan</h2>
+                <p class="recipient-info" id="recipientInfo">
+                    +6587872341 • AIXX TAX
+                </p>
+            </div>
+
+
+            <!-- input amount -->
+            <div class="amount-section">
+                <div class="amount-input-container">
+                    <input
+                        type="number"
+                        id="amountInput"
+                        placeholder="0.00"
+                        min="0.01"
+                        step="0.01"
+                        inputmode="decimal"
+                        aria-label="Transfer amount"
+                    >
+                    <span>SGD</span>
+                </div>
+
+
+                <!-- buttons quick amount -->
+                <div class="quick-amounts">
+                    <button type="button" data-amount="5">$5</button>
+                    <button type="button" data-amount="10">$10</button>
+                    <button type="button" data-amount="15">$15</button>
+                    <button type="button" data-amount="20">$20</button>
+                </div>
+
+                <p class="quick-hint hidden" id="quickHint">
+                    Tap again to remove
+                </p>
+                <!-- More Amounts Dropdown -->
+                <div class="dropdown-container">
+                    <select id="moreAmounts">
+                        <option value="">More amounts</option>
+                        <option value="30">$30</option>
+                        <option value="50">$50</option>
+                        <option value="100">$100</option>
+                        <option value="200">$200</option>
+                        <option value="500">$500</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <!-- transfer limit -->
+            <p class="daily-limit">
+                Daily limit remaining:
+                <span id="dailyLimit">2,000.00 SGD</span>
+            </p>
+
+
+            <hr>
+            <!-- your account details -->
+            <div class="account-section">
+                <p class="section-label">From</p>
+                <h3 id="accountType">Savings Account</h3>
+                <p class="account-number" id="accountNumber">
+                    111-1-111111
+                </p>
+
+                <button
+                    type="button"
+                    class="balance-button"
+                    id="balanceButton"
+                >
+                    <span class="eye-icon">◎</span>
+                    Show available balance
+                </button>
+
+                <p class="available-balance hidden" id="availableBalance">
+                </p>
+
+            </div>
+
+
+            <!-- guided mode info -->
+            <div class="guided-card">
+
+                <h3>Choosing how much to send</h3>
+                <p>
+                    Tap a quick amount, or type your own.
+                    You can still change it later
+                </p>
+                <p class="guided-reminder">
+                    Check the name above to see who you want to pay
+                </p>
+            </div>
+
+
+            <!-- next button -->
+            <div class="button-container">
+                <button
+                    type="button"
+                    class="next-button"
+                    id="nextButton"
+                >
+                    Next
+                </button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
