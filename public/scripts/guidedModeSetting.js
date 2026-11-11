@@ -1,7 +1,7 @@
 // Save guided mode settings
 // Import guided mode functions
 import {
-    isGuidedModeEnabled,
+    guidedModeCheck,
     setGuidedMode
 } from "./guided-mode/guidedMode.js"
 
@@ -9,7 +9,7 @@ import {
 const toggle = document.getElementById("guidedModeToggle");
 
 // Load previously saved setting
-toggle.checked = isGuidedModeEnabled();
+toggle.checked = guidedModeCheck();
 
 // Update setting when toggled
 toggle.addEventListener("change", () => {
