@@ -75,16 +75,45 @@ body {
     width: 90px;
     height: 40px;
     flex-shrink: 0;
+    position: relative;
+    display: inline-block;
     background-color: #676666;
     border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 .toggle span {
+    position: absolute;
     width: 30px;
     height: 30px;
-    margin-left: 5px;
+    left: 5px;
+    top: 5px;
     background-color: #d9d9d9;
     border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+/* ON state */
+.toggle:has(input:checked) {
+    background-color: #D92828;
+}
+
+.toggle input:checked + span {
+    background-color: white;
+    transform: translateX(50px);
+}
+
+/* Keyboard focus */
+.toggle input:focus-visible + span {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
 }
 
 .setting-message {

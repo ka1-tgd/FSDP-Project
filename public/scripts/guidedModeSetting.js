@@ -1,1 +1,17 @@
-// toggle changing colours and position upon click
+// Save guided mode settings
+// Import guided mode functions
+import {
+    isGuidedModeEnabled,
+    setGuidedMode
+} from "./guided-mode/guidedMode.js"
+
+// Get toggle from DOM
+const toggle = document.getElementById("guidedModeToggle");
+
+// Load previously saved setting
+toggle.checked = isGuidedModeEnabled();
+
+// Update setting when toggled
+toggle.addEventListener("change", () => {
+    setGuidedMode(toggle.checked);
+});
