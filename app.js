@@ -1,6 +1,6 @@
 // Require express, mssql, dotenv and path
 const express = require("express");
-const mssql = require("mssql");
+const sql = require("mssql");
 const dotenv = require("dotenv");
 const path = require("path");
 
