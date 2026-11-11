@@ -24,7 +24,9 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded req bodies
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
-
+// Transfer routes
+const transferRoutes = require("./routes/transferRoutes");
+app.use("/api/transfer", transferRoutes);
 // Get contacts from SQL Server
 app.get("/api/paynow/contacts", async (req, res) => {
     try {
