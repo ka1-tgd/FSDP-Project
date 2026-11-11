@@ -447,3 +447,38 @@ hr {
     }
 
 }
+
+/* ask ocbc button */
+
+.step-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 34px;
+}
+
+.step-header .step-title {
+    margin-bottom: 0;
+}
+
+.ask-ocbc-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    padding: 4px 7px;
+
+    border: 1px solid #e52525;
+    border-radius: 9px;
+
+    background-color: #ffffff;
+    color: #e52525;
+
+    font-size: 11px;
+    white-space: nowrap;
+
+    cursor: pointer;
+}
+
