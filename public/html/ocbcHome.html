@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCBC Home</title>
+    <!-- Your existing stylesheet first (reset, body, .phone-screen, .hidden) -->
+    <link rel="stylesheet" href="../css/paynow.css">
+    <!-- Home page styles second -->
+    <link rel="stylesheet" href="../css/ocbcHome.css">
+</head>
+<body>
+
+<div class="phone-screen home-page">
+
+    <!-- Top bar -->
+    <div class="top-bar">
+        <button class="token-button" type="button">
+            <img src="../images/ocbc-token.png" alt="" class="token-icon">
+            OCBC Tokens
+        </button>
+        <button class="logout-link" type="button">logout</button>
+    </div>
+
+    <!-- Scrollable area -->
+    <div class="home-scroll">
+
+        <!-- Hero banner -->
+        <div class="hero">
+            <img src="../images/ocbc-banner.png" alt="Together, lifting everyone we serve" class="hero-image">
+        </div>
+
+        <!-- Quick actions -->
+        <div class="quick-actions">
+            <div class="quick-actions-main">
+                <button class="action-item" type="button">
+                    <img src="../images/paynow.png" alt="" class="action-icon">
+                    <span>PayNow</span>
+                </button>
+                <button class="action-item" type="button">
+                    <img src="../images/scan-and-pay.png" alt="" class="action-icon">
+                    <span>Scan &amp; Pay</span>
+                </button>
+                <button class="action-item" type="button">
+                    <img src="../images/foreign-exchange.png" alt="" class="action-icon">
+                    <span>Foreign Exchange</span>
+                </button>
+            </div>
+            <div class="action-divider"></div>
+            <button class="action-item" type="button">
+                <img src="../images/Gear-icon.png" alt="" class="action-icon">
+                <span>Customise</span>
+            </button>
+        </div>
+
+        <!-- Eye toggle + tabs -->
+        <div class="account-tabs">
+            <button class="eye-toggle" type="button" aria-label="Show or hide balance">
+                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                    <path d="M12 5C6.5 5 2.7 9 1 12c1.7 3 5.5 7 11 7s9.3-4 11-7c-1.7-3-5.500-7-11-7z" fill="#fff"/>
+                    <circle cx="12" cy="12" r="4.200" fill="#111"/>
+                    <circle cx="13.300" cy="10.800" r="1.200" fill="#fff"/>
+                </svg>
+            </button>
+            <div class="tab-divider"></div>
+            <div class="pill-tabs">
+                <button class="pill active" type="button">Accounts</button>
+                <button class="pill" type="button">Cards</button>
+                <button class="pill" type="button">Investment</button>
+            </div>
+        </div>
+
+        <!-- Savings account card -->
+        <div class="account-card-wrap">
+            <div class="account-card">
+                <div class="account-card-dots">
+                    <span></span>
+                    <span></span>
+                </div>
+                <h2>Savings Account</h2>
+                <p class="card-number">1234-7890-2345</p>
+                <p class="card-balance-label">Available Balance</p>
+                <p class="card-balance">SGD 12,000.00</p>
+                <a href="#" class="view-details">view details</a>
+            </div>
+        </div>
+
+        <!-- Savings goals / Money insights -->
+        <div class="feature-cards">
+            <button class="feature-card goals" type="button">
+                <h3>SAVINGS GOALS</h3>
+                <p>View/manage goals</p>
+            </button>
+            <button class="feature-card insights" type="button">
+                <h3>MONEY INSIGHTS</h3>
+                <p>Take control</p>
+            </button>
+        </div>
+
+        <!-- Recent transactions -->
+        <div class="transactions">
+            <h3>Recent transactions</h3>
+
+            <button class="transaction-row" type="button">
+                <img src="../images/7-eleven.png" alt="" class="transaction-icon">
+                <div class="transaction-info">
+                    <h4>7-Eleven</h4>
+                    <p>26 Oct 2026</p>
+                </div>
+                <span class="amount negative">-$10.40</span>
+                <span class="chevron">&#8250;</span>
+            </button>
+
+            <button class="transaction-row" type="button">
+                <img src="../images/john.png" alt="" class="transaction-icon">
+                <div class="transaction-info">
+                    <h4>John</h4>
+                    <p>25 Oct 2026</p>
+                </div>
+                <span class="amount positive">+$24.01</span>
+                <span class="chevron">&#8250;</span>
+            </button>
+
+            <button class="transaction-row" type="button">
+                <img src="../images/foodpanda.jpg" alt="" class="transaction-icon">
+                <div class="transaction-info">
+                    <h4>Foodpanda</h4>
+                    <p>24 Oct 2026</p>
+                </div>
+                <span class="amount negative">-$13.00</span>
+                <span class="chevron">&#8250;</span>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Bottom navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" type="button">
+            <img src="../images/house-red.png" alt="" class="nav-icon">
+            <span>Home</span>
+        </button>
+        <button class="nav-item" type="button">
+            <img src="../images/plan.png" alt="" class="nav-icon">
+            <span>Plan</span>
+        </button>
+        <button class="nav-item" type="button">
+            <img src="../images/pay-transfer.png" alt="" class="nav-icon">
+            <span>Pay &amp; Transfer</span>
+        </button>
+        <button class="nav-item" type="button">
+            <img src="../images/gift.png" alt="" class="nav-icon">
+            <span>Rewards</span>
+        </button>
+        <button class="nav-item" type="button">
+            <img src="../images/more.png" alt="" class="nav-icon">
+            <span>More</span>
+        </button>
+    </nav>
+
+</div>
+
+</body>
+</html>
