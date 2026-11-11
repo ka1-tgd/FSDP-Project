@@ -129,3 +129,77 @@ body {
 .setting-message h2 {
     color: #D92828;
 }
+
+
+
+
+/* Text-to-Speech Settings */
+
+.tts-page .toggle-box {
+    display: grid;
+    grid-template-columns: 65px minmax(0, 1fr);
+    align-items: center;
+    gap: 15px;
+    margin: 20px 15px;
+    padding: 20px 15px;
+    border: 1px solid #aaaaaa;
+    border-radius: 25px;
+}
+
+.tts-page .tts-icon {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+}
+
+.tts-page .setting-details {
+    min-width: 0;
+}
+
+.tts-page .setting-details h2 {
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    white-space: nowrap;
+}
+
+.tts-page .tts-description-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tts-page .tts-description-row p {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #555555;
+}
+
+.tts-page .toggle {
+    width: 60px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.tts-page .toggle span {
+    width: 24px;
+    height: 24px;
+    top: 4px;
+    left: 4px;
+}
+
+.tts-page .toggle input:checked + span {
+    transform: translateX(28px);
+}
+
+.tts-page .header h1 {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.tts-page .setting-message {
+    margin: 30px 15px;
+    border-radius: 25px;
+}
