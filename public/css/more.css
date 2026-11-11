@@ -14,6 +14,11 @@
     background: white;
 }
 
+.more-page button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
 /* Header */
 
 .more-header {
@@ -48,9 +53,111 @@
     min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
 }
 
-/* Accordion sections */
+/* New features */
+
+.more-features,
+.more-apply {
+    padding: 14px 10px 4px;
+}
+
+.more-features h3,
+.more-apply h3,
+.services-heading {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.feature-banner-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.feature-banner {
+    height: 78px;
+    padding: 7px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.feature-banner h4 {
+    font-size: 9px;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.feature-banner p {
+    font-size: 8px;
+    color: #555;
+    margin-top: 3px;
+    position: relative;
+    z-index: 1;
+}
+
+.feature-banner.savings {
+    background: #f9e8e9;
+}
+
+.feature-banner.insights {
+    background: #f1eee5;
+}
+
+.banner-art {
+    position: absolute;
+    bottom: 3px;
+    right: 7px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #aaa69e;
+    font-size: 23px;
+}
+
+.banner-art span:nth-child(2) {
+    font-size: 30px;
+}
+
+/* Apply icons */
+
+.apply-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 12px;
+    margin-top: 5px;
+}
+
+.apply-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 3px;
+}
+
+.apply-icon {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+}
+
+.apply-item p {
+    font-size: 10px;
+    margin: 0;
+}
+
+/* Services */
+
+.services-heading {
+    padding: 10px 12px 4px;
+    margin: 0;
+}
 
 .more-section {
     border-bottom: 1px solid #ddd;
@@ -58,7 +165,7 @@
 
 .more-section summary {
     min-height: 40px;
-    padding: 12px 12px;
+    padding: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -80,7 +187,7 @@
     content: "⌃";
 }
 
-/* Collapsed section links */
+/* Accordion content */
 
 .section-content {
     display: flex;
@@ -96,7 +203,7 @@
     font-size: 11px;
 }
 
-/* Profile settings grid */
+/* Profile settings */
 
 .settings-grid {
     display: grid;
@@ -114,7 +221,6 @@
     gap: 7px;
     min-height: 52px;
     padding: 3px;
-
     color: #333;
     text-decoration: none;
     text-align: center;
@@ -127,7 +233,7 @@
     height: 22px;
 }
 
-/* Help section */
+/* Need more help */
 
 .more-help {
     padding: 24px 12px;
@@ -167,6 +273,7 @@
 
 .more-page .bottom-nav {
     flex-shrink: 0;
+    width: 100%;
     display: flex;
     justify-content: space-around;
     padding: 8px 4px 14px;
@@ -178,25 +285,53 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 3px;
     min-width: 64px;
+    border: none;
+    background: none;
     color: black;
     text-decoration: none;
     font-size: 11px;
 }
 
-.more-page .nav-item.active {
-    color: #e52525;
-}
-
-/* Bottom navigation icons */
 .more-page .nav-icon {
     width: 30px;
     height: 30px;
     object-fit: contain;
 }
 
-.more-page .bottom-nav {
-    width: 100%;
-    flex-shrink: 0;
+.more-page .nav-transfer-icon {
+    width: 45px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.more-page .nav-item.active {
+    color: #e52525;
+}
+
+.header-actions {
+    position: absolute;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.support-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    padding: 0;
+}
+
+.logout-button {
+    position: static;
+    border: none;
+    background: none;
+    color: white;
+    font-size: 11px;
 }

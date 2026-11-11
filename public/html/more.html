@@ -15,18 +15,106 @@
 
 <main class="phone-screen more-page">
 
-    <!-- Top header -->
+    <!-- Header -->
     <header class="more-header">
         <h1>More</h1>
-        <button type="button" class="logout-button">♧ Logout</button>
+        <div class="header-actions">
+            <button type="button" class="support-button" aria-label="Customer support">
+                <svg viewBox="0 0 24 24" width="18" height="18"
+                fill="none" stroke="white" stroke-width="1.6"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 13v-2a9 9 0 0 1 18 0v2"/>
+                <rect x="3" y="12" width="4" height="7" rx="2"/>
+                <rect x="17" y="12" width="4" height="7" rx="2"/>
+                <path d="M21 18a4 4 0 0 1-4 4h-3"/>
+            </svg>
+        </button>
+
+    <button type="button" class="logout-button">Logout</button>
+</div>
+   
     </header>
 
     <!-- Scrollable content -->
     <section class="more-scroll">
 
+        <!-- New features -->
+        <section class="more-features">
+            <h3>New features for you</h3>
+
+            <div class="feature-banner-row">
+
+                <div class="feature-banner savings">
+                    <h4>SAVINGS GOALS</h4>
+                    <p>View/manage goals</p>
+
+                    <div class="banner-art savings-art">
+                        <span>＄</span>
+                        <span>♧</span>
+                        <span>＄</span>
+                    </div>
+                </div>
+
+                <div class="feature-banner insights">
+                    <h4>MONEY INSIGHTS</h4>
+                    <p>Take control</p>
+
+                    <div class="banner-art insights-art">
+                        <span>▥</span>
+                        <span>▤</span>
+                        <span>▥</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Apply -->
+        <section class="more-apply">
+            <h3>Apply</h3>
+
+            <div class="apply-grid">
+
+                <div class="apply-item">
+                    <img src="../images/accounts.png"
+                         alt="" class="apply-icon">
+                    <p>Accounts</p>
+                </div>
+
+                <div class="apply-item">
+                    <img src="../images/cards.png"
+                         alt="" class="apply-icon">
+                    <p>Cards</p>
+                </div>
+
+                <div class="apply-item">
+                    <img src="../images/investments.png"
+                         alt="" class="apply-icon">
+                    <p>Investments</p>
+                </div>
+
+                <div class="apply-item">
+                    <img src="../images/insurance.png"
+                         alt="" class="apply-icon">
+                    <p>Insurance</p>
+                </div>
+
+                <div class="apply-item">
+                    <img src="../images/loans.png"
+                         alt="" class="apply-icon">
+                    <p>Loans</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Services -->
+        <h3 class="services-heading">Services</h3>
+
         <!-- Documents -->
         <details class="more-section">
             <summary>Documents - Statements & Letters</summary>
+
             <div class="section-content">
                 <a href="#">Account statements</a>
                 <a href="#">Bank letters</a>
@@ -36,6 +124,7 @@
         <!-- Investment -->
         <details class="more-section">
             <summary>Investment services</summary>
+
             <div class="section-content">
                 <a href="#">Investment portfolio</a>
                 <a href="#">Unit trusts</a>
@@ -46,6 +135,7 @@
         <!-- Payments -->
         <details class="more-section">
             <summary>Payments & transfers</summary>
+
             <div class="section-content">
                 <a href="#">Transfer history</a>
                 <a href="#">Manage payees</a>
@@ -53,8 +143,8 @@
             </div>
         </details>
 
-        <!-- Profile and settings -->
-        <details class="more-section" open>
+        <!-- Profile settings -->
+        <details class="more-section">
             <summary>Profile & app settings</summary>
 
             <div class="settings-grid">
@@ -122,8 +212,8 @@
             </div>
         </details>
 
-        <!-- Help section -->
-        <div class="more-help">
+        <!-- Help -->
+        <section class="more-help">
             <h3>Need more help?</h3>
 
             <a href="#" class="hotline">
@@ -131,7 +221,7 @@
                 <span>Hotline</span>
                 <span class="hotline-arrow">›</span>
             </a>
-        </div>
+        </section>
 
     </section>
 
@@ -139,27 +229,32 @@
     <nav class="bottom-nav">
 
         <a href="home.html" class="nav-item">
-            <img src="../images/house-red.png" class="nav-icon" alt="">
+            <img src="../images/house-red.png"
+                 class="nav-icon" alt="">
             <span>Home</span>
         </a>
 
         <a href="#" class="nav-item">
-            <img src="../images/plan.png" class="nav-icon" alt="">
+            <img src="../images/plan.png"
+                 class="nav-icon" alt="">
             <span>Plan</span>
         </a>
 
         <a href="#" class="nav-item">
-            <img src="../images/pay-transfer.png" class="nav-icon" alt="">
-            <span>Pay & Transfer</span>
+            <img src="../images/pay-transfer.png"
+                 class="nav-transfer-icon" alt="">
+            <span>Pay &amp; Transfer</span>
         </a>
 
         <a href="#" class="nav-item">
-            <img src="../images/gift.png" class="nav-icon" alt="">
+            <img src="../images/gift.png"
+                 class="nav-icon" alt="">
             <span>Rewards</span>
         </a>
 
         <a href="more.html" class="nav-item active">
-            <img src="../images/more.png" class="nav-icon" alt="">
+            <img src="../images/more.png"
+                 class="nav-icon" alt="">
             <span>More</span>
         </a>
 
