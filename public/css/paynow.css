@@ -590,12 +590,14 @@ hr {
 
 /* Adjust existing styles for Step 1 */
 .paynow-page {
+    width: 100%;
     max-width: 393px;
-    min-height: 852px;
-    min-height: 100dvh;
+    height: min(852px, 100dvh);
+    min-height: 0;
+
     display: flex;
     flex-direction: column;
-    overflow: visible;
+    overflow: hidden;
 }
 
 .paynow-page .header {
@@ -626,7 +628,14 @@ hr {
 }
 
 .paynow-page .content {
+    flex: 1;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
     padding: 19px 20px 10px;
+    overflow: hidden;
 }
 
 .paynow-page .step-title {
@@ -753,9 +762,10 @@ hr {
 
 /* Recipient list */
 .recipient-content {
-    min-height: 185px;
-    max-height: 350px;
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 12px 0;
     font-size: 12px;
 }
@@ -827,7 +837,7 @@ hr {
 
 /* Need Help button at the bottom */
 .bottom-section {
-    margin-top: auto;
+    flex-shrink: 0;
     padding: 0 20px 23px;
 }
 
@@ -851,19 +861,19 @@ hr {
 
 /* No recent transfers */
 
-.empty-state {
+.paynow-page .empty-state {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 100px 15px 30px;
+    padding: 35px 20px 20px;
 }
 
-.empty-state-icon {
-    width: 110px;
-    height: 110px;
+.paynow-page .empty-state-icon {
+    width: 100px;
+    height: 100px;
     object-fit: contain;
-    margin-bottom: 25px;
+    margin-bottom: 18px;
 }
 
 .empty-state h3 {
@@ -878,33 +888,33 @@ hr {
     line-height: 25px;
 }
 
-/* Empty state */
+/* Recent empty state */
 
-.empty-state {
+.paynow-page .empty-state {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 100px 20px 30px;
+    padding: 20px 15px;
 }
 
-.empty-state-icon {
-    width: 110px;
-    height: 110px;
+.paynow-page .empty-state-icon {
+    width: 75px;
+    height: 75px;
     object-fit: contain;
-    margin-bottom: 25px;
-}
-
-.empty-title {
-    font-size: 20px;
-    font-weight: 500;
     margin-bottom: 12px;
 }
 
-.empty-subtitle {
+.paynow-page .empty-title {
     font-size: 16px;
+    margin: 0 0 8px;
+}
+
+.paynow-page .empty-subtitle {
+    font-size: 13px;
+    line-height: 19px;
+    margin: 0;
     color: #626779;
-    line-height: 24px;
 }
 
 
