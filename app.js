@@ -8,10 +8,6 @@ const path = require("path");
 dotenv.config();
 const dbConfig = require("./dbConfig");
 
-// Require controllers
-
-// Require middleware
-
 // Create express app
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,18 +15,25 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(express.json()); // Parse JSON req bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded req bodies
+const transferMiddleware = require("../middleware/transferamountmid");
 
+//controllers
+const transferController = require("../controllers/transferamountcon");
 // Serve static files from public
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
-// Transfer routes
-const transferRoutes = require("./routes/transferRoutes");
-app.use("/api/transfer", transferRoutes);
+//transfer routes
+app.post(
+    "/api/transfer/details",
+    transferMiddleware.validateTransfer,
+    transferController.getTransferDetails
+);
+
 // Get contacts from SQL Server
 app.get("/api/paynow/contacts", async (req, res) => {
     try {
-        const pool = await sql.connect(dbConfig);
+        const pool = await mssql.connect(dbConfig);
 
         const result = await pool.request().query(`
             SELECT
