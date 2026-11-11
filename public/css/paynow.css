@@ -410,6 +410,107 @@ hr {
     display: none !important;
 }
 
+/* Timeline container */
+.timeline {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 25px;
+}
+
+/* Individual timeline item */
+.timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+
+    min-height: 350px;
+    position: relative;
+}
+
+/* Timeline circles */
+.timeline-icon {
+    width: 150px;
+    height: 150px;
+    flex-shrink: 0;
+
+    border: 9px solid #858585;
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: white;
+    position: relative;
+    z-index: 1;
+}
+
+/* Connecting lines */
+.timeline-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+
+    left: 75px;
+    top: 150px;
+
+    width: 7px;
+    height: 200px;
+
+    background-color: #858585;
+}
+
+/* Text content */
+.timeline-content {
+    padding-top: 10px;
+}
+
+.timeline-content h2 {
+    font-size: 38px;
+    margin: 0;
+}
+
+.timeline-content p {
+    font-size: 26px;
+    color: #666;
+    margin: 5px 0;
+}
+
+/* Completed step */
+.timeline-item.completed .timeline-icon {
+    background-color: #d60000;
+    border-color: #d60000;
+}
+
+.timeline-item.completed .timeline-icon span {
+    color: white;
+    font-size: 100px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.timeline-item.completed::after {
+    background-color: #d60000;
+}
+
+/* Active step */
+.timeline-item.active .timeline-icon {
+    background-color: #d60000;
+    border-color: #d60000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Three dots in active icon */
+.timeline-item.active .timeline-icon span {
+    width: 12px;
+    height: 12px;
+
+    background-color: white;
+    border-radius: 50%;
+}
 
 /* responsive design*/
 

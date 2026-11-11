@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="../css/paynow.css">
+        <script src="../scripts/transferStatus.js"></script>
     </head>
     <body>
         <main class="phone-screen">
@@ -40,6 +41,30 @@
                         <div class="timeline-content">
                             <h2>Request submitted</h2>
                             <p>1 Nov 2026, 9:13 AM</p>
+                        </div>
+                    </div>
+
+                    <!-- Processing -->
+                    <div class="timeline-item active">
+                        <div class="timeline-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+
+                        <div class="timeline-content">
+                            <h2>Processing</h2>
+                            <p>Your request is being processed.</p>
+                        </div>
+                    </div>
+
+                    <!-- Completed -->
+                    <div class="timeline-item pending">
+                        <div class="timeline-icon"></div>
+
+                        <div class="timeline-content">
+                            <h2>Completed</h2>
+                            <p>You'll receive a notification shortly.</p>
                         </div>
                     </div>
                 </div>
