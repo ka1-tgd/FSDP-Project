@@ -6,6 +6,7 @@ const path = require("path");
 
 // Load env variables
 dotenv.config();
+const dbConfig = require("./dbConfig");
 
 // Require controllers
 
@@ -23,6 +24,32 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded req bodies
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
+
+// Get contacts from SQL Server
+app.get("/api/paynow/contacts", async (req, res) => {
+    try {
+        const pool = await mssql.connect(dbConfig);
+
+        const result = await pool.request().query(`
+            SELECT
+                a.AccNo AS id,
+                u.Name AS name,
+                RTRIM(u.PhoneNo) AS phone
+            FROM Users u
+            INNER JOIN Account a ON u.NRIC = a.NRIC
+            ORDER BY u.Name
+        `);
+
+        res.json(result.recordset);
+
+    } catch (error) {
+        console.error("Contacts error:", error);
+        res.status(500).json({
+            error: "Unable to load contacts"
+        });
+    }
+});
+
 
 // Start server
 app.listen(port, () => {
