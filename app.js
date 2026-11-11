@@ -19,7 +19,7 @@ const transferMiddleware = require("../middleware/transferamountmid");
 
 //controllers
 const transferController = require("../controllers/transferamountcon");
-const chatbotController = require("../FSDP-Project/backend/controllers/chatbotController");
+const chatbotController = require("../FSDP-Project/backend/controllers/chatbotController")
 // Serve static files from public
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -57,6 +57,7 @@ app.get("/api/paynow/contacts", async (req, res) => {
 });
 
 // Get faqs
+app.get("/chatbot", (req, res) => {res.sendFile(path.join(__dirname, "public", "html", "aiChatbot.html"));});
 app.post("/chatbot", chatbotController.handleChat);
 
 // Start server

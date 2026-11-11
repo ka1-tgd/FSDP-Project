@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FAQ Chatbot Tester</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+        input { width: 70%; padding: 10px; font-size: 16px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        #result { margin-top: 20px; background: #f4f4f4; padding: 15px; border-radius: 5px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+
+    <h2>Test Your FAQ Chatbot</h2>
+    <input type="text" id="messageInput" placeholder="Type a question (e.g., password, billing)...">
+    <button onclick="sendMessage()">Send</button>
+
+    <h3>Response:</h3>
+    <div id="result">Waiting for your message...</div>
+
+    <script>
+        async function sendMessage() {
+            const message = document.getElementById('messageInput').value;
+            const resultDiv = document.getElementById('result');
+
+            if (!message) {
+                alert('Please type a message first!');
+                return;
+            }
+
+            resultDiv.innerText = "Searching FAQs...";
+
+            try {
+                // Send POST request to your backend endpoint
+                const response = await fetch('/chatbot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                const data = await response.json();
+
+                // Format and display the response nicely
+                if (data.success) {
+                    let output = `${data.message}\n\n`;
+                    if (data.faqs.length > 0) {
+                        data.faqs.forEach((faq, index) => {
+                            output += `[Match ${index + 1}]\nQ: ${faq.question}\nA: ${faq.answer}\n\n`;
+                        });
+                    }
+                    resultDiv.innerText = output;
+                } else {
+                    resultDiv.innerText = "Error: " + JSON.stringify(data);
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerText = "Failed to connect to the server.";
+            }
+        }
+    </script>
+
+</body>
+</html>
