@@ -590,12 +590,14 @@ hr {
 
 /* Adjust existing styles for Step 1 */
 .paynow-page {
+    width: 100%;
     max-width: 393px;
-    min-height: 852px;
-    min-height: 100dvh;
+    height: min(852px, 100dvh);
+    min-height: 0;
+
     display: flex;
     flex-direction: column;
-    overflow: visible;
+    overflow: hidden;
 }
 
 .paynow-page .header {
@@ -626,7 +628,14 @@ hr {
 }
 
 .paynow-page .content {
+    flex: 1;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
     padding: 19px 20px 10px;
+    overflow: hidden;
 }
 
 .paynow-page .step-title {
@@ -753,9 +762,10 @@ hr {
 
 /* Recipient list */
 .recipient-content {
-    min-height: 185px;
-    max-height: 350px;
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 12px 0;
     font-size: 12px;
 }
@@ -827,7 +837,7 @@ hr {
 
 /* Need Help button at the bottom */
 .bottom-section {
-    margin-top: auto;
+    flex-shrink: 0;
     padding: 0 20px 23px;
 }
 
