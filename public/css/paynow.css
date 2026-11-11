@@ -849,4 +849,62 @@ hr {
     cursor: pointer;
 }
 
+/* No recent transfers */
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 100px 15px 30px;
+}
+
+.empty-state-icon {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    margin-bottom: 25px;
+}
+
+.empty-state h3 {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.empty-state p {
+    font-size: 17px;
+    color: #626779;
+    line-height: 25px;
+}
+
+/* Empty state */
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 100px 20px 30px;
+}
+
+.empty-state-icon {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    margin-bottom: 25px;
+}
+
+.empty-title {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.empty-subtitle {
+    font-size: 16px;
+    color: #626779;
+    line-height: 24px;
+}
+
 
