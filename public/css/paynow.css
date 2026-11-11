@@ -861,19 +861,19 @@ hr {
 
 /* No recent transfers */
 
-.empty-state {
+.paynow-page .empty-state {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 100px 15px 30px;
+    padding: 35px 20px 20px;
 }
 
-.empty-state-icon {
-    width: 110px;
-    height: 110px;
+.paynow-page .empty-state-icon {
+    width: 100px;
+    height: 100px;
     object-fit: contain;
-    margin-bottom: 25px;
+    margin-bottom: 18px;
 }
 
 .empty-state h3 {
@@ -888,33 +888,33 @@ hr {
     line-height: 25px;
 }
 
-/* Empty state */
+/* Recent empty state */
 
-.empty-state {
+.paynow-page .empty-state {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 100px 20px 30px;
+    padding: 20px 15px;
 }
 
-.empty-state-icon {
-    width: 110px;
-    height: 110px;
+.paynow-page .empty-state-icon {
+    width: 75px;
+    height: 75px;
     object-fit: contain;
-    margin-bottom: 25px;
-}
-
-.empty-title {
-    font-size: 20px;
-    font-weight: 500;
     margin-bottom: 12px;
 }
 
-.empty-subtitle {
+.paynow-page .empty-title {
     font-size: 16px;
+    margin: 0 0 8px;
+}
+
+.paynow-page .empty-subtitle {
+    font-size: 13px;
+    line-height: 19px;
+    margin: 0;
     color: #626779;
-    line-height: 24px;
 }
 
 

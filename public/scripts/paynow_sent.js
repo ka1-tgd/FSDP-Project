@@ -10,21 +10,25 @@ let recipients = [];
 let requestId = 0;
 
 
-// Load recipients from backend
+// Load recipients
 async function loadRecipients() {
     const currentRequest = ++requestId;
 
-    recipientContent.textContent = "Loading recipients...";
+    // Recent tab: Hardcoded empty state
+    if (activeTab === "recent") {
+        recipients = [];
+        displayRecipients();
+        return;
+    }
 
-    const url = activeTab === "recent"
-        ? "/api/paynow/recent"
-        : "/api/paynow/contacts";
+    // Contacts tab: Retrieve contacts from database
+    recipientContent.textContent = "Loading contacts...";
 
     try {
-        const response = await fetch(url);
+        const response = await fetch("/api/paynow/contacts");
 
         if (!response.ok) {
-            throw new Error("Failed to load recipients");
+            throw new Error("Failed to load contacts");
         }
 
         const data = await response.json();
@@ -32,7 +36,7 @@ async function loadRecipients() {
         if (currentRequest !== requestId) return;
 
         if (!Array.isArray(data)) {
-            throw new Error("Invalid recipient data");
+            throw new Error("Invalid contact data");
         }
 
         recipients = data;
@@ -41,9 +45,10 @@ async function loadRecipients() {
     } catch (error) {
         if (currentRequest !== requestId) return;
 
-        console.error(error);
+        console.error("Contacts error:", error);
+
         recipientContent.textContent =
-            "Unable to load recipients. Please try again.";
+            "Unable to load contacts. Please try again.";
     }
 }
 
@@ -60,33 +65,37 @@ function displayRecipients() {
 
         return name.includes(keyword) || phone.includes(keyword);
     });
-    
+
+    // Empty state
     if (filtered.length === 0) {
         const noRecent = activeTab === "recent" && keyword === "";
+
         recipientContent.innerHTML = `
-        <div class="empty-state">
-        ${noRecent ? `
-            <img
-            src="../images/paynow-no-recent-icon.png"
-            alt=""
-            class="empty-state-icon">
-            ` : ""}
-            <p class="empty-title">
-            ${noRecent
-                ? "No recent PayNow transfers"
-                : "No recipients found"}
+            <div class="empty-state">
+                ${noRecent ? `
+                    <img
+                        src="../images/paynow-no-recent-icon.png"
+                        alt=""
+                        class="empty-state-icon">
+                ` : ""}
+
+                <p class="empty-title">
+                    ${noRecent
+                        ? "No recent PayNow transfers"
+                        : "No recipients found"}
                 </p>
+
                 <p class="empty-subtitle">
-                ${noRecent
-                    ? "Your 10 most recent payees will be shown here."
-                    : "Try searching for another recipient"}
-                    </p>
-                    </div>
-                    `;
-                    return;
-                }
+                    ${noRecent
+                        ? "Your 10 most recent payees will be shown here."
+                        : "Try searching for another recipient"}
+                </p>
+            </div>
+        `;
+        return;
+    }
 
-
+    // Display contact list
     filtered.forEach(function(person) {
         const item = document.createElement("button");
         item.type = "button";
