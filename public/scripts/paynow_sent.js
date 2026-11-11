@@ -60,27 +60,32 @@ function displayRecipients() {
 
         return name.includes(keyword) || phone.includes(keyword);
     });
-
+    
     if (filtered.length === 0) {
         const noRecent = activeTab === "recent" && keyword === "";
-
         recipientContent.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-circle"></div>
-                <p class="empty-title">
-                    ${noRecent
-                        ? "No recent PayNow transfers"
-                        : "No recipients found"}
+        <div class="empty-state">
+        ${noRecent ? `
+            <img
+            src="../images/paynow-no-recent-icon.png"
+            alt=""
+            class="empty-state-icon">
+            ` : ""}
+            <p class="empty-title">
+            ${noRecent
+                ? "No recent PayNow transfers"
+                : "No recipients found"}
                 </p>
                 <p class="empty-subtitle">
-                    ${noRecent
-                        ? "Your recent payees will be shown here"
-                        : "Try searching for another recipient"}
-                </p>
-            </div>
-        `;
-        return;
-    }
+                ${noRecent
+                    ? "Your 10 most recent payees will be shown here."
+                    : "Try searching for another recipient"}
+                    </p>
+                    </div>
+                    `;
+                    return;
+                }
+
 
     filtered.forEach(function(person) {
         const item = document.createElement("button");
