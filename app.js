@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Get contacts from SQL Server
 app.get("/api/paynow/contacts", async (req, res) => {
     try {
-        const pool = await mssql.connect(dbConfig);
+        const pool = await sql.connect(dbConfig);
 
         const result = await pool.request().query(`
             SELECT
