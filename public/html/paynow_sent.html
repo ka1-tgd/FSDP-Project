@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OCBC PayNow - Choose Recipient</title>
+    <link rel="stylesheet" href="../css/paynow.css">
+    <script src="../scripts/paynow_sent.js" defer></script>
+</head>
+
+<body>
+    <main class="phone-screen paynow-page">
+
+        <!-- Header -->
+        <header class="header">
+            <button class="back-button" id="backButton" aria-label="Go back">
+                ‹
+            </button>
+            <h1>PayNow</h1>
+        </header>
+
+        <!-- Progress bar -->
+        <div class="progress-container">
+            <div class="progress-bar active"></div>
+            <div class="progress-bar"></div>
+            <div class="progress-bar"></div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <section class="content">
+
+            <!-- Step information -->
+            <div class="step-row">
+                <p class="step-title">
+                    <span>Step 1 of 4</span> · Choose who to pay
+                </p>
+
+                <button type="button" class="ask-button" id="askBtn">
+                    Ask OCBC
+                </button>
+            </div>
+            
+            <!-- Payment options -->
+            <div class="payment-types">
+                <button type="button" class="payment-option" data-type="nric">
+                    <img src="../images/nric-icon.png"
+                    class="payment-icon" alt="">
+                    <span>NRIC/FIN</span>
+                </button>
+                
+                <button type="button" class="payment-option" data-type="uen">
+                    <img src="../images/uen-icon.png"
+                    class="payment-icon" alt="">
+                    <span>UEN/VPA</span>
+                </button>
+            </div>
+
+            <!-- Search -->
+            <div class="search-section">
+                <label for="searchInput">Who are you sending to?</label>
+
+                <div class="search-box">
+                    <span class="search-icon">⌕</span>
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Search by name or mobile number"
+                        autocomplete="off"
+                    >
+                </div>
+            </div>
+
+            <!-- Recent / Contacts -->
+            <div class="tabs">
+                <button type="button" class="tab active" data-tab="recent">
+                    Recent
+                </button>
+                <button type="button" class="tab" data-tab="contacts">
+                    Contacts
+                </button>
+            </div>
+
+            <!-- Database recipients -->
+            <div class="recipient-content" id="recipientContent" aria-live="polite">
+            </div>
+
+        </section>
+
+        <!-- Bottom button -->
+        <div class="bottom-section">
+            <div class="button-container">
+                <button type="button" class="help-button" id="helpBtn">
+                    Need help?
+                </button>
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>
