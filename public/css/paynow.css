@@ -103,6 +103,16 @@ body {
     );
 }
 
+.progress-bar-fill-half {
+    width: 50%;
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(
+        90deg,
+        #ed2727,
+        #aa1717
+    );
+}
 
 /* content */
 
