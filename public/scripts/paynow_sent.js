@@ -167,11 +167,7 @@ paymentOptions.forEach(function(button) {
 
 // Ask OCBC chatbot
 document.getElementById("askBtn").addEventListener("click", function() {
-    if (typeof openChatbot === "function") {
-        openChatbot();
-    } else {
-        alert("Ask OCBC chatbot will be connected later.");
-    }
+    window.location.href = "http://localhost:3000/api/chatbot";
 });
 
 
