@@ -120,13 +120,11 @@ function displayRecipients() {
 
         // Continue to Step 2
         item.addEventListener("click", function() {
-            sessionStorage.setItem(
-                "paynowRecipient",
-                JSON.stringify(person)
-            );
+    sessionStorage.setItem("paynowRecipient", JSON.stringify(person));
 
-            window.location.href = "transferamount.html";
-        });
+    const digits = String(person.phone || "").replace(/\D/g, "").slice(-8);
+    window.location.href = "transferamount.html?phone=" + digits;
+    });
 
         recipientContent.appendChild(item);
     });
