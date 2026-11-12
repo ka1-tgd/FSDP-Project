@@ -13,7 +13,7 @@
 <body>
 
     <h2>Test Your FAQ Chatbot</h2>
-    <input type="text" id="messageInput" placeholder="Type a question (e.g., password, billing)...">
+    <input type="text" id="messageInput" placeholder="Type a question (e.g., How do I transfer money?)..." onkeydown="if(event.key === 'Enter') sendMessage()">
     <button onclick="sendMessage()">Send</button>
 
     <h3>Response:</h3>
@@ -21,7 +21,8 @@
 
     <script>
         async function sendMessage() {
-            const message = document.getElementById('messageInput').value;
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
             const resultDiv = document.getElementById('result');
 
             if (!message) {
@@ -29,11 +30,11 @@
                 return;
             }
 
-            resultDiv.innerText = "Searching FAQs...";
+            resultDiv.innerText = "Thinking...";
 
             try {
-                // Send POST request to your backend endpoint
-                const response = await fetch('/chatbot', {
+                // FIXED: Pointing to the new /api/chatbot route
+                const response = await fetch('/api/chatbot', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -43,17 +44,18 @@
 
                 const data = await response.json();
 
-                // Format and display the response nicely
                 if (data.success) {
-                    let output = `${data.message}\n\n`;
-                    if (data.faqs.length > 0) {
-                        data.faqs.forEach((faq, index) => {
-                            output += `[Match ${index + 1}]\nQ: ${faq.question}\nA: ${faq.answer}\n\n`;
-                        });
+                    // Display the direct reply from Gemini/Database
+                    let output = `${data.reply}\n`;
+                    
+                    // Optional: If you want to see which question matched under the hood
+                    if (data.matchedQuestion) {
+                        output += `\n[Matched FAQ Question: "${data.matchedQuestion}"]`;
                     }
+                    
                     resultDiv.innerText = output;
                 } else {
-                    resultDiv.innerText = "Error: " + JSON.stringify(data);
+                    resultDiv.innerText = "Error: " + (data.error || JSON.stringify(data));
                 }
 
             } catch (error) {

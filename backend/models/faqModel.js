@@ -1,27 +1,79 @@
 const sql = require("mssql");
+const { GoogleGenAI } = require("@google/genai");
 const dbConfig = require("../../dbConfig");
+require("dotenv").config();
 
-//Get frequently asked questions
+//Uses C06_FGEMINI_API_KEY.
+const ai = new GoogleGenAI();
+
+//Get Ferquently Ask Questions.
 async function getFaqs(userQuery) {
   try {
     const connection = await sql.connect(dbConfig);
-    
-    const request = connection.request();     //Use SQL to search the question.
-    request.input('searchTerm', sql.VarChar, `%${userQuery}%`);
 
-    const result = await request.query(`
-      SELECT TOP 3 question, answer 
-      FROM Faqs 
-      WHERE question LIKE @searchTerm OR keywords LIKE @searchTerm
+    // 1. Fetch all questions & keywords (lightweight, no long answers yet)
+    const allFaqsResult = await connection.request().query(`
+      SELECT id, question, keywords FROM Faqs
     `);
+    const allFaqs = allFaqsResult.recordset;
 
-    return result.recordset; //Returns an array of matching FAQ rows.
+    // Format the list for Gemini
+    const faqListText = allFaqs
+      .map((f) => `ID: ${f.id} | Question: ${f.question} | Keywords: ${f.keywords}`)
+      .join("\n");
+
+    // 2. Ask Gemini to match the user's intent to the best FAQ ID
+    const response = await ai.models.generateContent({
+      model: "gemini-3.5-flash-lite",
+      contents: `User question: "${userQuery}"`,
+      config: {
+        systemInstruction: `You are a routing assistant for a banking FAQ database. 
+Match the user's question to the single best FAQ from the list below using the question and keywords.
+Reply with ONLY the numeric ID (e.g., 1). If none of the FAQs match the user's intent, reply with -1. Do not write any other words.
+
+FAQ LIST:
+${faqListText}`,
+      },
+    });
+
+    const matchedId = parseInt(response.text.trim(), 10);
+
+    // 3. Fetch the exact approved answer from SQL Server using that ID
+    if (!isNaN(matchedId) && matchedId > 0) {
+      const answerRequest = connection.request();
+      answerRequest.input("id", sql.Int, matchedId);
+
+      const finalResult = await answerRequest.query(`
+        SELECT TOP 1 question, answer 
+        FROM Faqs 
+        WHERE id = @id
+      `);
+
+      return finalResult.recordset; // Returns [{ question, answer }] just like before!
+    }
+
+    return []; // No match found
   } catch (error) {
-    console.error('Database query error:', error);
-    throw error;
+    console.error("Error in getFaqs:", error);
+    // Optional fallback: if API fails or hits rate limit, fall back to your SQL LIKE search
+    return fallbackSqlSearch(userQuery);
   }
 }
 
+// Fallback using your original SQL LIKE logic
+async function fallbackSqlSearch(userQuery) {
+  const connection = await sql.connect(dbConfig);
+  const request = connection.request();
+  request.input("searchTerm", sql.VarChar, `%${userQuery}%`);
+
+  const result = await request.query(`
+    SELECT TOP 3 question, answer 
+    FROM Faqs 
+    WHERE question LIKE @searchTerm OR keywords LIKE @searchTerm
+  `);
+  return result.recordset;
+}
+
 module.exports = {
-    getFaqs
+  getFaqs,
 };

@@ -58,8 +58,10 @@ app.get("/api/paynow/contacts", async (req, res) => {
 });
 
 // Get faqs
-app.get("/chatbot", (req, res) => {res.sendFile(path.join(__dirname, "public", "html", "aiChatbot.html"));});
-app.post("/chatbot", chatbotController.handleChat);
+app.get("/chatbot", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "html", "aiChatbot.html"));
+});
+app.post("/api/chatbot", chatbotController.handleChat);
 
 // Start server
 app.listen(port, () => {
