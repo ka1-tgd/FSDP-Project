@@ -1,6 +1,6 @@
 // Require express, mssql, dotenv and path
 const express = require("express");
-const sql = require("mssql");
+const mssql = require("mssql");
 const dotenv = require("dotenv");
 const path = require("path");
 
@@ -66,7 +66,7 @@ process.on("SIGINT", async () => {
     console.log("Server is gracefully shutting down");
 
     // Close any open connections
-    await sql.close();
+    await mssql.close();
     console.log("Database connections closed");
     process.exit(0);
 });

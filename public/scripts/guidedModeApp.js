@@ -1,6 +1,7 @@
-console.log("Frontend app.js is running!");
+// Import guided mode initialization function
 import { initializeGuidedMode } from "./guided-mode/guidedModeInit.js";
 
+// Import guided mode functions
 import {
     guidedModeCheck,
     setGuidedMode
@@ -13,9 +14,12 @@ initializeGuidedMode();
 const toggle = document.getElementById("guidedModeToggle");
 
 if (toggle) {
+    // Load previously saved setting
     toggle.checked = guidedModeCheck();
 
+    // Update setting when toggled
     toggle.addEventListener("change", () => {
         setGuidedMode(toggle.checked);
+        initializeGuidedMode();
     });
 }

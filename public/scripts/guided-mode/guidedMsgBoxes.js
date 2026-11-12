@@ -1,5 +1,13 @@
-export function createMessageBoxes(guidanceSteps) {
+// Function to remove existing message boxes
+export function removeMessageBoxes() {
+    document.querySelectorAll(".guided-message, .guided-note").forEach(element => {
+        element.remove();
+    });
+}
 
+// Function to create message boxes
+export function createMessageBoxes(guidanceSteps) {
+    // Remove existing message boxes
     removeMessageBoxes();
 
     guidanceSteps.forEach(step => {
@@ -44,11 +52,5 @@ export function createMessageBoxes(guidanceSteps) {
         );
 
         messageBox.insertAdjacentElement("afterend", note);
-    });
-}
-
-export function removeMessageBoxes() {
-    document.querySelectorAll(".guided-message, .guided-note").forEach(element => {
-        element.remove();
     });
 }
