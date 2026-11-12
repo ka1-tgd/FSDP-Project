@@ -58,7 +58,17 @@ function appendMessage(text, sender) {
     if (sender === 'bot') {
         const avatar = document.createElement('div');
         avatar.className = 'avatar bot-avatar';
-        avatar.innerText = 'OCBC';
+        
+        // Bot avatar using Chatbot_Avatar.jpg from the parallel /images folder
+        const img = document.createElement('img');
+        img.src = '../images/Chatbot_Avatar.jpg';
+        img.alt = 'Bot';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '50%';
+        
+        avatar.appendChild(img);
         row.appendChild(avatar);
     } else {
         // User avatar using john.png from the parallel /images folder
