@@ -1,21 +1,21 @@
 /* Main guidance box */
 .guided-message {
     background-color: #b3a6fc;
-    border-left: 4px solid #6146ff;
-    border-radius: 8px;
-
-    padding: 12px 16px;
-    margin: 12px 0 5px;
-
-    font-size: 13px;
-    line-height: 1.5;
     color: #6146ff;
+    border-left: 5px solid #6146ff;
+    border-radius: 12px;
+
+    padding: 7px 13px;
+    margin: 15px 0 5px;
+
+    font-size: 12px;
+    line-height: 1.5;
 }
 
 /* Tips title */
 .guided-message > strong {
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
     font-size: 14px;
 }
 
@@ -27,6 +27,8 @@
 /* Note outside the box */
 .guided-note {
     font-size: 11px;
+    font-weight: bold;
     color: #6146ff;
     margin: 4px 0 12px;
+    line-height: 1.4;
 }

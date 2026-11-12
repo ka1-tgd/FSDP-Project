@@ -1,6 +1,6 @@
 export const paynowSentGuidance = [
     {
-        target: ".tabs",
+        target: "#recipientContent",
         
         position: "afterend",
 

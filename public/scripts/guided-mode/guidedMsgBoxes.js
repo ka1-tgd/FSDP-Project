@@ -10,12 +10,15 @@ export function createMessageBoxes(guidanceSteps) {
     // Remove existing message boxes
     removeMessageBoxes();
 
+    // Loop through guidance objects
     guidanceSteps.forEach(step => {
-
+        // Check for condition and if is met
         if (step.condition && !step.condition()) return;
 
+        // Find HTML element
         const target = document.querySelector(step.target);
 
+        // If cannot find target, exit function
         if (!target) return;
 
         // Main message box
@@ -45,12 +48,13 @@ export function createMessageBoxes(guidanceSteps) {
         note.classList.add("guided-note");
         note.textContent = step.note;
 
-        // Insert elements
+        // Insert message box
         target.insertAdjacentElement(
             step.position || "afterend",
             messageBox
         );
 
+        // Note below
         messageBox.insertAdjacentElement("afterend", note);
     });
 }
