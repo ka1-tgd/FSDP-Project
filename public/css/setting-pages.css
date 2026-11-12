@@ -203,3 +203,13 @@ body {
     margin: 30px 15px;
     border-radius: 25px;
 }
+
+/* iPhone 16 screen size - Text-to-Speech Settings */
+.tts-page.phone-screen {
+    width: 100%;
+    max-width: 393px;
+    height: min(852px, 100dvh);
+    min-height: 0;
+    margin: 0 auto;
+    overflow-y: auto;
+}
