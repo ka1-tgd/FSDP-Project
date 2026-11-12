@@ -1,6 +1,6 @@
 
 const sql = require("mssql");
-const dbConfig = require("../dbConfig");
+const dbConfig = require("../../dbConfig");
 
 
 const SENDER_ACCOUNT = "111-1-111111";

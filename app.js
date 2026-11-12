@@ -15,21 +15,16 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(express.json()); // Parse JSON req bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded req bodies
-const transferMiddleware = require("../middleware/transferamountmid");
+
 
 //controllers
-const transferController = require("../controllers/transferamountcon");
 const chatbotController = require("../FSDP-Project/backend/controllers/chatbotController")
 // Serve static files from public
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
 //transfer routes
-app.post(
-    "/api/transfer/details",
-    transferMiddleware.validateTransfer,
-    transferController.getTransferDetails
-);
+
 
 // Get contacts from SQL Server
 app.get("/api/paynow/contacts", async (req, res) => {
