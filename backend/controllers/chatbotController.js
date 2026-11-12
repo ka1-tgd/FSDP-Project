@@ -1,28 +1,31 @@
 const faqModel = require("../models/faqModel");
 
-//Get frequently asked questions
+// Get frequently asked questions
 async function handleChat(req, res) {
   try {
-    const userMessage = req.body.message;       //Get the user's message from the request body.
+    const userMessage = req.body.message; // Get the user's message from the request body.
 
     if (!userMessage) {
       return res.status(400).json({ error: 'Message is required.' });
     }
 
-    const matchingFaqs = await faqModel.getFaqs(userMessage);        //Search SQL Server database for relevant FAQs using faqModel.
+    // Search/match FAQs using your updated faqModel (powered by Gemini + SQL)
+    const matchingFaqs = await faqModel.getFaqs(userMessage);
 
-    //Send the matching database rows back to the frontend.
+    // If Gemini matched an FAQ, send back the answer
     if (matchingFaqs && matchingFaqs.length > 0) {
       return res.json({ 
         success: true,
-        faqs: matchingFaqs, //Array of { question, answer } rows
-        message: "Here are the closest matching FAQs I found:" 
+        reply: matchingFaqs[0].answer, // The exact answer from your SQL database
+        matchedQuestion: matchingFaqs[0].question,
+        faqs: matchingFaqs // Keeps compatibility if your frontend expects the array
       });
     } else {
+      // If Gemini returned -1 or no match found
       return res.json({ 
         success: true,
-        faqs: [],
-        message: "Sorry, I couldn't find any matching FAQs for your search." 
+        reply: "Sorry, I couldn't find an answer to that. Would you like me to connect you with a human support agent?",
+        faqs: []
       });
     }
 
@@ -33,5 +36,5 @@ async function handleChat(req, res) {
 }
 
 module.exports = {
-    handleChat
+  handleChat
 };
