@@ -2,68 +2,98 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FAQ Chatbot Tester</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
-        input { width: 70%; padding: 10px; font-size: 16px; }
-        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
-        #result { margin-top: 20px; background: #f4f4f4; padding: 15px; border-radius: 5px; white-space: pre-wrap; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask OCBC Bot</title>
+    <!-- Matching your teammates' stylesheet order -->
+    <link rel="stylesheet" href="../css/paynow.css">
+    <link rel="stylesheet" href="../css/aiChatbot.css">
 </head>
-<body>
+<body data-page="aiChatbot">
 
-    <h2>Test Your FAQ Chatbot</h2>
-    <input type="text" id="messageInput" placeholder="Type a question (e.g., How do I transfer money?)..." onkeydown="if(event.key === 'Enter') sendMessage()">
-    <button onclick="sendMessage()">Send</button>
+    <div class="phone-screen chatbot-page">
 
-    <h3>Response:</h3>
-    <div id="result">Waiting for your message...</div>
+        <!-- Top bar matching ocbcHome.html -->
+        <div class="top-bar">
+            <button class="token-button" type="button">
+                <img src="../images/ocbc-token.png" alt="" class="token-icon">
+                OCBC Tokens
+            </button>
+            <button class="logout-link" type="button">logout</button>
+        </div>
 
-    <script>
-        async function sendMessage() {
-            const messageInput = document.getElementById('messageInput');
-            const message = messageInput.value.trim();
-            const resultDiv = document.getElementById('result');
+        <!-- Header matching your teammates' design -->
+        <header class="header">
+            <a href="ocbcHome.html" class="back-button" aria-label="Go back">‹</a>
+            <h1>Ask OCBC Bot</h1>
+        </header>
 
-            if (!message) {
-                alert('Please type a message first!');
-                return;
-            }
+        <!-- Chat Container -->
+        <div class="chat-container" id="chatContainer">
 
-            resultDiv.innerText = "Thinking...";
-
-            try {
-                // FIXED: Pointing to the new /api/chatbot route
-                const response = await fetch('/api/chatbot', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ message: message })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    // Display the direct reply from Gemini/Database
-                    let output = `${data.reply}\n`;
+            <!-- Initial Bot Greeting -->
+            <div class="message-row bot-row">
+                <div class="avatar bot-avatar">🤖</div>
+                <div class="chat-bubble bot-bubble">
+                    <p>Hi! I'm OCBC Assist.<br>How can I help you today?</p>
                     
-                    // Optional: If you want to see which question matched under the hood
-                    if (data.matchedQuestion) {
-                        output += `\n[Matched FAQ Question: "${data.matchedQuestion}"]`;
-                    }
-                    
-                    resultDiv.innerText = output;
-                } else {
-                    resultDiv.innerText = "Error: " + (data.error || JSON.stringify(data));
-                }
+                    <!-- Quick Suggestion Pills -->
+                    <div class="quick-chips">
+                        <button type="button" class="chip" onclick="sendPreset('How do I transfer money?')">How do I transfer money?</button>
+                        <button type="button" class="chip" onclick="sendPreset('What is PayNow?')">What is PayNow?</button>
+                        <button type="button" class="chip" onclick="sendPreset('How do I reset my PIN?')">How do I reset my PIN?</button>
+                        <button type="button" class="chip" onclick="sendPreset('Talk to a customer agent')">Talk to a customer agent</button>
+                    </div>
+                </div>
+            </div>
 
-            } catch (error) {
-                console.error('Error:', error);
-                resultDiv.innerText = "Failed to connect to the server.";
-            }
-        }
-    </script>
+        </div>
 
+        <!-- Bottom Input Bar -->
+        <div class="chat-input-section">
+            <div class="input-pill-box">
+                <input 
+                    type="text" 
+                    id="messageInput" 
+                    placeholder="Type a message" 
+                    autocomplete="off"
+                    onkeydown="if(event.key === 'Enter') sendMessage()"
+                >
+                <button type="button" class="send-icon-btn" onclick="sendMessage()" aria-label="Send">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation matching ocbcHome.html -->
+        <nav class="bottom-nav">
+            <a href="ocbcHome.html" class="nav-item">
+                <img src="../images/house-red.png" alt="" class="nav-icon">
+                <span>Home</span>
+            </a>
+            <a href="plan.html" class="nav-item">
+                <img src="../images/plan.png" alt="" class="nav-icon">
+                <span>Plan</span>
+            </a>
+            <a href="paynowSent.html" class="nav-item">
+                <img src="../images/pay-transfer.png" alt="" class="nav-icon">
+                <span>Pay &amp; Transfer</span>
+            </a>
+            <a href="rewards.html" class="nav-item">
+                <img src="../images/gift.png" alt="" class="nav-icon">
+                <span>Rewards</span>
+            </a>
+            <a href="more.html" class="nav-item">
+                <img src="../images/more.png" alt="" class="nav-icon">
+                <span>More</span>
+            </a>
+        </nav>
+
+    </div>
+
+    <!-- Frontend JavaScript Logic -->
+    <script src="../scripts/aiChatbot.js"></script>
 </body>
 </html>
