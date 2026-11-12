@@ -917,8 +917,14 @@ hr {
     color: #626779;
 }
 
-.header {
+.header a.back-button {
+    text-decoration: none !important;
+    border: none !important;
     border-bottom: none !important;
+    box-shadow: none !important;
+    outline: none;
+    background: transparent;
 }
+
 
 
