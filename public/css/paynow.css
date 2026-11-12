@@ -917,4 +917,8 @@ hr {
     color: #626779;
 }
 
+.header {
+    border-bottom: none !important;
+}
+
 
