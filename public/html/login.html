@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCBC Login</title>
+    <!-- Your existing stylesheet first (reset, body, .phone-screen, .hidden) -->
+    <link rel="stylesheet" href="../css/paynow.css">
+    <!-- Login page styles second -->
+    <link rel="stylesheet" href="../css/login.css">
+    <script src="../scripts/login.js" defer></script>
+</head>
+<body>
+
+<div class="phone-screen login-page">
+
+    <!-- Landing screen -->
+    <div class="screen landing-screen" id="landingScreen">
+
+        <!-- Top bar -->
+        <div class="top-bar">
+            <button class="icon-button" type="button" aria-label="Scan">
+                <img src="../images/scan.png" alt="">
+            </button>
+            <button class="icon-button" type="button" aria-label="Notifications">
+                <img src="../images/bell.png" alt="">
+            </button>
+        </div>
+
+        <!-- Hero banner -->
+        <div class="hero">
+            <img src="../images/login-hero.png" alt="OCBC banner" class="hero-image">
+        </div>
+
+        <!-- shortcuts -->
+        <div class="quick-actions">
+            <button class="action-item" type="button">
+                <span class="action-circle"><img src="../images/onetoken.png" alt="" class="action-icon"></span>
+                <span>OneToken</span>
+            </button>
+            <button class="action-item" type="button">
+                <span class="action-circle"><img src="../images/scan-and-pay.png" alt="" class="action-icon"></span>
+                <span>Scan &amp; Pay</span>
+            </button>
+            <button class="action-item" type="button">
+                <span class="action-circle"><img src="../images/paynow.png" alt="" class="action-icon"></span>
+                <span>PayNow</span>
+            </button>
+            <button class="action-item" type="button">
+                <span class="action-circle"><img src="../images/wealth.png" alt="" class="action-icon"></span>
+                <span>Wealth Insights</span>
+            </button>
+            <button class="action-item" type="button">
+                <span class="action-circle"><img src="../images/foreign-exchange.png" alt="" class="action-icon"></span>
+                <span>Foreign Exchange</span>
+            </button>
+            <button class="action-item" type="button">
+                <span class="action-circle"><img src="../images/more.png" alt="" class="action-icon"></span>
+                <span>More</span>
+            </button>
+        </div>
+
+        <!-- login button -->
+        <div class="landing-bottom">
+            <button class="dark-button" type="button" id="openLoginButton">
+                Log in to OCBC Singapore
+            </button>
+        </div>
+
+    </div>
+
+
+    <!-- login screen -->
+    <div class="screen login-screen hidden" id="loginScreen">
+
+        <div class="login-top">
+            <button class="login-back-button" type="button" id="loginBackButton" aria-label="Go back">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="1.6"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M15 5l-7 7 7 7"></path>
+                </svg>
+            </button>
+        </div>
+
+        <form class="login-form" id="loginForm" novalidate>
+
+            <div class="field-row">
+                <div class="field">
+                    <input
+                        type="text"
+                        id="userId"
+                        placeholder="User ID (Access Code)"
+                        aria-label="User ID (Access Code)"
+                        autocomplete="username"
+                        autocapitalize="off"
+                        spellcheck="false">
+                </div>
+
+                <button class="faceid-button" type="button" aria-label="Log in with Face ID">
+                    <img src="../images/faceid.png" alt="">
+                </button>
+            </div>
+
+            <div class="field">
+                <input
+                    type="password"
+                    id="pin"
+                    placeholder="PIN"
+                    aria-label="PIN"
+                    autocomplete="current-password">
+            </div>
+
+            <p class="error-message hidden" id="loginError" role="alert"></p>
+
+            <button class="dark-button" type="submit" id="loginButton" disabled>
+                Log in
+            </button>
+
+            <a href="#" class="trouble-link">Trouble logging in</a>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
