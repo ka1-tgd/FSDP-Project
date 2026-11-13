@@ -11,18 +11,18 @@ async function getFaqs(userQuery) {
   try {
     const connection = await sql.connect(dbConfig);
 
-    // 1. Fetch all questions & keywords (lightweight, no long answers yet)
+    //Fetch all questions & keywords.
     const allFaqsResult = await connection.request().query(`
       SELECT id, question, keywords FROM Faqs
     `);
     const allFaqs = allFaqsResult.recordset;
 
-    // Format the list for Gemini
+    //Format the list for Gemini.
     const faqListText = allFaqs
       .map((f) => `ID: ${f.id} | Question: ${f.question} | Keywords: ${f.keywords}`)
       .join("\n");
 
-    // 2. Ask Gemini to match the user's intent to the best FAQ ID
+    //Ask Gemini to match the user's intent to the best FAQ ID.
     const response = await ai.models.generateContent({
       model: "gemini-3.5-flash-lite",
       contents: `User question: "${userQuery}"`,
@@ -38,7 +38,7 @@ ${faqListText}`,
 
     const matchedId = parseInt(response.text.trim(), 10);
 
-    // 3. Fetch the exact approved answer from SQL Server using that ID
+    //Fetch the answer from SQL Server using that ID.
     if (!isNaN(matchedId) && matchedId > 0) {
       const answerRequest = connection.request();
       answerRequest.input("id", sql.Int, matchedId);
@@ -49,18 +49,17 @@ ${faqListText}`,
         WHERE id = @id
       `);
 
-      return finalResult.recordset; // Returns [{ question, answer }] just like before!
+      return finalResult.recordset; //Returns [{ question, answer }].
     }
 
-    return []; // No match found
+    return [];    //If no match was found.
   } catch (error) {
     console.error("Error in getFaqs:", error);
-    // Optional fallback: if API fails or hits rate limit, fall back to your SQL LIKE search
-    return fallbackSqlSearch(userQuery);
+    return fallbackSqlSearch(userQuery);    //Fallback - if API fails or hits rate limit, fall back to your SQL LIKE search.
   }
 }
 
-// Fallback using your original SQL LIKE logic
+//Fallback using the original SQL LIKE logic.
 async function fallbackSqlSearch(userQuery) {
   const connection = await sql.connect(dbConfig);
   const request = connection.request();

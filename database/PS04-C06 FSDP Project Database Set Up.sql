@@ -53,6 +53,13 @@ create table Transactions (
 	constraint CK_Transactions_Status check (Status in ('submitted', 'processing', 'completed', 'failed')),
 	constraint CK_Transactions_DiffAcc check (PayerAccNo <> RecipientAccNo)
 );
+
+create table Faqs (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    question VARCHAR(MAX) NOT NULL,
+    answer VARCHAR(MAX) NOT NULL,
+    keywords VARCHAR(MAX)
+);
 go
 
 -- Insert sample data
@@ -77,3 +84,42 @@ insert into Transactions (TransRef, PayerAccNo, RecipientAccNo, Description, Amo
 	('1234567890123456', '123-4-567890', '098-7-654321', 'Lunch', 9.80, 'completed', '2026-11-07T14:00:00'),
 	('0987654321098765', '098-7-654321', '111-2-333444', null, 15.00, 'completed', '2026-11-07T19:00:00'),
 	('1122334455667788', '123-4-567890', '111-1-111111', 'Weekly allowance', 100.00, 'completed', '2026-11-08T10:00:00')
+
+insert into Faqs (question, answer, keywords)
+	values
+	(
+		'How to transfer money?', 
+		'You may transfer money using the app by following these steps:
+
+1. Tap on "Pay & Transfer" in the menu.
+2. Select transfer type (Local or PayNow via mobile number, NRIC/FIN, or UEN).
+3. Choose the recipient or add a new payee by entering their bank account or PayNow details.
+4. Enter the transfer amount and any required payment details or notes.
+5. Review the transaction details and slide to transfer (authenticate with OTP if prompted).
+
+You may turn on money transfer guide mode if you need step-by-step guidance. Would you like me to show you how to turn on money transfer guide mode for extra help?', 
+		'transfer, send money, pay, paynow, funds, fund, How do I transfer money to someone?, Can I send funds to another account?, Where is the button to send money?, How to make a PayNow transfer?, I want to pay a friend, how do I do that?'
+	),
+	(
+		'How to reset my PIN?',
+		'You can reset your OCBC card PIN by following the steps below:
+
+1. Tap on the "More" icon in the bottom navigation bar and select "Card Services".
+2. Tap on "Reset card PIN".
+3. Select the existing card you want to reset the PIN for.
+4. Enter your new 6-digit PIN and confirm it.
+5. Enter the OTP sent to your SMS to complete the process.', 
+		'reset PIN, card PIN, change PIN, change card PIN, debit card PIN, credit card PIN, card password, I forgot my card PIN, how do I change it?, How can I set a new PIN for my debit card?, How do I reset my card PIN?'
+	),
+	(
+		'How to turn on money transfer guide mode?',
+		'You can enable guide mode to get step-by-step overlays while making a transfer by following these steps:
+
+1. Tap on "More" icon form the bottom navigation bar.
+2. Select "Profile & App Settings".
+3. Tap on "Guide mode".
+4. Click on the button in the Enable Guided Mode box to turn it on.
+
+You can also enable the Text-to-Speech feature there if you need audio guidance.',
+		'guide mode, transfer guide, step by step transfer, turn on guide, enable guidance, transfer assistant, How do I turn on guide mode for transfers?, Can I get step-by-step help when sending money?, Where to turn on the transfer guide mode?'
+	);
