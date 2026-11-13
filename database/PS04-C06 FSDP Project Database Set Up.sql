@@ -62,6 +62,22 @@ create table Faqs (
 );
 go
 
+CREATE TABLE dbo.SavedContacts (
+    ContactID INT IDENTITY(1,1) PRIMARY KEY,
+    OwnerNRIC CHAR(9) NOT NULL,
+    RecipientType VARCHAR(10) NOT NULL,
+    RecipientIdentifier VARCHAR(100) NOT NULL,
+    SavedName VARCHAR(50) NOT NULL,
+    CreatedAt DATETIME2 DEFAULT GETDATE(),
+
+    CONSTRAINT CK_SavedContacts_Type
+    CHECK (RecipientType IN ('NRIC', 'UEN')),
+
+    CONSTRAINT FK_SavedContacts_Users
+    FOREIGN KEY (OwnerNRIC)
+    REFERENCES dbo.Users(NRIC)
+);
+
 -- Insert sample data
 insert into Users (NRIC, Name, PhoneNo)
 	values
@@ -123,3 +139,12 @@ You may turn on money transfer guide mode if you need step-by-step guidance. Wou
 You can also enable the Text-to-Speech feature there if you need audio guidance.',
 		'guide mode, transfer guide, step by step transfer, turn on guide, enable guidance, transfer assistant, How do I turn on guide mode for transfers?, Can I get step-by-step help when sending money?, Where to turn on the transfer guide mode?'
 	);
+
+	INSERT INTO dbo.SavedContacts
+    (OwnerNRIC, RecipientType, RecipientIdentifier, SavedName)
+VALUES
+    ('S1234567A', 'NRIC', 'S7654321B', 'Best Friend'),
+    ('S1234567A', 'NRIC', 'S8765432C', 'School Friend'),
+    ('S1234567A', 'UEN', '201912345A', 'My Business'),
+    ('S7654321B', 'NRIC', 'S1234567A', 'John'),
+    ('S7654321B', 'UEN', '202012345B', 'Work Supplier');
