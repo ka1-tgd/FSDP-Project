@@ -2,6 +2,8 @@
 const API_URL = "http://localhost:3000/api";
 
 // HTML elements
+const token = sessionStorage.getItem("token");
+const authHeaders = { Authorization: `Bearer ${token}` };
 const amountInput = document.getElementById("amountInput");
 const quickButtons = document.querySelectorAll(".quick-amounts button");
 const quickHint = document.getElementById("quickHint");
@@ -22,6 +24,8 @@ const customKeypad = document.getElementById("customKeypad");
 const keypadDone = document.getElementById("keypadDone");
 const keypadAmount = document.getElementById("keypadAmount");
 const keypadButtons = document.querySelectorAll("[data-key]");
+
+
 
 // Variables
 let senderBalance = null;
@@ -58,7 +62,9 @@ function maskName(fullName) {
 // Find saved contact
 async function findSavedContact(person) {
     try {
-        const response = await fetch(`${API_URL}/paynow/contacts`);
+        const response = await fetch(`${API_URL}/paynow/contacts`, {
+    headers: authHeaders
+});
 
         if (!response.ok) return null;
 
@@ -79,6 +85,7 @@ async function findSavedContact(person) {
 
 // Get masked registered name
 async function getMaskedRegisteredName(person) {
+    
     if (person.maskedName) return person.maskedName;
 
     if (person.registeredName) {
@@ -94,8 +101,9 @@ async function getMaskedRegisteredName(person) {
 
     try {
         const response = await fetch(
-            `${API_URL}/paynow/search/nric?value=${encodeURIComponent(person.recipientIdentifier)}`
-        );
+    `${API_URL}/paynow/search/nric?value=${encodeURIComponent(person.recipientIdentifier)}`,
+    { headers: authHeaders }
+);
 
         if (!response.ok) return "";
 
@@ -212,8 +220,9 @@ async function loadRecipient() {
 
     try {
         const response = await fetch(
-            `${API_URL}/transfer/recipient/${encodeURIComponent(phone)}`
-        );
+    `${API_URL}/transfer/recipient/${encodeURIComponent(phone)}`,
+    { headers: authHeaders }
+);
 
         if (!response.ok) {
             throw new Error("Recipient not found");
@@ -243,40 +252,22 @@ async function loadRecipient() {
 }
 
 
-// Load sender account
+
 async function loadSender() {
     try {
-        const response = await fetch(
-            `${API_URL}/transfer/sender`
-        );
+        const res = await fetch(`${API_URL}/transfer/sender`, {
+            headers: authHeaders
+        });
+        if (!res.ok) throw new Error('Account not found');
+        senderData = await res.json();
 
-        if (!response.ok) {
-            throw new Error("Account not found");
-        }
-
-        senderData = await response.json();
-
-        accountType.textContent =
-            `${senderData.AccType} Account`;
-
-        accountNumber.textContent =
-            senderData.AccNo;
-
+        accountType.textContent = `${senderData.AccType} Account`;
+        accountNumber.textContent = senderData.AccNo;
         senderBalance = senderData.Balance;
-
-    } catch (error) {
-        console.error("Sender error:", error);
-
-        senderData = null;
-        senderBalance = null;
-
-        accountType.textContent = "Account unavailable";
-        accountNumber.textContent = "";
-
-        showAppError(
-            "Account unavailable",
-            "Unable to retrieve your account details. Please try again later."
-        );
+    } catch (err) {
+        console.error(err);
+        accountType.textContent = 'Account unavailable';
+        accountNumber.textContent = '';
     }
 }
 

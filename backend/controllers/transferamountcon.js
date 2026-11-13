@@ -1,8 +1,6 @@
 const transferAmountModel = require("../models/transferamountmodel");
 
-// No login yet so this is just for reference
-const SENDER_ACC_NO = "123-4-567890";
-
+// Recipient (looked up by phone number)
 async function getRecipientByPhone(req, res) {
   try {
     const recipient = await transferAmountModel.getRecipientByPhone(
@@ -18,16 +16,17 @@ async function getRecipientByPhone(req, res) {
   }
 }
 
+// Sender account (the logged-in user, taken from the JWT)
 async function getSender(req, res) {
   try {
-    const account = await transferAmountModel.getAccountByAccNo(SENDER_ACC_NO);
+    const account = await transferAmountModel.getAccountByNric(req.user.nric);
     if (!account) {
       return res.status(404).json({ error: "Sender account not found" });
     }
     res.json(account);
-  } catch (error) {
+    } catch (error) {
     console.error("Controller error:", error);
-    res.status(500).json({ error: "Error retrieving sender account" });
+    res.status(500).json({ error: error.message });
   }
 }
 

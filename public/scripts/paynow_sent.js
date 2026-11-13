@@ -1,4 +1,5 @@
-
+const token = sessionStorage.getItem("token");
+const authHeaders = { Authorization: `Bearer ${token}` };
 // HTML elements
 const recipientContent = document.getElementById("recipientContent");
 const searchInput = document.getElementById("searchInput");
@@ -11,6 +12,20 @@ let requestId = 0;
 
 // Load recipients from database
 async function loadRecipients() {
+    const response = await fetch(apiUrl, {
+    cache: "no-store",
+    headers: authHeaders
+});
+
+if (response.status === 401) {
+    sessionStorage.removeItem("token");
+    window.location.href = "login.html";
+    return;
+}
+
+if (!response.ok) {
+    throw new Error("Failed to load recipients");
+}
     const currentRequest = ++requestId;
 
     const apiUrl = activeTab === "recent"

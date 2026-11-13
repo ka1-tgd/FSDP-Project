@@ -17,9 +17,11 @@ const port = process.env.PORT || 3000;
 app.use(express.json()); // Parse JSON req bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded req bodies
 const transferAmountMiddleware = require("./backend/middleware/transferamountmid");
+const userLoginMiddleware = require("./backend/middleware/userloginMiddle");
 //controllers
 const chatbotController = require("../FSDP-Project/backend/controllers/chatbotController")
 const transferAmountController = require("./backend/controllers/transferamountcon");
+const userLoginController = require("./backend/controllers/userloginController");
 // Serve static files from public
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -61,23 +63,11 @@ async function getPool() {
     }
 }
 
-// Existing Step 2 transfer routes
-app.get(
-    "/api/transfer/recipient/:phone",
-    transferAmountMiddleware.validatePhone,
-    transferAmountController.getRecipientByPhone
-);
-
-app.get(
-    "/api/transfer/sender",
-    transferAmountController.getSender
-);
 
 // PayNow saved contacts
-app.get("/api/paynow/contacts", async (req, res) => {
+app.get("/api/paynow/contacts", userLoginMiddleware.verifyToken, async (req, res) => {
     try {
-        const ownerNRIC = getDemoUser(req, res);
-        if (!ownerNRIC) return;
+        const ownerNRIC = req.user.nric;
 
         const pool = await getPool();
 
@@ -472,6 +462,28 @@ app.post("/api/paynow/transfer", async (req, res) => {
         });
     }
 });
+
+//login routes
+// Login (public)
+app.post(
+  "/api/auth/login",
+  userLoginMiddleware.validateLogin,
+  userLoginController.login
+);
+
+// Transfer (login required)
+app.get(
+  "/api/transfer/recipient/:phone",
+  userLoginMiddleware.verifyToken,
+  transferAmountMiddleware.validatePhone,
+  transferAmountController.getRecipientByPhone
+);
+app.get(
+  "/api/transfer/sender",
+  userLoginMiddleware.verifyToken,
+  transferAmountController.getSender
+);
+
 
 // Get faqs
 app.get("/api/chatbot", (req, res) => {
