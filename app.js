@@ -37,17 +37,28 @@ function getDemoUser(req, res) {
 }
 
 // Reuse database connection
+
+// PayNow database connection
 let poolPromise;
 
-function getPool() {
+async function getPool() {
     if (!poolPromise) {
-        poolPromise = mssql.connect(dbConfig).catch(error => {
-            poolPromise = null;
-            throw error;
-        });
+        poolPromise = mssql.connect(dbConfig);
     }
 
-    return poolPromise;
+    try {
+        const pool = await poolPromise;
+
+        if (!pool.connected) {
+            poolPromise = null;
+            return getPool();
+        }
+
+        return pool;
+    } catch (error) {
+        poolPromise = null;
+        throw error;
+    }
 }
 
 // Routes
@@ -60,7 +71,7 @@ app.get(
 app.get("/api/transfer/sender", transferAmountController.getSender);
 
 
-// PayNow - Get saved contacts
+// PayNow saved contacts
 app.get("/api/paynow/contacts", async (req, res) => {
     try {
         const ownerNRIC = getDemoUser(req, res);
@@ -72,20 +83,23 @@ app.get("/api/paynow/contacts", async (req, res) => {
             .input("OwnerNRIC", mssql.Char(9), ownerNRIC)
             .query(`
                 SELECT
-                    ContactID AS id,
-                    SavedName AS name,
-                    RecipientType AS recipientType,
-                    RecipientIdentifier AS recipientIdentifier
-                FROM dbo.SavedContacts
-                WHERE OwnerNRIC = @OwnerNRIC
-                ORDER BY CreatedAt DESC
+                    sc.ContactID AS id,
+                    sc.SavedName AS name,
+                    RTRIM(u.PhoneNo) AS phone,
+                    sc.RecipientType AS recipientType,
+                    sc.RecipientIdentifier AS recipientIdentifier
+                FROM dbo.SavedContacts sc
+                LEFT JOIN dbo.Users u
+                    ON sc.RecipientType = 'NRIC'
+                    AND sc.RecipientIdentifier = u.NRIC
+                WHERE sc.OwnerNRIC = @OwnerNRIC
+                ORDER BY sc.CreatedAt DESC
             `);
 
         res.json(result.recordset);
 
     } catch (error) {
         console.error("Contacts error:", error);
-
         res.status(500).json({
             error: "Unable to load contacts"
         });
@@ -153,6 +167,118 @@ app.get("/api/paynow/recent", async (req, res) => {
 
         res.status(500).json({
             error: "Unable to load recent recipients"
+        });
+    }
+});
+
+
+// PayNow - Mask registered recipient name
+function maskPayNowName(fullName) {
+    return String(fullName || "")
+        .trim()
+        .split(/\s+/)
+        .map(part => {
+            if (part.length <= 2) return part.toUpperCase();
+
+            return part.substring(0, 2).toUpperCase() +
+                "X".repeat(part.length - 2);
+        })
+        .join(" ");
+}
+
+// PayNow - Search by NRIC/FIN
+app.get("/api/paynow/search/nric", async (req, res) => {
+    try {
+        const ownerNRIC = getDemoUser(req, res);
+        if (!ownerNRIC) return;
+
+        const value = String(req.query.value || "")
+            .trim()
+            .toUpperCase();
+
+        if (!/^[A-Z][0-9]{7}[A-Z]$/.test(value)) {
+            return res.json([]);
+        }
+
+        const pool = await getPool();
+
+        const result = await pool.request()
+            .input("NRIC", mssql.Char(9), value)
+            .input("OwnerNRIC", mssql.Char(9), ownerNRIC)
+            .query(`
+                SELECT TOP 1
+                    a.AccNo AS id,
+                    RTRIM(u.Name) AS registeredName,
+                    RTRIM(u.PhoneNo) AS phone,
+                    RTRIM(u.NRIC) AS recipientIdentifier
+                FROM dbo.Users u
+                INNER JOIN dbo.Account a
+                    ON a.NRIC = u.NRIC
+                WHERE u.NRIC = @NRIC
+                  AND u.NRIC <> @OwnerNRIC
+                ORDER BY a.AccNo;
+            `);
+
+        const recipients = result.recordset.map(person => ({
+            id: person.id,
+            name: person.registeredName,
+            phone: person.phone,
+            recipientType: "NRIC",
+            recipientIdentifier: person.recipientIdentifier
+        }));
+        res.json(recipients);
+
+    } catch (error) {
+        console.error("NRIC search error:", error);
+        res.status(500).json({
+            error: "Unable to search recipient"
+        });
+    }
+});
+
+// PayNow - Search by UEN
+app.get("/api/paynow/search/uen", async (req, res) => {
+    try {
+        const ownerNRIC = getDemoUser(req, res);
+        if (!ownerNRIC) return;
+
+        const value = String(req.query.value || "")
+            .trim()
+            .toUpperCase();
+
+        if (!/^[A-Z0-9]{9,10}$/.test(value)) {
+            return res.json([]);
+        }
+
+        const pool = await getPool();
+
+        const result = await pool.request()
+            .input("UEN", mssql.Char(10), value)
+            .input("OwnerNRIC", mssql.Char(9), ownerNRIC)
+            .query(`
+                SELECT TOP 1
+                    a.AccNo AS id,
+                    RTRIM(a.UEN) AS recipientIdentifier
+                FROM dbo.Account a
+                WHERE RTRIM(a.UEN) = @UEN
+                  AND a.NRIC <> @OwnerNRIC
+                ORDER BY a.AccNo;
+            `);
+
+        const recipients = result.recordset.map(person => ({
+            id: person.id,
+            name: "UEN " + person.recipientIdentifier,
+            phone: "",
+            recipientType: "UEN",
+            recipientIdentifier: person.recipientIdentifier
+        }));
+
+        res.json(recipients);
+
+    } catch (error) {
+        console.error("UEN search error:", error);
+        res.status(500).json({
+            error: "Unable to search recipient"
         });
     }
 });

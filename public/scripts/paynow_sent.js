@@ -9,26 +9,23 @@ let activeTab = "recent";
 let recipients = [];
 let requestId = 0;
 
-
-// Load recipients
+// Load recipients from database
 async function loadRecipients() {
     const currentRequest = ++requestId;
 
-    // Recent tab: Hardcoded empty state
-    if (activeTab === "recent") {
-        recipients = [];
-        displayRecipients();
-        return;
-    }
+    const apiUrl = activeTab === "recent"
+        ? "/api/paynow/recent"
+        : "/api/paynow/contacts";
 
-    // Contacts tab: Retrieve contacts from database
-    recipientContent.textContent = "Loading contacts...";
+    recipientContent.textContent = "Loading recipients...";
 
     try {
-        const response = await fetch("/api/paynow/contacts");
+        const response = await fetch(apiUrl, {
+            cache: "no-store"
+        });
 
         if (!response.ok) {
-            throw new Error("Failed to load contacts");
+            throw new Error("Failed to load recipients");
         }
 
         const data = await response.json();
@@ -36,7 +33,7 @@ async function loadRecipients() {
         if (currentRequest !== requestId) return;
 
         if (!Array.isArray(data)) {
-            throw new Error("Invalid contact data");
+            throw new Error("Invalid recipient data");
         }
 
         recipients = data;
@@ -45,58 +42,23 @@ async function loadRecipients() {
     } catch (error) {
         if (currentRequest !== requestId) return;
 
-        console.error("Contacts error:", error);
+        console.error("PayNow error:", error);
 
         recipientContent.textContent =
-            "Unable to load contacts. Please try again.";
+            "Unable to load recipients. Please try again.";
     }
 }
 
-
-// Display recipients and filter search
+// Display recipient list
 function displayRecipients() {
     recipientContent.innerHTML = "";
 
-    const keyword = searchInput.value.trim().toLowerCase();
-
-    const filtered = recipients.filter(function(person) {
-        const name = String(person.name || "").toLowerCase();
-        const phone = String(person.phone || "").toLowerCase();
-
-        return name.includes(keyword) || phone.includes(keyword);
-    });
-
-    // Empty state
-    if (filtered.length === 0) {
-        const noRecent = activeTab === "recent" && keyword === "";
-
-        recipientContent.innerHTML = `
-            <div class="empty-state">
-                ${noRecent ? `
-                    <img
-                        src="../images/paynow-no-recent-icon.png"
-                        alt=""
-                        class="empty-state-icon">
-                ` : ""}
-
-                <p class="empty-title">
-                    ${noRecent
-                        ? "No recent PayNow transfers"
-                        : "No recipients found"}
-                </p>
-
-                <p class="empty-subtitle">
-                    ${noRecent
-                        ? "Your 10 most recent payees will be shown here."
-                        : "Try searching for another recipient"}
-                </p>
-            </div>
-        `;
+    if (recipients.length === 0) {
+        showEmptyState();
         return;
     }
 
-    // Display contact list
-    filtered.forEach(function(person) {
+    recipients.forEach(function(person) {
         const item = document.createElement("button");
         item.type = "button";
         item.className = "contact-item";
@@ -112,26 +74,86 @@ function displayRecipients() {
         const name = document.createElement("h4");
         name.textContent = person.name || "Unknown recipient";
 
-        const phone = document.createElement("p");
-        phone.textContent = person.phone || "";
+        const details = document.createElement("p");
 
-        info.append(name, phone);
+        // Show actual identifier, not NRIC/UEN labels
+        details.textContent =
+            person.phone || person.recipientIdentifier || "";
+
+        info.append(name, details);
         item.append(avatar, info);
 
-        // Continue to Step 2
         item.addEventListener("click", function() {
-    sessionStorage.setItem("paynowRecipient", JSON.stringify(person));
-
-    const digits = String(person.phone || "").replace(/\D/g, "").slice(-8);
-    window.location.href = "transferamount.html?phone=" + digits;
-    });
+            selectRecipient(person);
+        });
 
         recipientContent.appendChild(item);
     });
 }
 
+// Display default empty state
+function showEmptyState() {
+    recipientContent.innerHTML = "";
 
-// Switch Recent / Contacts tabs
+    const emptyState = document.createElement("div");
+    emptyState.className = "empty-state";
+
+    const title = document.createElement("p");
+    title.className = "empty-title";
+
+    const subtitle = document.createElement("p");
+    subtitle.className = "empty-subtitle";
+
+    if (activeTab === "recent") {
+        const image = document.createElement("img");
+        image.src = "../images/paynow-no-recent-icon.png";
+        image.alt = "";
+        image.className = "empty-state-icon";
+        emptyState.appendChild(image);
+
+        title.textContent = "No recent PayNow transfers";
+        subtitle.textContent =
+            "Your 10 most recent payees will be shown here.";
+    } else {
+        title.textContent = "No saved contacts";
+        subtitle.textContent =
+            "Your saved PayNow contacts will appear here.";
+    }
+
+    emptyState.append(title, subtitle);
+    recipientContent.appendChild(emptyState);
+}
+
+// Save selected recipient and continue
+function selectRecipient(person) {
+    const selectedRecipient = {
+        id: person.id,
+        name: person.name,
+        phone: person.phone || "",
+        recipientType: person.recipientType,
+        recipientIdentifier: person.recipientIdentifier,
+        source: activeTab
+    };
+
+    sessionStorage.setItem(
+        "paynowRecipient",
+        JSON.stringify(selectedRecipient)
+    );
+
+    const phone = String(person.phone || "")
+        .replace(/\D/g, "")
+        .slice(-8);
+
+    if (phone.length === 8) {
+        window.location.href =
+            "transferamount.html?phone=" +
+            encodeURIComponent(phone);
+    } else {
+        window.location.href = "transferamount.html";
+    }
+}
+
+// Switch Recent and Contacts
 tabs.forEach(function(tab) {
     tab.addEventListener("click", function() {
         tabs.forEach(function(item) {
@@ -140,46 +162,51 @@ tabs.forEach(function(tab) {
 
         tab.classList.add("active");
         activeTab = tab.dataset.tab;
-        searchInput.value = "";
 
         loadRecipients();
     });
 });
 
+// Open dedicated search page
+searchInput.addEventListener("click", function() {
+    window.location.href = "paynowSearch.html?mode=contacts";
+});
 
-// Search by name or phone
-searchInput.addEventListener("input", displayRecipients);
-
-
-// NRIC/FIN and UEN/VPA buttons
+// Open NRIC or UEN search page
 paymentOptions.forEach(function(button) {
     button.addEventListener("click", function() {
-        paymentOptions.forEach(function(item) {
-            item.classList.remove("active");
-        });
+        const mode = button.dataset.type;
 
-        button.classList.add("active");
+        window.location.href =
+            "paynowSearch.html?mode=" +
+            encodeURIComponent(mode);
     });
 });
 
-
 // Ask OCBC chatbot
-document.getElementById("askBtn").addEventListener("click", function() {
-    window.location.href = "http://localhost:3000/api/chatbot";
+const askBtn = document.getElementById("askBtn");
+
+if (askBtn) {
+    askBtn.addEventListener("click", function() {
+        window.location.href = "/api/chatbot";
+    });
+}
+
+// Help button
+const helpBtn = document.getElementById("helpBtn");
+
+if (helpBtn) {
+    helpBtn.addEventListener("click", function() {
+        alert("Help and Support will be connected later.");
+    });
+}
+
+// Refresh Recent after returning from another page
+window.addEventListener("pageshow", function(event) {
+    if (event.persisted) {
+        loadRecipients();
+    }
 });
-
-
-// Need Help
-document.getElementById("helpBtn").addEventListener("click", function() {
-    alert("Help and Support will be connected later.");
-});
-
-
-// Back button
-document.getElementById("backButton").addEventListener("click", function() {
-    window.history.back();
-});
-
 
 // Initial load
 loadRecipients();
