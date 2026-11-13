@@ -46,7 +46,7 @@ body {
     gap: 6px;
     padding: 5px 12px;
     background: #ffffff;
-    border: 1px solid #d91f26;
+    border: 1px solid #e1251b;
     border-radius: 16px;
     font-size: 12px;
     cursor: pointer;
@@ -160,19 +160,21 @@ body {
 }
 
 .bot-bubble {
-    background-color: #fceaea;
-    color: #000;
+    background-color: #e1251b;
+    color: #ffffff;
     border-bottom-left-radius: 4px;
 }
 
 .bot-bubble p {
+    color: #ffffff;
     margin: 0;
     margin-bottom: 6px;
 }
 
 .user-bubble {
-    background-color: #fceaea;
-    color: #000;
+    background-color: #ffffff;
+    color: #e1251b;
+    outline: 1px solid #e1251b;
     border-bottom-right-radius: 4px;
 }
 
@@ -186,8 +188,8 @@ body {
 
 .chip {
     background-color: #ffffff;
-    border: 1px solid #e52525;
-    color: #e52525;
+    border: 1px solid #e1251b;
+    color: #e1251b;
     padding: 8px 12px;
     border-radius: 18px;
     font-size: 13px;
@@ -214,7 +216,8 @@ body {
 .input-pill-box {
     display: flex;
     align-items: center;
-    background: #fceaea;
+    background: #ffffff;
+    outline: 1px solid #e1251b;
     border-radius: 25px;
     padding: 8px 16px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
