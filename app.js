@@ -65,7 +65,7 @@ async function getPool() {
 
 
 // PayNow saved contacts
-app.get("/api/paynow/contacts", async (req, res) => {
+app.get("/api/paynow/contacts", userLoginMiddleware.verifyToken, async (req, res) => {
     try {
         const ownerNRIC = req.user.nric;
 
