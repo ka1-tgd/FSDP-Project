@@ -183,24 +183,6 @@ paymentOptions.forEach(function(button) {
     });
 });
 
-// Ask OCBC chatbot
-const askBtn = document.getElementById("askBtn");
-
-if (askBtn) {
-    askBtn.addEventListener("click", function() {
-        window.location.href = "/api/chatbot";
-    });
-}
-
-// Help button
-const helpBtn = document.getElementById("helpBtn");
-
-if (helpBtn) {
-    helpBtn.addEventListener("click", function() {
-        alert("Help and Support will be connected later.");
-    });
-}
-
 // Refresh Recent after returning from another page
 window.addEventListener("pageshow", function(event) {
     if (event.persisted) {

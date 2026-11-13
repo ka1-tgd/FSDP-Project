@@ -1,6 +1,5 @@
 
-*
-
+/* GLOBAL */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -9,24 +8,22 @@
 }
 
 body {
-    background-color: #808080;
-    color: #000000;
+    background: #808080;
+    color: #000;
     min-height: 100vh;
 }
-
-
-/*  phone screen mode yuh */
 
 .phone-screen {
     width: 100%;
     max-width: 475px;
     min-height: 100vh;
     margin: 0 auto;
-    background-color: #ffffff;
+    background: #fff;
     position: relative;
     overflow: hidden;
 }
 
+/* HEADER */
 .header {
     height: 163px;
     position: relative;
@@ -34,12 +31,7 @@ body {
     justify-content: center;
     align-items: flex-start;
     padding-top: 78px;
-
-    background: linear-gradient(
-        110deg,
-        #fceaea 0%,
-        #fffafa 100%
-    );
+    background: linear-gradient(110deg, #fceaea, #fffafa);
 }
 
 .header h1 {
@@ -51,71 +43,56 @@ body {
     position: absolute;
     left: 27px;
     top: 88px;
-
-    background: none;
     border: none;
-
+    background: transparent;
+    color: #171717;
     font-size: 43px;
     line-height: 30px;
     cursor: pointer;
-    color: #171717;
+}
+
+.header a.back-button {
+    text-decoration: none;
+    box-shadow: none;
 }
 
 .guided-label {
     position: absolute;
     top: 20px;
     right: 29px;
-
     padding: 10px 18px;
-
     border-radius: 30px;
-
-    background-color: #e0dbff;
+    background: #e0dbff;
     color: #4b40d1;
-
     font-size: 16px;
 }
 
-
-/* progress bar */
-
+/* PROGRESS */
 .progress-container {
     display: flex;
     gap: 14px;
-
     padding: 22px 27px 0;
 }
 
 .progress-bar {
     flex: 1;
     height: 11px;
-
     border-radius: 20px;
-
-    background-color: #e3e4e9;
+    background: #e3e4e9;
 }
 
-.progress-bar.active {
-    background: linear-gradient(
-        90deg,
-        #ed2727,
-        #aa1717
-    );
+.progress-bar.active,
+.progress-bar-fill-half {
+    background: linear-gradient(90deg, #ed2727, #aa1717);
 }
 
 .progress-bar-fill-half {
     width: 50%;
     height: 100%;
     border-radius: 20px;
-    background: linear-gradient(
-        90deg,
-        #ed2727,
-        #aa1717
-    );
 }
 
-/* content */
-
+/* GENERAL CONTENT */
 .content {
     padding: 33px 27px 26px;
 }
@@ -127,12 +104,10 @@ body {
 }
 
 .step-title span {
-    color: #000000;
+    color: #000;
 }
 
-
-/* recicipant details */
-
+/* RECIPIENT */
 .recipient-section {
     margin-left: 1px;
 }
@@ -154,9 +129,7 @@ body {
     margin-top: 2px;
 }
 
-
-/* input amount */
-
+/* AMOUNT */
 .amount-section {
     margin-top: 24px;
 }
@@ -170,15 +143,14 @@ body {
 
 .amount-input-container input {
     width: 190px;
-
     border: none;
     outline: none;
-
     background: transparent;
-
     font-size: 34px;
     font-weight: 400;
-    color: #000000;
+    color: #000;
+    appearance: textfield;
+    -moz-appearance: textfield;
 }
 
 .amount-input-container input::placeholder {
@@ -186,45 +158,31 @@ body {
     opacity: 1;
 }
 
-/* Remove number input arrows */
-
 .amount-input-container input::-webkit-inner-spin-button,
 .amount-input-container input::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-.amount-input-container input[type="number"] {
-    appearance: textfield;
-    -moz-appearance: textfield;
-}
-
 .amount-input-container span {
     font-size: 15px;
 }
 
-
-/* quick amount boxes */
-
+/* QUICK AMOUNTS */
 .quick-amounts {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
-
     margin: 7px -8px 0;
 }
 
 .quick-amounts button {
     height: 57px;
-
-    border: 1.5px solid #111111;
+    border: 1.5px solid #111;
     border-radius: 22px;
-
-    background-color: #ffffff;
-
+    background: #fff;
     font-size: 29px;
     font-weight: bold;
-
     cursor: pointer;
     transition: border 0.1s ease;
 }
@@ -234,11 +192,8 @@ body {
 }
 
 .quick-amounts button:active {
-    background-color: #fff5f5;
+    background: #fff5f5;
 }
-
-
-/* Selected Amount Hint */
 
 .quick-hint {
     text-align: center;
@@ -247,9 +202,7 @@ body {
     margin-top: 1px;
 }
 
-
-/* more amount box*/
-
+/* MORE AMOUNTS */
 .dropdown-container {
     margin: 32px 16px 0;
 }
@@ -257,25 +210,18 @@ body {
 .dropdown-container select {
     width: 100%;
     height: 52px;
-
     padding: 0 15px;
-
     border: 1.5px solid #d91f26;
     border-radius: 13px;
-
-    background-color: #ffffff;
+    background: #fff;
     color: #626779;
-
     font-size: 16px;
     cursor: pointer;
 }
 
-
-/* transfer limit */
-
+/* DAILY LIMIT */
 .daily-limit {
     margin: 9px 10px 11px;
-
     font-size: 16px;
     color: #626779;
 }
@@ -284,17 +230,12 @@ body {
     color: #0066cc;
 }
 
-
-/* divider */
-
 hr {
     border: none;
     border-top: 1px solid #999da6;
 }
 
-
-/* account details yuyh */
-
+/* ACCOUNT */
 .account-section {
     margin: 16px 10px 0;
 }
@@ -315,15 +256,11 @@ hr {
     display: flex;
     align-items: center;
     gap: 5px;
-
     margin-top: 3px;
-
     border: none;
     background: none;
-
     color: #0066cc;
     font-size: 16px;
-
     cursor: pointer;
 }
 
@@ -336,20 +273,16 @@ hr {
     margin-top: 8px;
     font-size: 14px;
     font-weight: bold;
-    color: #333333;
+    color: #333;
 }
 
-
-/* guided mode info */
-
+/* GUIDED MODE */
 .guided-card {
     margin: 28px 10px 0;
     padding: 11px 14px 14px;
-
     border: 1px solid #cbc7e7;
     border-radius: 21px;
-
-    background-color: #dfd9fc;
+    background: #dfd9fc;
     color: #4b40ca;
 }
 
@@ -368,9 +301,7 @@ hr {
     margin-top: 22px;
 }
 
-
-/* next button */
-
+/* BUTTONS */
 .button-container {
     margin-top: 60px;
     padding-bottom: 0;
@@ -378,26 +309,15 @@ hr {
 
 .red-button {
     display: block;
-
     width: 78%;
     height: 55px;
-
     margin: 0 auto;
-
     border: none;
     border-radius: 11px;
-
-    background: linear-gradient(
-        100deg,
-        #e52525,
-        #a91417
-    );
-
-    color: #ffffff;
-
+    background: linear-gradient(100deg, #e52525, #a91417);
+    color: #fff;
     font-size: 19px;
     font-weight: bold;
-
     cursor: pointer;
 }
 
@@ -405,61 +325,49 @@ hr {
     opacity: 0.93;
 }
 
-
 .hidden {
     display: none !important;
 }
 
-/* Timeline container */
+/* TIMELINE */
 .timeline {
     display: flex;
     flex-direction: column;
     padding: 20px 25px;
 }
 
-/* Individual timeline item */
 .timeline-item {
     display: flex;
     align-items: flex-start;
     gap: 30px;
-
     min-height: 350px;
     position: relative;
 }
 
-/* Timeline circles */
 .timeline-icon {
     width: 150px;
     height: 150px;
     flex-shrink: 0;
-
     border: 9px solid #858585;
     border-radius: 50%;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
-    background-color: white;
+    background: #fff;
     position: relative;
     z-index: 1;
 }
 
-/* Connecting lines */
 .timeline-item:not(:last-child)::after {
     content: "";
     position: absolute;
-
     left: 75px;
     top: 150px;
-
     width: 7px;
     height: 200px;
-
-    background-color: #858585;
+    background: #858585;
 }
 
-/* Text content */
 .timeline-content {
     padding-top: 10px;
 }
@@ -475,82 +383,35 @@ hr {
     margin: 5px 0;
 }
 
-/* Completed step */
-.timeline-item.completed .timeline-icon {
-    background-color: #d60000;
+.timeline-item.completed .timeline-icon,
+.timeline-item.active .timeline-icon {
+    background: #d60000;
     border-color: #d60000;
 }
 
 .timeline-item.completed .timeline-icon span {
-    color: white;
+    color: #fff;
     font-size: 100px;
     font-weight: bold;
     line-height: 1;
 }
 
 .timeline-item.completed::after {
-    background-color: #d60000;
+    background: #d60000;
 }
 
-/* Active step */
 .timeline-item.active .timeline-icon {
-    background-color: #d60000;
-    border-color: #d60000;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
     gap: 12px;
 }
 
-/* Three dots in active icon */
 .timeline-item.active .timeline-icon span {
     width: 12px;
     height: 12px;
-
-    background-color: white;
+    background: #fff;
     border-radius: 50%;
 }
 
-/* responsive design*/
-
-@media (max-width: 380px) {
-
-    .content {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    .quick-amounts {
-        gap: 7px;
-    }
-
-    .quick-amounts button {
-        font-size: 24px;
-        height: 51px;
-    }
-
-    .guided-card p {
-        font-size: 16px;
-        line-height: 22px;
-    }
-
-}
-
-@media (min-width: 700px) {
-
-    body {
-        padding: 22px 0;
-    }
-
-    .phone-screen {
-        min-height: 1032px;
-    }
-
-}
-
-/* ask ocbc button */
-
+/* ASK OCBC */
 .step-header {
     display: flex;
     justify-content: space-between;
@@ -568,33 +429,22 @@ hr {
     align-items: center;
     justify-content: center;
     gap: 4px;
-
     padding: 4px 7px;
-
     border: 1px solid #e52525;
     border-radius: 9px;
-
-    background-color: #ffffff;
+    background: #fff;
     color: #e52525;
-
     font-size: 11px;
     white-space: nowrap;
-
     cursor: pointer;
 }
 
-
-/* =====================================
-   PAYNOW STEP 1 - IPHONE 16
-===================================== */
-
-/* Adjust existing styles for Step 1 */
+/* PAYNOW IPHONE 16 FRAME */
 .paynow-page {
     width: 100%;
     max-width: 393px;
     height: min(852px, 100dvh);
     min-height: 0;
-
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -619,6 +469,7 @@ hr {
 }
 
 .paynow-page .progress-container {
+    flex-shrink: 0;
     gap: 8px;
     padding: 14px 20px 0;
 }
@@ -630,10 +481,8 @@ hr {
 .paynow-page .content {
     flex: 1;
     min-height: 0;
-
     display: flex;
     flex-direction: column;
-
     padding: 19px 20px 10px;
     overflow: hidden;
 }
@@ -643,8 +492,7 @@ hr {
     margin: 0;
 }
 
-
-/* Step heading and Ask OCBC */
+/* STEP 1 */
 .step-row {
     display: flex;
     justify-content: space-between;
@@ -657,15 +505,13 @@ hr {
     padding: 6px 9px;
     border: 1px solid #d91f26;
     border-radius: 6px;
-    background: white;
+    background: #fff;
     color: #d91f26;
     font-size: 10px;
     white-space: nowrap;
     cursor: pointer;
 }
 
-
-/* NRIC/FIN and UEN/VPA */
 .payment-types {
     display: flex;
     gap: 15px;
@@ -678,14 +524,12 @@ hr {
     height: 60px;
     border: 1px solid #999;
     border-radius: 12px;
-    background: white;
-
+    background: #fff;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 3px;
-
     font-size: 12px;
     cursor: pointer;
 }
@@ -701,8 +545,7 @@ hr {
     object-fit: contain;
 }
 
-
-/* Search */
+/* SEARCH */
 .search-section label {
     display: block;
     font-size: 13px;
@@ -715,7 +558,6 @@ hr {
     gap: 8px;
     height: 42px;
     padding: 0 12px;
-
     border: 1px solid #ddd;
     border-radius: 22px;
     background: #f5f6f8;
@@ -735,8 +577,7 @@ hr {
     font-size: 12px;
 }
 
-
-/* Recent and Contacts tabs */
+/* RECENT AND CONTACTS */
 .tabs {
     display: flex;
     margin-top: 14px;
@@ -748,8 +589,8 @@ hr {
     padding: 12px 0;
     border: none;
     border-bottom: 3px solid transparent;
-    background: white;
-    color: black;
+    background: #fff;
+    color: #000;
     font-size: 13px;
     cursor: pointer;
 }
@@ -759,8 +600,6 @@ hr {
     font-weight: 600;
 }
 
-
-/* Recipient list */
 .recipient-content {
     flex: 1;
     min-height: 0;
@@ -770,11 +609,39 @@ hr {
     font-size: 12px;
 }
 
-
-/* Empty recent transfers */
-.empty-state {
+/* EMPTY STATE - CONSOLIDATED */
+.paynow-page .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    padding: 9px 5px;
+    padding: 20px 15px;
+}
+
+.paynow-page .empty-state-icon {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    margin-bottom: 12px;
+}
+
+.paynow-page .empty-state h3 {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.paynow-page .empty-title {
+    font-size: 16px;
+    margin: 0 0 8px;
+}
+
+.paynow-page .empty-subtitle,
+.paynow-page .empty-state p {
+    font-size: 13px;
+    line-height: 19px;
+    margin: 0;
+    color: #626779;
 }
 
 .empty-circle {
@@ -785,18 +652,7 @@ hr {
     background: #d9d9d9;
 }
 
-.empty-title {
-    font-size: 13px;
-    margin-bottom: 8px;
-}
-
-.empty-subtitle {
-    font-size: 11px;
-    color: #626779;
-}
-
-
-/* Contact list */
+/* CONTACT LIST */
 .contact-item {
     width: 100%;
     display: flex;
@@ -805,7 +661,7 @@ hr {
     padding: 12px 8px;
     border: none;
     border-bottom: 1px solid #eee;
-    background: white;
+    background: #fff;
     text-align: left;
     cursor: pointer;
 }
@@ -816,8 +672,7 @@ hr {
     flex-shrink: 0;
     border-radius: 50%;
     background: #263238;
-    color: white;
-
+    color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -834,8 +689,7 @@ hr {
     margin-top: 4px;
 }
 
-
-/* Need Help button at the bottom */
+/* STEP 1 HELP BUTTON */
 .bottom-section {
     flex-shrink: 0;
     padding: 0 20px 23px;
@@ -853,78 +707,422 @@ hr {
     height: 44px;
     border: 1px solid #d91f26;
     border-radius: 10px;
-    background: white;
+    background: #fff;
     color: #d91f26;
     font-size: 13px;
     cursor: pointer;
 }
 
-/* No recent transfers */
-
-.paynow-page .empty-state {
+/* STEP 2 - COMPACT IPHONE 16 */
+.transfer-page .content {
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 35px 20px 20px;
+    padding: 15px 20px 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
-.paynow-page .empty-state-icon {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-    margin-bottom: 18px;
+.transfer-page .step-header {
+    margin-bottom: 25px;
 }
 
-.empty-state h3 {
-    font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 12px;
+.transfer-page .step-title {
+    font-size: 11px;
 }
 
-.empty-state p {
-    font-size: 17px;
-    color: #626779;
-    line-height: 25px;
+.transfer-page .recipient-section h2 {
+    font-size: 24px;
+    font-weight: 600;
 }
 
-/* Recent empty state */
-
-.paynow-page .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 20px 15px;
+.transfer-page .recipient-info {
+    font-size: 14px;
+    margin-top: 3px;
 }
 
-.paynow-page .empty-state-icon {
-    width: 75px;
-    height: 75px;
-    object-fit: contain;
-    margin-bottom: 12px;
+.transfer-page .amount-section {
+    margin-top: 17px;
 }
 
-.paynow-page .empty-title {
-    font-size: 16px;
-    margin: 0 0 8px;
+.transfer-page .amount-input-container {
+    height: 37px;
 }
 
-.paynow-page .empty-subtitle {
+.transfer-page .amount-input-container input {
+    width: 160px;
+    font-size: 29px;
+}
+
+.transfer-page .amount-input-container span {
     font-size: 13px;
-    line-height: 19px;
-    margin: 0;
-    color: #626779;
 }
 
-.header a.back-button {
-    text-decoration: none !important;
-    border: none !important;
-    border-bottom: none !important;
-    box-shadow: none !important;
-    outline: none;
-    background: transparent;
+.transfer-page .quick-amounts {
+    gap: 9px;
+    margin-top: 5px;
 }
 
+.transfer-page .quick-amounts button {
+    height: 48px;
+    font-size: 23px;
+    border-radius: 18px;
+}
+
+.transfer-page .quick-hint {
+    font-size: 11px;
+}
+
+.transfer-page .dropdown-container {
+    margin: 20px 10px 0;
+}
+
+.transfer-page .dropdown-container select {
+    height: 44px;
+    font-size: 14px;
+}
+
+.transfer-page .daily-limit {
+    margin: 8px 5px 10px;
+    font-size: 14px;
+}
+
+.transfer-page .account-section {
+    margin: 13px 5px 0;
+}
+
+.transfer-page .account-section h3 {
+    font-size: 19px;
+}
+
+.transfer-page .account-number,
+.transfer-page .balance-button {
+    font-size: 14px;
+}
+
+.transfer-page .button-container {
+    margin-top: auto;
+    padding-top: 25px;
+    padding-bottom: 5px;
+}
+
+.transfer-page .red-button {
+    height: 47px;
+    font-size: 16px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 380px) {
+    .content {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .quick-amounts {
+        gap: 7px;
+    }
+
+    .quick-amounts button {
+        font-size: 24px;
+        height: 51px;
+    }
+
+    .guided-card p {
+        font-size: 16px;
+        line-height: 22px;
+    }
+}
+
+@media (min-width: 700px) {
+    body {
+        padding: 22px 0;
+    }
+
+    .phone-screen {
+        min-height: 1032px;
+    }
+
+    .paynow-page {
+        min-height: 0;
+    }
+}
+
+
+/* STEP 2 - CUSTOM NUMERIC KEYPAD */
+
+.transfer-page {
+    position: relative;
+}
+
+.transfer-page .custom-keypad {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 280px;
+    padding: 10px 12px;
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+    background: #e5e5ea;
+    border-radius: 14px 14px 0 0;
+    z-index: 20;
+}
+
+.transfer-page .keypad-header {
+    height: 43px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px;
+    margin-bottom: 8px;
+    background: #fff;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.transfer-page .keypad-header button {
+    border: none;
+    background: none;
+    color: #007aff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.transfer-page .keypad-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 43px);
+    gap: 7px;
+}
+
+.transfer-page .keypad-grid button {
+    border: none;
+    border-radius: 7px;
+    background: #fff;
+    color: #111;
+    font-size: 23px;
+    cursor: pointer;
+}
+
+.transfer-page .keypad-grid button:active {
+    background: #cfd2d8;
+}
+
+
+/* =====================================
+   STEP 3 - REVIEW AND CONFIRM
+===================================== */
+
+.review-page {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.review-page .review-content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 18px 20px 12px;
+}
+
+.review-heading {
+    margin-bottom: 22px;
+}
+
+.review-instruction {
+    font-size: 14px;
+    color: #555;
+    margin-top: 15px;
+    line-height: 1.4;
+}
+
+.review-amount-section {
+    margin-bottom: 35px;
+}
+
+.review-amount-section > p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+.review-amount {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    color: #222;
+}
+
+.review-amount .currency {
+    font-size: 17px;
+}
+
+.review-amount strong {
+    font-size: 35px;
+    font-weight: 700;
+}
+
+.review-details {
+    border-left: 5px solid #e41e26;
+    border-radius: 2px;
+    padding: 5px 0 5px 17px;
+    margin-bottom: 25px;
+}
+
+.review-account {
+    padding: 5px 0;
+}
+
+.review-label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.review-account h3 {
+    font-size: 19px;
+    margin: 0 0 5px;
+}
+
+.review-account p:last-child {
+    font-size: 14px;
+    color: #555;
+    overflow-wrap: anywhere;
+}
+
+.review-divider {
+    height: 1px;
+    background: #e5e5e5;
+    margin: 12px 0;
+}
+
+.review-warning {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff1d2;
+    color: #8a641d;
+    padding: 12px;
+    border-radius: 14px;
+    margin-bottom: 15px;
+}
+
+.warning-icon {
+    font-size: 22px;
+}
+
+.review-warning p {
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.review-tips {
+    background: #e5ddff;
+    color: #51458b;
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+}
+
+.review-tips strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.review-tips p {
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.review-bottom {
+    flex-shrink: 0;
+    padding: 12px 20px 20px;
+    background: #fff;
+}
+
+.review-reminder {
+    color: #555;
+    font-size: 13px;
+    line-height: 1.4;
+    margin-bottom: 17px;
+}
+
+.slide-to-pay {
+    position: relative;
+    height: 58px;
+    background: #263b43;
+    border-radius: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    user-select: none;
+    touch-action: pan-y;
+    overflow: hidden;
+}
+
+.slide-handle {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    color: #35464d;
+    font-size: 24px;
+    cursor: grab;
+    z-index: 2;
+    touch-action: none;
+}
+
+.slide-handle:active {
+    cursor: grabbing;
+}
+
+.slide-to-pay span {
+    pointer-events: none;
+}
+
+.transfer-status {
+    font-size: 13px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.transfer-status.error {
+    color: #d21f2b;
+}
+
+.transfer-status.success {
+    color: #168447;
+}
+
+.slide-to-pay.processing {
+    opacity: 0.65;
+    pointer-events: none;
+}
+
+@media (max-height: 700px) {
+    .review-page .review-content {
+        padding-top: 10px;
+    }
+
+    .review-amount-section {
+        margin-bottom: 18px;
+    }
+
+    .review-bottom {
+        padding-top: 8px;
+    }
+}
 
 

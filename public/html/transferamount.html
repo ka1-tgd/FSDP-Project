@@ -7,144 +7,125 @@
 
     <title>OCBC PayNow - Enter Amount</title>
 
+    <!-- PayNow CSS -->
     <link rel="stylesheet" href="../css/paynow.css">
-    <script src="../scripts/transferamount.js" defer></script>
+
+    <!-- Voice Assistance -->
     <link rel="stylesheet" href="../css/voiceAssistance.css">
     <script src="../scripts/voiceAssistance.js" defer></script>
 
-    <!-- Guided mode -->
+    <!-- Guided Mode -->
     <link rel="stylesheet" href="../css/guided-mode.css">
     <script type="module" src="../scripts/guidedModeApp.js"></script>
+
+    <!-- Transfer Amount JavaScript -->
+    <script src="../scripts/transferamount.js" defer></script>
 </head>
 
 <body data-page="transferAmount">
-    <main class="phone-screen">
+
+    <main class="phone-screen paynow-page transfer-page">
+
+        <!-- Header -->
         <header class="header">
 
             <button
-    type="button"
-    class="back-button"
-    id="backButton"
-    aria-label="Go back"
-    onclick="window.location.href='paynowSent.html'">
-    ‹
-</button>
+                type="button"
+                class="back-button"
+                id="backButton"
+                aria-label="Go back"
+                onclick="window.location.href='paynowSent.html'">
+                ‹
+            </button>
 
             <h1>PayNow</h1>
 
         </header>
 
-
         <!-- Progress Indicator -->
         <div class="progress-container">
-
             <div class="progress-bar active"></div>
             <div class="progress-bar active"></div>
             <div class="progress-bar"></div>
             <div class="progress-bar"></div>
-
         </div>
-
 
         <!-- Main Content -->
         <section class="content">
 
-
-            <!-- Step Title and Ask OCBC Button -->
+            <!-- Step Heading -->
             <div class="step-header">
-
                 <p class="step-title">
                     <span>Step 2 of 4</span> · Enter amount
                 </p>
+            </div>
 
-                <button
-                    type="button"
-                    class="ask-ocbc-button"
-                    id="askOcbcButton"
-                    aria-label="Ask OCBC">
+            <!-- Recipient Details -->
+            <div class="recipient-section">
 
-                    <!-- Microphone Icon -->
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round">
+                <p class="section-label">Pay to</p>
 
-                        <rect x="9" y="2" width="6" height="13" rx="3"></rect>
-                        <path d="M5 10v2a7 7 0 0 0 14 0v-2"></path>
-                        <path d="M12 19v3"></path>
-                        <path d="M8 22h8"></path>
+                <h2 id="recipientName"></h2>
 
-                    </svg>
-
-                    <span>Ask OCBC</span>
-
-                </button>
+                <p
+                    class="recipient-info"
+                    id="recipientInfo">
+                </p>
 
             </div>
 
-
-
-            <!-- Recipient Details -->
-<div class="recipient-section">
-    <p class="section-label">Pay to</p>
-    <h2 id="recipientName"></h2>
-    <p class="recipient-info" id="recipientInfo"></p>
-</div>
-
-
-            <!-- amount selection -->
+            <!-- Amount Selection -->
             <div class="amount-section">
+
                 <div class="amount-input-container">
 
                     <input
-                        type="number"
+                        type="text"
                         id="amountInput"
                         placeholder="0.00"
-                        min="0.01"
-                        step="0.01"
-                        inputmode="decimal"
+                        readonly
+                        inputmode="none"
+                        autocomplete="off"
                         aria-label="Enter transfer amount">
 
-                    <span>SGD</span>
+                    <label for="amountInput">SGD</label>
 
                 </div>
 
-
-                <!-- Quick amount -->
+                <!-- Quick Amounts -->
                 <div class="quick-amounts">
 
                     <button type="button" data-amount="5">$5</button>
-
                     <button type="button" data-amount="10">$10</button>
-
                     <button type="button" data-amount="15">$15</button>
-
                     <button type="button" data-amount="20">$20</button>
 
                 </div>
 
-
-                <!-- quick amount hint -->
-                <p class="quick-hint hidden" id="quickHint">
+                <!-- Quick Amount Hint -->
+                <p
+                    class="quick-hint hidden"
+                    id="quickHint">
                     Tap again to remove
                 </p>
 
-
-                <!-- more dropdown -->
+                <!-- More Amounts -->
                 <div class="dropdown-container">
-                    <select id="moreAmounts" aria-label="More amounts">
-                        <option value="">More amounts</option>
+
+                    <select
+                        id="moreAmounts"
+                        aria-label="More amounts">
+
+                        <option value="" selected disabled hidden>
+                            More amounts
+                        </option>
+
                         <option value="30">$30</option>
                         <option value="50">$50</option>
                         <option value="100">$100</option>
                         <option value="200">$200</option>
                         <option value="500">$500</option>
+                        <option value="cancel">Cancel</option>
 
                     </select>
 
@@ -152,36 +133,32 @@
 
             </div>
 
-
-            <!-- Daily transfer limit -->
+            <!-- Daily Transfer Limit -->
             <p class="daily-limit">
-
                 Daily limit remaining:
-
                 <span id="dailyLimit">3,000.00 SGD</span>
-
             </p>
-
 
             <hr>
 
-
-            <!-- sender account details -->
+            <!-- Sender Account Details -->
             <div class="account-section">
 
                 <p class="section-label">From</p>
 
                 <h3 id="accountType"></h3>
 
-                <p class="account-number" id="accountNumber"></p>
-
+                <p
+                    class="account-number"
+                    id="accountNumber">
+                </p>
 
                 <!-- Show / Hide Balance -->
                 <button
                     type="button"
                     class="balance-button"
                     id="balanceButton">
-                    <!-- Eye Icon -->
+
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="17"
@@ -192,8 +169,11 @@
                         stroke-width="2"
                         stroke-linecap="round"
                         stroke-linejoin="round">
+
                         <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"></path>
+
                         <circle cx="12" cy="12" r="3"></circle>
+
                     </svg>
 
                     <span id="balanceButtonText">
@@ -201,25 +181,69 @@
                     </span>
 
                 </button>
-                <!-- balance available -->
+
+                <!-- Available Balance -->
                 <p
                     class="available-balance hidden"
                     id="availableBalance"
                     aria-live="polite">
                 </p>
+
             </div>
 
             <!-- Next Button -->
             <div class="button-container">
+
                 <button
                     type="button"
                     class="red-button"
                     id="nextButton">
                     Next
                 </button>
+
             </div>
+
         </section>
+
+        <!-- Custom Numeric Keypad -->
+        <div
+            class="custom-keypad hidden"
+            id="customKeypad"
+            aria-label="Numeric amount keypad">
+
+            <div class="keypad-header">
+
+                <span id="keypadAmount">0.00</span>
+
+                <button type="button" id="keypadDone">
+                    Done
+                </button>
+
+            </div>
+
+            <div class="keypad-grid">
+
+                <button type="button" data-key="1">1</button>
+                <button type="button" data-key="2">2</button>
+                <button type="button" data-key="3">3</button>
+
+                <button type="button" data-key="4">4</button>
+                <button type="button" data-key="5">5</button>
+                <button type="button" data-key="6">6</button>
+
+                <button type="button" data-key="7">7</button>
+                <button type="button" data-key="8">8</button>
+                <button type="button" data-key="9">9</button>
+
+                <button type="button" data-key=".">.</button>
+                <button type="button" data-key="0">0</button>
+                <button type="button" data-key="delete">⌫</button>
+
+            </div>
+
+        </div>
+
     </main>
+
 </body>
 </html>
-

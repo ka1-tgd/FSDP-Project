@@ -3,6 +3,7 @@ const express = require("express");
 const mssql = require("mssql");
 const dotenv = require("dotenv");
 const path = require("path");
+const crypto = require("crypto");
 
 // Load env variables
 dotenv.config();
@@ -22,6 +23,7 @@ const transferAmountController = require("./backend/controllers/transferamountco
 // Serve static files from public
 app.use(express.static(path.join(__dirname, "public")));
 
+
 // PayNow temporary demo user
 function getDemoUser(req, res) {
     const ownerNRIC = process.env.DEMO_USER_NRIC;
@@ -37,8 +39,6 @@ function getDemoUser(req, res) {
 }
 
 // Reuse database connection
-
-// PayNow database connection
 let poolPromise;
 
 async function getPool() {
@@ -61,15 +61,17 @@ async function getPool() {
     }
 }
 
-// Routes
-//transfer routes
+// Existing Step 2 transfer routes
 app.get(
-  "/api/transfer/recipient/:phone",
-  transferAmountMiddleware.validatePhone,
-  transferAmountController.getRecipientByPhone
+    "/api/transfer/recipient/:phone",
+    transferAmountMiddleware.validatePhone,
+    transferAmountController.getRecipientByPhone
 );
-app.get("/api/transfer/sender", transferAmountController.getSender);
 
+app.get(
+    "/api/transfer/sender",
+    transferAmountController.getSender
+);
 
 // PayNow saved contacts
 app.get("/api/paynow/contacts", async (req, res) => {
@@ -83,30 +85,48 @@ app.get("/api/paynow/contacts", async (req, res) => {
             .input("OwnerNRIC", mssql.Char(9), ownerNRIC)
             .query(`
                 SELECT
-                    sc.ContactID AS id,
+                    sc.ContactID AS contactId,
+                    a.AccNo AS id,
                     sc.SavedName AS name,
                     RTRIM(u.PhoneNo) AS phone,
                     sc.RecipientType AS recipientType,
-                    sc.RecipientIdentifier AS recipientIdentifier
+                    RTRIM(sc.RecipientIdentifier) AS recipientIdentifier
                 FROM dbo.SavedContacts sc
                 LEFT JOIN dbo.Users u
                     ON sc.RecipientType = 'NRIC'
                     AND sc.RecipientIdentifier = u.NRIC
+                OUTER APPLY (
+                    SELECT TOP 1 account.AccNo
+                    FROM dbo.Account account
+                    WHERE
+                        (
+                            sc.RecipientType = 'NRIC'
+                            AND account.NRIC = sc.RecipientIdentifier
+                        )
+                        OR
+                        (
+                            sc.RecipientType = 'UEN'
+                            AND RTRIM(account.UEN) =
+                                RTRIM(sc.RecipientIdentifier)
+                        )
+                    ORDER BY account.AccNo
+                ) a
                 WHERE sc.OwnerNRIC = @OwnerNRIC
-                ORDER BY sc.CreatedAt DESC
+                ORDER BY sc.CreatedAt DESC;
             `);
 
         res.json(result.recordset);
 
     } catch (error) {
         console.error("Contacts error:", error);
+
         res.status(500).json({
             error: "Unable to load contacts"
         });
     }
 });
 
- // PayNow - Get 10 most recent unique recipients
+// PayNow recent recipients
 app.get("/api/paynow/recent", async (req, res) => {
     try {
         const ownerNRIC = getDemoUser(req, res);
@@ -131,7 +151,6 @@ app.get("/api/paynow/recent", async (req, res) => {
                     WHERE sender.NRIC = @OwnerNRIC
                       AND t.Status = 'completed'
                 )
-
                 SELECT TOP 10
                     recipient.AccNo AS id,
                     COALESCE(
@@ -171,8 +190,7 @@ app.get("/api/paynow/recent", async (req, res) => {
     }
 });
 
-
-// PayNow - Mask registered recipient name
+// PayNow mask registered recipient name
 function maskPayNowName(fullName) {
     return String(fullName || "")
         .trim()
@@ -186,7 +204,7 @@ function maskPayNowName(fullName) {
         .join(" ");
 }
 
-// PayNow - Search by NRIC/FIN
+// PayNow search NRIC/FIN
 app.get("/api/paynow/search/nric", async (req, res) => {
     try {
         const ownerNRIC = getDemoUser(req, res);
@@ -221,22 +239,24 @@ app.get("/api/paynow/search/nric", async (req, res) => {
 
         const recipients = result.recordset.map(person => ({
             id: person.id,
-            name: person.registeredName,
+            name: maskPayNowName(person.registeredName),
             phone: person.phone,
             recipientType: "NRIC",
             recipientIdentifier: person.recipientIdentifier
         }));
+
         res.json(recipients);
 
     } catch (error) {
         console.error("NRIC search error:", error);
+
         res.status(500).json({
             error: "Unable to search recipient"
         });
     }
 });
 
-// PayNow - Search by UEN
+// PayNow search UEN
 app.get("/api/paynow/search/uen", async (req, res) => {
     try {
         const ownerNRIC = getDemoUser(req, res);
@@ -277,12 +297,181 @@ app.get("/api/paynow/search/uen", async (req, res) => {
 
     } catch (error) {
         console.error("UEN search error:", error);
+
         res.status(500).json({
             error: "Unable to search recipient"
         });
     }
 });
 
+// PayNow complete transfer
+app.post("/api/paynow/transfer", async (req, res) => {
+    const ownerNRIC = getDemoUser(req, res);
+    if (!ownerNRIC) return;
+
+    const recipientAccNo = String(
+        req.body.recipientAccNo || ""
+    ).trim();
+
+    const amount = Number(req.body.amount);
+
+    console.log("PAYNOW DEBUG");
+    console.log("Sender NRIC:", ownerNRIC);
+    console.log("Recipient account:", JSON.stringify(recipientAccNo));
+    console.log("Amount:", amount);
+
+    if (
+        !recipientAccNo ||
+        !Number.isFinite(amount) ||
+        amount <= 0 ||
+        Math.round(amount * 100) !== amount * 100
+    ) {
+        return res.status(400).json({
+            error: "Invalid transfer details."
+        });
+    }
+
+    let transaction;
+    let transactionStarted = false;
+
+    try {
+        const pool = await getPool();
+
+        transaction = new mssql.Transaction(pool);
+        await transaction.begin();
+        transactionStarted = true;
+
+        // Find sender account
+        const senderResult = await new mssql.Request(transaction)
+            .input("OwnerNRIC", mssql.Char(9), ownerNRIC)
+            .query(`
+                SELECT TOP 1 AccNo, Balance
+                FROM dbo.Account WITH (UPDLOCK, HOLDLOCK)
+                WHERE NRIC = @OwnerNRIC
+                ORDER BY AccNo;
+            `);
+
+        if (senderResult.recordset.length === 0) {
+            throw new Error("Sender account not found.");
+        }
+
+        const sender = senderResult.recordset[0];
+
+        // Find recipient account
+        const recipientResult = await new mssql.Request(transaction)
+            .input("RecipientAccNo", mssql.VarChar(50), recipientAccNo)
+            .query(`
+                SELECT AccNo
+                FROM dbo.Account WITH (UPDLOCK, HOLDLOCK)
+                WHERE LTRIM(RTRIM(AccNo)) =
+                      LTRIM(RTRIM(@RecipientAccNo));
+            `);
+
+        console.log("Recipient lookup:", recipientResult.recordset);
+
+        if (recipientResult.recordset.length === 0) {
+            throw new Error("Recipient account not found.");
+        }
+
+        const actualRecipientAccNo =
+            recipientResult.recordset[0].AccNo;
+
+        // Prevent transfers to own account
+        if (sender.AccNo.trim() === actualRecipientAccNo.trim()) {
+            throw new Error("You cannot transfer to your own account.");
+        }
+
+        // Check available balance
+        if (Number(sender.Balance) < amount) {
+            throw new Error("Insufficient account balance.");
+        }
+
+        // Deduct sender balance
+        const deductResult = await new mssql.Request(transaction)
+            .input("Amount", mssql.Decimal(19, 2), amount)
+            .input("SenderAccNo", mssql.VarChar(50), sender.AccNo)
+            .query(`
+                UPDATE dbo.Account
+                SET Balance = Balance - @Amount
+                WHERE AccNo = @SenderAccNo
+                  AND Balance >= @Amount;
+            `);
+
+        if (deductResult.rowsAffected[0] !== 1) {
+            throw new Error("Unable to deduct sender balance.");
+        }
+
+        // Credit recipient balance
+        const creditResult = await new mssql.Request(transaction)
+            .input("Amount", mssql.Decimal(19, 2), amount)
+            .input("RecipientAccNo", mssql.VarChar(50), actualRecipientAccNo)
+            .query(`
+                UPDATE dbo.Account
+                SET Balance = Balance + @Amount
+                WHERE AccNo = @RecipientAccNo;
+            `);
+
+        if (creditResult.rowsAffected[0] !== 1) {
+            throw new Error("Unable to update recipient balance.");
+        }
+
+        // Record completed transaction
+        const transRef = crypto.randomUUID();
+
+        await new mssql.Request(transaction)
+            .input("TransRef", mssql.VarChar(50), transRef)
+            .input("PayerAccNo", mssql.VarChar(50), sender.AccNo)
+            .input("RecipientAccNo", mssql.VarChar(50), actualRecipientAccNo)
+            .input("Amount", mssql.Decimal(19, 2), amount)
+            .query(`
+                INSERT INTO dbo.Transactions (
+                    TransRef,
+                    PayerAccNo,
+                    RecipientAccNo,
+                    Description,
+                    Amount,
+                    Status,
+                    TransDateTime
+                )
+                VALUES (
+                    @TransRef,
+                    @PayerAccNo,
+                    @RecipientAccNo,
+                    'PayNow Transfer',
+                    @Amount,
+                    'completed',
+                    SYSDATETIME()
+                );
+            `);
+
+        await transaction.commit();
+        transactionStarted = false;
+
+        console.log("PayNow transfer completed:", transRef);
+
+        res.json({
+            success: true,
+            message: "Transfer completed successfully.",
+            transRef: transRef,
+            amount: amount.toFixed(2)
+        });
+
+    } catch (error) {
+        if (transaction && transactionStarted) {
+            try {
+                await transaction.rollback();
+            } catch (rollbackError) {
+                console.error("Rollback error:", rollbackError);
+            }
+        }
+
+        console.error("PayNow transfer error:", error);
+
+        res.status(400).json({
+            error: error.message || "Unable to complete transfer."
+        });
+    }
+});
 
 // Get faqs
 app.get("/api/chatbot", (req, res) => {

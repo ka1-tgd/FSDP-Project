@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OCBC PayNow - Transfer Successful</title>
+
+    <link rel="stylesheet" href="../css/paynow.css">
+    <link rel="stylesheet" href="../css/voiceAssistance.css">
+    <link rel="stylesheet" href="../css/guided-mode.css">
+
+    <script src="../scripts/voiceAssistance.js" defer></script>
+    <script type="module" src="../scripts/guidedModeApp.js"></script>
+    <script src="../scripts/transferSuccess.js" defer></script>
+
+    <style>
+        .success-page {
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+        }
+
+        .success-top {
+            position: relative;
+            height: 250px;
+            background: #f8fafb;
+            border-radius: 0 0 50% 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .success-top .logout {
+            position: absolute;
+            top: 25px;
+            right: 22px;
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .success-icon {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: #d9f0eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-icon svg {
+            width: 85px;
+            height: 85px;
+        }
+
+        .success-content {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 22px 20px 10px;
+        }
+
+        .success-amount {
+            font-size: 27px;
+            font-weight: 700;
+            color: #292929;
+            margin-bottom: 35px;
+        }
+
+        .success-recipient {
+            border-left: 4px solid #e52525;
+            padding: 5px 0 5px 15px;
+            margin-bottom: 28px;
+        }
+
+        .success-label {
+            font-size: 15px;
+            color: #626779;
+            margin-bottom: 5px;
+        }
+
+        .success-recipient h2 {
+            font-size: 19px;
+            margin-bottom: 5px;
+        }
+
+        .success-recipient p:last-child {
+            font-size: 14px;
+            color: #555;
+            overflow-wrap: anywhere;
+        }
+
+        .success-date {
+            margin-bottom: 23px;
+        }
+
+        .success-date strong {
+            display: block;
+            font-size: 19px;
+            margin-top: 5px;
+        }
+
+        .transaction-link {
+            border: none;
+            background: transparent;
+            color: #0066cc;
+            font-size: 15px;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .transaction-details {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            background: #f3f4f6;
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .success-bottom {
+            flex-shrink: 0;
+            padding: 12px 20px 20px;
+            background: #fff;
+        }
+
+        .transaction-reference {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 20px;
+            overflow-wrap: anywhere;
+        }
+
+        .success-button {
+            display: block;
+            width: 100%;
+            height: 52px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        .transfers-button {
+            border: none;
+            background: #354b54;
+            color: #fff;
+        }
+
+        .home-button {
+            border: 1.5px solid #354b54;
+            background: #fff;
+            color: #354b54;
+        }
+
+        .success-error {
+            color: #c62828;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+
+<body data-page="transferSuccess">
+
+    <main class="phone-screen paynow-page success-page">
+
+        <section class="success-top">
+
+            <a href="home.html" class="logout">Log out</a>
+
+            <div class="success-icon">
+                <svg viewBox="0 0 100 100" fill="none">
+                    <circle cx="50" cy="50" r="43" fill="#168c80"/>
+                    <path d="M27 51 L43 67 L75 33"
+                        stroke="white"
+                        stroke-width="8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"/>
+                </svg>
+            </div>
+
+        </section>
+
+        <section class="success-content">
+
+            <h2 class="success-amount">
+                <span id="successAmount">0.00</span> SGD paid
+            </h2>
+
+            <div class="success-recipient">
+
+                <p class="success-label">To</p>
+
+                <h2 id="successRecipientName">Loading...</h2>
+
+                <p id="successRecipientInfo"></p>
+
+            </div>
+
+            <div class="success-date">
+
+                <p class="success-label">When</p>
+
+                <strong id="successDate">Loading...</strong>
+
+            </div>
+
+            <button
+                type="button"
+                class="transaction-link"
+                id="transactionToggle">
+                See transaction details
+            </button>
+
+            <div
+                class="transaction-details hidden"
+                id="transactionDetails">
+
+                <p>Transaction reference:</p>
+                <strong id="successReference"></strong>
+
+                <p style="margin-top: 10px;">Payment status: Successful</p>
+
+            </div>
+
+        </section>
+
+        <section class="success-bottom">
+
+            <p class="transaction-reference">
+                Transaction ID:
+                <span id="successTransactionId">-</span>
+            </p>
+
+            <p class="success-error hidden" id="successError"></p>
+
+            <button
+                type="button"
+                class="success-button transfers-button"
+                id="goTransfers">
+                Go to Transfers
+            </button>
+
+            <button
+                type="button"
+                class="success-button home-button"
+                id="backHome">
+                Back to Home
+            </button>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
