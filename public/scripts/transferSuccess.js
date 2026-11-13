@@ -91,7 +91,7 @@ document.getElementById("goTransfers").addEventListener("click", () => {
 
 // Return to home
 document.getElementById("backHome").addEventListener("click", () => {
-    window.location.href = "home.html";
+    window.location.href = "ocbcHome.html";
 });
 
 // Load page

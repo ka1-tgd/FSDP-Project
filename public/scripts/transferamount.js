@@ -30,10 +30,7 @@ let senderData = null;
 let enteredAmount = "";
 
 
-// ======================================
-// FORMAT PHONE NUMBER
-// ======================================
-
+// Format phone number
 function formatPhone(phone) {
     const digits = String(phone || "").replace(/\D/g, "");
 
@@ -43,10 +40,7 @@ function formatPhone(phone) {
 }
 
 
-// ======================================
-// MASK OFFICIAL REGISTERED NAME
-// ======================================
-
+// Mask official registered name
 function maskName(fullName) {
     return String(fullName || "")
         .trim()
@@ -61,10 +55,7 @@ function maskName(fullName) {
 }
 
 
-// ======================================
-// FIND SAVED CONTACT
-// ======================================
-
+// Find saved contact
 async function findSavedContact(person) {
     try {
         const response = await fetch(`${API_URL}/paynow/contacts`);
@@ -86,10 +77,7 @@ async function findSavedContact(person) {
 }
 
 
-// ======================================
-// GET MASKED REGISTERED NAME
-// ======================================
-
+// Get masked registered name
 async function getMaskedRegisteredName(person) {
     if (person.maskedName) return person.maskedName;
 
@@ -122,15 +110,11 @@ async function getMaskedRegisteredName(person) {
 }
 
 
-// ======================================
-// DISPLAY RECIPIENT INFORMATION
-// ======================================
-
+// Display recipient information
 async function displayRecipient(person, source) {
     const type = String(person.recipientType || "").toUpperCase();
     const identifier = String(person.recipientIdentifier || "").trim();
 
-    // Check whether recipient is saved in Contacts
     const savedContact = await findSavedContact(person);
 
     if (savedContact) {
@@ -194,10 +178,7 @@ async function displayRecipient(person, source) {
 }
 
 
-// ======================================
-// LOAD SELECTED RECIPIENT
-// ======================================
-
+// Load selected recipient
 async function loadRecipient() {
     const storedRecipient =
         sessionStorage.getItem("paynowRecipient");
@@ -253,14 +234,16 @@ async function loadRecipient() {
 
         recipientName.textContent = "Recipient not found";
         recipientInfo.textContent = "";
+
+        showAppError(
+            "Recipient unavailable",
+            "Unable to retrieve the recipient details. Please check and try again."
+        );
     }
 }
 
 
-// ======================================
-// LOAD SENDER ACCOUNT
-// ======================================
-
+// Load sender account
 async function loadSender() {
     try {
         const response = await fetch(
@@ -284,16 +267,21 @@ async function loadSender() {
     } catch (error) {
         console.error("Sender error:", error);
 
+        senderData = null;
+        senderBalance = null;
+
         accountType.textContent = "Account unavailable";
         accountNumber.textContent = "";
+
+        showAppError(
+            "Account unavailable",
+            "Unable to retrieve your account details. Please try again later."
+        );
     }
 }
 
 
-// ======================================
-// QUICK AMOUNT SELECTION
-// ======================================
-
+// Quick amount selection
 function clearQuickSelection() {
     quickButtons.forEach(button =>
         button.classList.remove("selected")
@@ -329,10 +317,6 @@ quickButtons.forEach(button => {
     });
 });
 
-
-// ======================================
-// CUSTOM NUMERIC KEYPAD
-// ======================================
 
 // Update amount display
 function updateAmount() {
@@ -421,10 +405,7 @@ keypadDone.addEventListener("click", () => {
 });
 
 
-// ======================================
-// MORE AMOUNTS DROPDOWN
-// ======================================
-
+// More amounts dropdown
 moreAmounts.addEventListener("change", () => {
 
     // Cancel selection
@@ -458,10 +439,7 @@ moreAmounts.addEventListener("change", () => {
 });
 
 
-// ======================================
-// SHOW / HIDE AVAILABLE BALANCE
-// ======================================
-
+// Show / hide available balance
 balanceButton.addEventListener("click", () => {
     const isHidden =
         availableBalance.classList.contains("hidden");
@@ -487,41 +465,62 @@ balanceButton.addEventListener("click", () => {
 });
 
 
-// ======================================
-// GO TO STEP 3 - REVIEW PAYMENT
-// ======================================
-
+// Go to Step 3 - Review Payment
 nextButton.addEventListener("click", () => {
 
     const amount = Number(enteredAmount);
 
     if (!Number.isFinite(amount) || amount <= 0) {
-        alert("Please enter a valid transfer amount.");
+        showAppError(
+            "Invalid amount",
+            "Please enter a valid transfer amount."
+        );
         return;
     }
 
     if (amount > 3000) {
-        alert("The transfer amount exceeds your daily limit.");
+        showAppError(
+            "Transfer limit exceeded",
+            "Your transfer exceeds the daily limit of SGD 3,000."
+        );
         return;
     }
 
     if (!senderData || !senderData.AccNo) {
-        alert("Unable to retrieve your sender account.");
+        showAppError(
+            "Account unavailable",
+            "Unable to retrieve your sender account. Please try again."
+        );
         return;
     }
 
     if (!recipientData || !recipientData.id) {
-        alert("Unable to retrieve the recipient account.");
+        showAppError(
+            "Recipient unavailable",
+            "Unable to retrieve the recipient account. Please check the details."
+        );
         return;
     }
 
-    if (senderData.AccNo === recipientData.id) {
-        alert("You cannot transfer money to your own account.");
+    if (
+        String(senderData.AccNo).trim() ===
+        String(recipientData.id).trim()
+    ) {
+        showAppError(
+            "Invalid recipient",
+            "You cannot transfer money to your own account."
+        );
         return;
     }
 
-    if (senderBalance !== null && amount > Number(senderBalance)) {
-        alert("Insufficient account balance.");
+    if (
+        senderBalance !== null &&
+        amount > Number(senderBalance)
+    ) {
+        showAppError(
+            "Insufficient balance",
+            "You do not have enough available balance for this transfer."
+        );
         return;
     }
 
@@ -545,9 +544,7 @@ nextButton.addEventListener("click", () => {
     window.location.href = "paynowReview.html";
 });
 
-// ======================================
-// INITIAL LOADING
-// ======================================
 
+// Initial loading
 loadRecipient();
 loadSender();

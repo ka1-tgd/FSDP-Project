@@ -1126,3 +1126,69 @@ hr {
 }
 
 
+/* Error popup */
+.error-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 9999;
+}
+
+.error-overlay.hidden {
+    display: none;
+}
+
+.error-popup {
+    width: 100%;
+    max-width: 340px;
+    background: white;
+    border-radius: 16px;
+    padding: 25px 20px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.error-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: #fdeaea;
+    color: #c62828;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-popup h2 {
+    font-size: 19px;
+    margin-bottom: 10px;
+}
+
+.error-popup p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
+
+.error-popup button {
+    width: 100%;
+    padding: 13px;
+    background: #c62828;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+
+

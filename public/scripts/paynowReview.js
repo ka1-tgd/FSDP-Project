@@ -13,27 +13,48 @@ const slideHandle = document.getElementById("slideHandle");
 const slideText = document.getElementById("slideText");
 const transferStatus = document.getElementById("transferStatus");
 
-// Load transfer details
+// Variables
 let transferDetails = null;
 let isProcessing = false;
 let startX = 0;
 let currentX = 0;
 let isDragging = false;
 
+
+// Show payment error popup
+function showTransferError(title, message) {
+    if (typeof window.showAppError === "function") {
+        window.showAppError(title, message);
+    } else {
+        showStatus(message, "error");
+    }
+}
+
+
+// Load transfer details
 function loadTransferDetails() {
     const stored = sessionStorage.getItem("paynowTransfer");
 
     if (!stored) {
-        transferStatus.textContent =
-            "Transfer details not found. Please return to Step 2.";
+        showTransferError(
+            "Transfer details unavailable",
+            "Your transfer details could not be retrieved. Please return to Step 2."
+        );
 
-        transferStatus.classList.add("error");
         slideToPay.classList.add("processing");
         return false;
     }
 
     try {
         transferDetails = JSON.parse(stored);
+
+        if (
+            !transferDetails ||
+            !transferDetails.amount ||
+            !transferDetails.recipientAccNo
+        ) {
+            throw new Error("Incomplete transfer details");
+        }
 
         reviewAmount.textContent =
             Number(transferDetails.amount).toFixed(2);
@@ -55,10 +76,13 @@ function loadTransferDetails() {
     } catch (error) {
         console.error("Transfer details error:", error);
 
-        transferStatus.textContent =
-            "Unable to load transfer details.";
+        transferDetails = null;
 
-        transferStatus.classList.add("error");
+        showTransferError(
+            "Unable to load transfer",
+            "Your payment details are incomplete. Please return to Step 2 and try again."
+        );
+
         slideToPay.classList.add("processing");
 
         return false;
@@ -73,7 +97,7 @@ function resetSlider() {
 }
 
 
-// Show status
+// Show processing status
 function showStatus(message, type) {
     transferStatus.textContent = message;
     transferStatus.className = `transfer-status ${type}`;
@@ -90,7 +114,10 @@ async function submitTransfer() {
     slideToPay.classList.add("processing");
     slideText.textContent = "Processing...";
 
-    showStatus("Please wait while your transfer is processed.", "");
+    showStatus(
+        "Please wait while your transfer is processed.",
+        ""
+    );
 
     try {
         const response = await fetch(`${API_URL}/paynow/transfer`, {
@@ -107,36 +134,48 @@ async function submitTransfer() {
         });
 
         const responseText = await response.text();
+
         let result;
+
         try {
             result = JSON.parse(responseText);
+
         } catch (error) {
             console.error("Server returned HTML instead of JSON:");
             console.error(responseText);
+
             throw new Error(
-        "Unable to reach the PayNow transfer API. Check your server route."
-    );
-}
+                "Unable to reach the PayNow transfer API."
+            );
+        }
 
-if (!response.ok) {
-    throw new Error(
-        result.error || "Unable to complete transfer."
-    );
-}
-
-        if (!response.ok) {
+        if (!response.ok || !result.success) {
             throw new Error(
                 result.error || "Unable to complete transfer."
             );
         }
-        
-        showStatus("Transfer successful!", "success");
-        slideText.textContent = "Payment successful";
-        
+
+        // Check transaction reference before showing success
+        if (!result.transRef) {
+            slideHandle.disabled = true;
+
+            slideText.textContent = "Check transaction status";
+
+            showStatus("", "");
+
+            showTransferError(
+                "Confirmation unavailable",
+                "The payment response did not include a transaction reference. Please check your transaction history before attempting another transfer."
+            );
+
+            return;
+        }
+
         // Save successful transfer details for Step 4
         const recipient = JSON.parse(
             sessionStorage.getItem("paynowRecipient") || "{}"
         );
+
         sessionStorage.setItem("paynowSuccess", JSON.stringify({
             transRef: result.transRef,
             amount: result.amount || transferDetails.amount,
@@ -148,52 +187,67 @@ if (!response.ok) {
             transactionDate: new Date().toISOString()
         }));
 
-// Prevent another submission
-slideHandle.disabled = true;
+        showStatus("Transfer successful!", "success");
 
-// Navigate to Step 4
-setTimeout(() => {
-    window.location.href = "transferSuccess.html";
-}, 800);
+        slideText.textContent = "Payment successful";
 
+        // Prevent another submission
+        slideHandle.disabled = true;
 
-    
+        // Navigate to Step 4
+        setTimeout(() => {
+            window.location.href = "transferSuccess.html";
+        }, 800);
+
     } catch (error) {
 
         console.error("Transfer error:", error);
 
-        let userMessage = error.message;
+        const userMessage = error.message || "";
+
+        let errorTitle = "Transfer unsuccessful";
+        let errorDescription =
+            "Your transfer could not be completed. Please try again.";
 
         // Friendly error messages
         if (userMessage.includes("Insufficient")) {
-            userMessage =
-                "Insufficient balance. Please enter a lower amount.";
+            errorTitle = "Insufficient balance";
+            errorDescription =
+                "You do not have enough available balance. Please enter a lower amount.";
 
         } else if (userMessage.includes("Recipient account")) {
-            userMessage =
-                "Unable to find recipient. Please check the details.";
+            errorTitle = "Recipient unavailable";
+            errorDescription =
+                "We could not find the recipient's account. Please check the recipient details.";
 
         } else if (userMessage.includes("Sender account")) {
-            userMessage =
-                "Unable to access your account. Please try again.";
+            errorTitle = "Account unavailable";
+            errorDescription =
+                "We could not access your sender account. Please try again later.";
 
         } else if (userMessage.includes("own account")) {
-            userMessage =
+            errorTitle = "Invalid recipient";
+            errorDescription =
                 "You cannot transfer money to your own account.";
 
         } else if (
             userMessage.includes("fetch") ||
-            userMessage.includes("API")
+            userMessage.includes("API") ||
+            userMessage.includes("network") ||
+            userMessage.includes("JSON")
         ) {
-            userMessage =
-                "Connection error. Please try again later.";
-
-        } else if (!userMessage) {
-            userMessage =
-                "Something went wrong. Please try again.";
+            errorTitle = "Connection error";
+            errorDescription =
+                "Unable to connect to the PayNow service. Please check your connection and transaction status before trying again.";
         }
 
-        showStatus(userMessage, "error");
+        // Show popup instead of bottom red error message
+        showStatus("", "");
+
+        showTransferError(
+            errorTitle,
+            errorDescription
+        );
 
         slideText.textContent = "Slide to pay";
 
@@ -209,13 +263,16 @@ setTimeout(() => {
 // Slider pointer events
 slideHandle.addEventListener("pointerdown", event => {
 
-    if (isProcessing || !transferDetails) return;
+    if (
+        isProcessing ||
+        !transferDetails ||
+        slideHandle.disabled
+    ) return;
 
     isDragging = true;
     startX = event.clientX;
 
     slideHandle.setPointerCapture(event.pointerId);
-
 });
 
 
@@ -235,7 +292,6 @@ slideHandle.addEventListener("pointermove", event => {
     );
 
     slideHandle.style.left = `${5 + currentX}px`;
-
 });
 
 
@@ -258,9 +314,7 @@ slideHandle.addEventListener("pointerup", async () => {
     } else {
 
         resetSlider();
-
     }
-
 });
 
 
@@ -271,7 +325,6 @@ slideHandle.addEventListener("pointercancel", () => {
     if (!isProcessing) {
         resetSlider();
     }
-
 });
 
 
