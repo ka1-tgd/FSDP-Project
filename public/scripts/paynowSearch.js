@@ -1,4 +1,6 @@
 
+const API_URL = "/api";
+
 // Search elements
 const searchInput = document.getElementById("recipientSearchInput");
 const searchResults = document.getElementById("searchResults");
@@ -12,6 +14,35 @@ const mode = ["nric", "uen", "contacts"].includes(searchMode)
 let savedContacts = [];
 let searchRequestId = 0;
 
+
+// Get login token
+function getAuthHeaders() {
+    const token = sessionStorage.getItem("token");
+
+    if (!token) {
+        window.location.href = "login.html";
+        return null;
+    }
+
+    return {
+        "Authorization": `Bearer ${token}`
+    };
+}
+
+
+// Handle expired login session
+function handleUnauthorized(response) {
+    if (response.status === 401) {
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("userName");
+        window.location.href = "login.html";
+        return true;
+    }
+
+    return false;
+}
+
+
 // Set search placeholder
 const placeholders = {
     nric: "Search by NRIC/FIN",
@@ -20,6 +51,7 @@ const placeholders = {
 };
 
 searchInput.placeholder = placeholders[mode];
+
 
 // Display search message
 function showMessage(message) {
@@ -31,6 +63,7 @@ function showMessage(message) {
 
     searchResults.appendChild(text);
 }
+
 
 // Display search results
 function displayResults(people) {
@@ -72,6 +105,7 @@ function displayResults(people) {
     });
 }
 
+
 // Save recipient for Step 2
 function selectRecipient(person) {
     const selected = {
@@ -101,12 +135,22 @@ function selectRecipient(person) {
     }
 }
 
+
 // Load saved contacts for contact search
 async function loadSavedContacts() {
+
+    const headers = getAuthHeaders();
+
+    if (!headers) return;
+
     try {
-        const response = await fetch("/api/paynow/contacts", {
-            cache: "no-store"
+        const response = await fetch(`${API_URL}/paynow/contacts`, {
+            method: "GET",
+            cache: "no-store",
+            headers: headers
         });
+
+        if (handleUnauthorized(response)) return;
 
         if (!response.ok) {
             throw new Error("Unable to load contacts");
@@ -120,14 +164,36 @@ async function loadSavedContacts() {
 
         savedContacts = data;
 
+        // Refresh filtered results if user has entered a search
+        const keyword = searchInput.value.trim().toLowerCase();
+
+        if (keyword) {
+            const filtered = savedContacts.filter(function(person) {
+                const name = String(person.name || "").toLowerCase();
+                const identifier = String(
+                    person.recipientIdentifier || ""
+                ).toLowerCase();
+                const phone = String(person.phone || "");
+
+                return name.includes(keyword) ||
+                       identifier.includes(keyword) ||
+                       phone.includes(keyword);
+            });
+
+            displayResults(filtered);
+        }
+
     } catch (error) {
         console.error("Search contacts error:", error);
+
         showMessage("Unable to load contacts. Please try again.");
     }
 }
 
+
 // Search database by exact NRIC or UEN
 async function searchDatabase(value) {
+
     const currentRequest = ++searchRequestId;
 
     if (!value) {
@@ -135,17 +201,27 @@ async function searchDatabase(value) {
         return;
     }
 
+    const headers = getAuthHeaders();
+
+    if (!headers) return;
+
     const endpoint = mode === "nric"
-        ? "/api/paynow/search/nric"
-        : "/api/paynow/search/uen";
+        ? "/paynow/search/nric"
+        : "/paynow/search/uen";
 
     showMessage("Searching...");
 
     try {
         const response = await fetch(
-            endpoint + "?value=" + encodeURIComponent(value),
-            { cache: "no-store" }
+            `${API_URL}${endpoint}?value=${encodeURIComponent(value)}`,
+            {
+                method: "GET",
+                cache: "no-store",
+                headers: headers
+            }
         );
+
+        if (handleUnauthorized(response)) return;
 
         if (!response.ok) {
             throw new Error("Search request failed");
@@ -162,32 +238,42 @@ async function searchDatabase(value) {
         displayResults(data);
 
     } catch (error) {
+
         if (currentRequest !== searchRequestId) return;
 
         console.error("Recipient search error:", error);
+
         showMessage("Unable to search. Please try again.");
     }
 }
 
+
 // Handle search input
 searchInput.addEventListener("input", function() {
+
     const value = searchInput.value.trim();
     const keyword = value.toLowerCase();
 
     if (mode === "contacts") {
+
         if (!keyword) {
             searchResults.innerHTML = "";
             return;
         }
 
         const filtered = savedContacts.filter(function(person) {
+
             const name = String(person.name || "").toLowerCase();
+
             const identifier = String(
                 person.recipientIdentifier || ""
             ).toLowerCase();
 
+            const phone = String(person.phone || "");
+
             return name.includes(keyword) ||
-                   identifier.includes(keyword);
+                   identifier.includes(keyword) ||
+                   phone.includes(keyword);
         });
 
         displayResults(filtered);
@@ -201,7 +287,10 @@ searchInput.addEventListener("input", function() {
     }
 
     // Search only when an identifier has been fully entered
-    if (mode === "nric" && !/^[A-Za-z][0-9]{7}[A-Za-z]$/.test(value)) {
+    if (
+        mode === "nric" &&
+        !/^[A-Za-z][0-9]{7}[A-Za-z]$/.test(value)
+    ) {
         searchRequestId++;
         searchResults.innerHTML = "";
         return;
@@ -215,6 +304,7 @@ searchInput.addEventListener("input", function() {
 
     searchDatabase(value.toUpperCase());
 });
+
 
 // Load contacts when needed
 if (mode === "contacts") {

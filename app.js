@@ -25,21 +25,6 @@ const userLoginController = require("./backend/controllers/userloginController")
 // Serve static files from public
 app.use(express.static(path.join(__dirname, "public")));
 
-
-// PayNow temporary demo user
-function getDemoUser(req, res) {
-    const ownerNRIC = process.env.DEMO_USER_NRIC;
-
-    if (!ownerNRIC) {
-        res.status(400).json({
-            error: "Demo user NRIC not configured"
-        });
-        return null;
-    }
-
-    return ownerNRIC.trim();
-}
-
 // Reuse database connection
 let poolPromise;
 
@@ -117,10 +102,9 @@ app.get("/api/paynow/contacts", userLoginMiddleware.verifyToken, async (req, res
 });
 
 // PayNow recent recipients
-app.get("/api/paynow/recent", async (req, res) => {
+app.get("/api/paynow/recent", userLoginMiddleware.verifyToken, async (req, res) => {
     try {
-        const ownerNRIC = getDemoUser(req, res);
-        if (!ownerNRIC) return;
+        const ownerNRIC = req.user.nric;
 
         const pool = await getPool();
 
@@ -195,10 +179,9 @@ function maskPayNowName(fullName) {
 }
 
 // PayNow search NRIC/FIN
-app.get("/api/paynow/search/nric", async (req, res) => {
+app.get("/api/paynow/search/nric", userLoginMiddleware.verifyToken, async (req, res) => {
     try {
-        const ownerNRIC = getDemoUser(req, res);
-        if (!ownerNRIC) return;
+        const ownerNRIC = req.user.nric;
 
         const value = String(req.query.value || "")
             .trim()
@@ -247,10 +230,9 @@ app.get("/api/paynow/search/nric", async (req, res) => {
 });
 
 // PayNow search UEN
-app.get("/api/paynow/search/uen", async (req, res) => {
+app.get("/api/paynow/search/uen", userLoginMiddleware.verifyToken, async (req, res) => {
     try {
-        const ownerNRIC = getDemoUser(req, res);
-        if (!ownerNRIC) return;
+        const ownerNRIC = req.user.nric;
 
         const value = String(req.query.value || "")
             .trim()
@@ -295,9 +277,8 @@ app.get("/api/paynow/search/uen", async (req, res) => {
 });
 
 // PayNow complete transfer
-app.post("/api/paynow/transfer", async (req, res) => {
-    const ownerNRIC = getDemoUser(req, res);
-    if (!ownerNRIC) return;
+app.post("/api/paynow/transfer", userLoginMiddleware.verifyToken, async (req, res) => {
+    const ownerNRIC = req.user.nric;
 
     const recipientAccNo = String(
         req.body.recipientAccNo || ""

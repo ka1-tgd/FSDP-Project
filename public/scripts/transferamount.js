@@ -3,7 +3,7 @@ const API_URL = "http://localhost:3000/api";
 
 // HTML elements
 const token = sessionStorage.getItem("token");
-const authHeaders = { Authorization: `Bearer ${token}` };
+
 const amountInput = document.getElementById("amountInput");
 const quickButtons = document.querySelectorAll(".quick-amounts button");
 const quickHint = document.getElementById("quickHint");
@@ -25,13 +25,39 @@ const keypadDone = document.getElementById("keypadDone");
 const keypadAmount = document.getElementById("keypadAmount");
 const keypadButtons = document.querySelectorAll("[data-key]");
 
-
-
 // Variables
 let senderBalance = null;
 let recipientData = null;
 let senderData = null;
 let enteredAmount = "";
+
+
+// Get authentication headers
+function getAuthHeaders() {
+    const currentToken = sessionStorage.getItem("token");
+
+    if (!currentToken) {
+        window.location.href = "login.html";
+        return null;
+    }
+
+    return {
+        "Authorization": `Bearer ${currentToken}`
+    };
+}
+
+
+// Handle expired login session
+function handleUnauthorized(response) {
+    if (response.status === 401) {
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("userName");
+        window.location.href = "login.html";
+        return true;
+    }
+
+    return false;
+}
 
 
 // Format phone number
@@ -61,12 +87,21 @@ function maskName(fullName) {
 
 // Find saved contact
 async function findSavedContact(person) {
+    const headers = getAuthHeaders();
+
+    if (!headers) return null;
+
     try {
         const response = await fetch(`${API_URL}/paynow/contacts`, {
-    headers: authHeaders
-});
+            cache: "no-store",
+            headers: headers
+        });
 
-        if (!response.ok) return null;
+        if (handleUnauthorized(response)) return null;
+
+        if (!response.ok) {
+            return null;
+        }
 
         const contacts = await response.json();
 
@@ -85,7 +120,7 @@ async function findSavedContact(person) {
 
 // Get masked registered name
 async function getMaskedRegisteredName(person) {
-    
+
     if (person.maskedName) return person.maskedName;
 
     if (person.registeredName) {
@@ -99,11 +134,20 @@ async function getMaskedRegisteredName(person) {
         return "";
     }
 
+    const headers = getAuthHeaders();
+
+    if (!headers) return "";
+
     try {
         const response = await fetch(
-    `${API_URL}/paynow/search/nric?value=${encodeURIComponent(person.recipientIdentifier)}`,
-    { headers: authHeaders }
-);
+            `${API_URL}/paynow/search/nric?value=${encodeURIComponent(person.recipientIdentifier)}`,
+            {
+                cache: "no-store",
+                headers: headers
+            }
+        );
+
+        if (handleUnauthorized(response)) return "";
 
         if (!response.ok) return "";
 
@@ -204,6 +248,13 @@ async function loadRecipient() {
 
         } catch (error) {
             console.error("Recipient storage error:", error);
+
+            showAppError(
+                "Recipient unavailable",
+                "Unable to load the selected recipient. Please return to Step 1 and select again."
+            );
+
+            return;
         }
     }
 
@@ -218,11 +269,19 @@ async function loadRecipient() {
         return;
     }
 
+    const headers = getAuthHeaders();
+
+    if (!headers) return;
+
     try {
         const response = await fetch(
-    `${API_URL}/transfer/recipient/${encodeURIComponent(phone)}`,
-    { headers: authHeaders }
-);
+            `${API_URL}/transfer/recipient/${encodeURIComponent(phone)}`,
+            {
+                headers: headers
+            }
+        );
+
+        if (handleUnauthorized(response)) return;
 
         if (!response.ok) {
             throw new Error("Recipient not found");
@@ -252,27 +311,56 @@ async function loadRecipient() {
 }
 
 
-
+// Load logged-in customer's sender account
 async function loadSender() {
-    try {
-        const res = await fetch(`${API_URL}/transfer/sender`, {
-            headers: authHeaders
-        });
-        if (!res.ok) throw new Error('Account not found');
-        senderData = await res.json();
+    const headers = getAuthHeaders();
 
-        accountType.textContent = `${senderData.AccType} Account`;
-        accountNumber.textContent = senderData.AccNo;
-        senderBalance = senderData.Balance;
-    } catch (err) {
-        console.error(err);
-        accountType.textContent = 'Account unavailable';
-        accountNumber.textContent = '';
+    if (!headers) return;
+
+    try {
+        const response = await fetch(`${API_URL}/transfer/sender`, {
+            cache: "no-store",
+            headers: headers
+        });
+
+        if (handleUnauthorized(response)) return;
+
+        if (!response.ok) {
+            throw new Error("Unable to retrieve sender account");
+        }
+
+        senderData = await response.json();
+
+        if (!senderData || !senderData.AccNo) {
+            throw new Error("Sender account details are missing");
+        }
+
+        accountType.textContent =
+            `${senderData.AccType} Account`;
+
+        accountNumber.textContent =
+            senderData.AccNo;
+
+        senderBalance = Number(senderData.Balance);
+
+    } catch (error) {
+        console.error("Sender account error:", error);
+
+        senderData = null;
+        senderBalance = null;
+
+        accountType.textContent = "Account unavailable";
+        accountNumber.textContent = "";
+
+        showAppError(
+            "Account unavailable",
+            "Unable to retrieve your sender account. Please try again later."
+        );
     }
 }
 
 
-// Quick amount selection
+// Clear quick amount selection
 function clearQuickSelection() {
     quickButtons.forEach(button =>
         button.classList.remove("selected")
@@ -281,6 +369,8 @@ function clearQuickSelection() {
     quickHint.classList.add("hidden");
 }
 
+
+// Quick amount selection
 quickButtons.forEach(button => {
     button.addEventListener("click", () => {
         const isSelected =
@@ -515,6 +605,7 @@ nextButton.addEventListener("click", () => {
         return;
     }
 
+    // Save transfer details for Step 3
     const transferDetails = {
         amount: amount.toFixed(2),
         senderAccNo: senderData.AccNo,
@@ -537,5 +628,10 @@ nextButton.addEventListener("click", () => {
 
 
 // Initial loading
-loadRecipient();
-loadSender();
+if (!token) {
+    sessionStorage.removeItem("userName");
+    window.location.href = "login.html";
+} else {
+    loadRecipient();
+    loadSender();
+}

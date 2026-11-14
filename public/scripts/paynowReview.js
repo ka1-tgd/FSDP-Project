@@ -21,6 +21,35 @@ let currentX = 0;
 let isDragging = false;
 
 
+// Get authentication headers
+function getAuthHeaders() {
+    const token = sessionStorage.getItem("token");
+
+    if (!token) {
+        window.location.href = "login.html";
+        return null;
+    }
+
+    return {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+    };
+}
+
+
+// Handle expired login session
+function handleUnauthorized(response) {
+    if (response.status === 401) {
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("userName");
+        window.location.href = "login.html";
+        return true;
+    }
+
+    return false;
+}
+
+
 // Show payment error popup
 function showTransferError(title, message) {
     if (typeof window.showAppError === "function") {
@@ -42,6 +71,8 @@ function loadTransferDetails() {
         );
 
         slideToPay.classList.add("processing");
+        slideHandle.disabled = true;
+
         return false;
     }
 
@@ -84,6 +115,7 @@ function loadTransferDetails() {
         );
 
         slideToPay.classList.add("processing");
+        slideHandle.disabled = true;
 
         return false;
     }
@@ -109,6 +141,10 @@ async function submitTransfer() {
 
     if (isProcessing || !transferDetails) return;
 
+    const headers = getAuthHeaders();
+
+    if (!headers) return;
+
     isProcessing = true;
 
     slideToPay.classList.add("processing");
@@ -123,15 +159,16 @@ async function submitTransfer() {
         const response = await fetch(`${API_URL}/paynow/transfer`, {
             method: "POST",
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: headers,
 
             body: JSON.stringify({
                 recipientAccNo: transferDetails.recipientAccNo,
                 amount: transferDetails.amount
             })
         });
+
+        // Check login session
+        if (handleUnauthorized(response)) return;
 
         const responseText = await response.text();
 
@@ -155,8 +192,10 @@ async function submitTransfer() {
             );
         }
 
-        // Check transaction reference before showing success
+        // Check transaction reference
         if (!result.transRef) {
+
+            // Avoid duplicate transfer attempts
             slideHandle.disabled = true;
 
             slideText.textContent = "Check transaction status";
@@ -191,7 +230,7 @@ async function submitTransfer() {
 
         slideText.textContent = "Payment successful";
 
-        // Prevent another submission
+        // Prevent duplicate submission
         slideHandle.disabled = true;
 
         // Navigate to Step 4
@@ -241,7 +280,6 @@ async function submitTransfer() {
                 "Unable to connect to the PayNow service. Please check your connection and transaction status before trying again.";
         }
 
-        // Show popup instead of bottom red error message
         showStatus("", "");
 
         showTransferError(
@@ -329,4 +367,8 @@ slideHandle.addEventListener("pointercancel", () => {
 
 
 // Initial loading
-loadTransferDetails();
+if (!sessionStorage.getItem("token")) {
+    window.location.href = "login.html";
+} else {
+    loadTransferDetails();
+}
