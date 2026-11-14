@@ -1,6 +1,3 @@
-// Import checking functions
-import { guidedModeCheck } from "./guidedMode.js"
-
 // Import guidances
 import { paynowSentGuidance } from "./pages/paynowSentGuidance.js";
 import { transferAmountGuidance } from "./pages/transferAmountGuidance.js";
@@ -18,12 +15,6 @@ const pageGuidance = {
 
 // Function to initialize Guided Mode on the current page
 export function initializeGuidedMode() {
-    // Check if guided mode is enabled
-    const enabled = guidedModeCheck();
-
-    // Stop function if not enabled
-    if (!enabled) return;
-
     // Identify current page and retrieve its guidance
     const currentPage = document.body.dataset.page;
     const guidance = pageGuidance[currentPage];
