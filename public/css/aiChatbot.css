@@ -166,7 +166,7 @@ body {
 
 .bot-bubble p {
     color: #ffffff;
-    margin: 0;
+    margin: 0px;
     margin-bottom: 4px;
 }
 
@@ -182,7 +182,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    margin-top: 4px;
+    margin-top: 1px;
 }
 
 .chip {
