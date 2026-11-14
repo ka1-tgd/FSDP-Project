@@ -1019,14 +1019,6 @@ hr {
     line-height: 1.4;
 }
 
-.review-tips {
-    background: #e5ddff;
-    color: #51458b;
-    border-radius: 14px;
-    padding: 14px;
-    text-align: center;
-}
-
 .review-tips strong {
     display: block;
     font-size: 13px;
