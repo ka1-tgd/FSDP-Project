@@ -1,6 +1,9 @@
 // controllers/transferController.js
 
+
+
 const transferModel = require("../models/transferamountmodel");
+
 // Get PayNow transfer details
 async function getTransferDetails(req, res) {
     try {
