@@ -1,8 +1,6 @@
 export const transferAmountGuidance = [
     {
-        target: "#balanceButton",
-
-        position: "afterend",
+        target: "#guidedHelpBtn",
 
         title: "Choosing How Much to Send",
 

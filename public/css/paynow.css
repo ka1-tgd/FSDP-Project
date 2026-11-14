@@ -412,15 +412,14 @@ hr {
 }
 
 /* ASK OCBC */
-.step-header {
+.step-heading {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 8px;
     margin-bottom: 34px;
 }
 
-.step-header .step-title {
+.step-heading .step-title {
     margin-bottom: 0;
 }
 
