@@ -59,9 +59,9 @@ function appendMessage(text, sender) {
         const avatar = document.createElement('div');
         avatar.className = 'avatar bot-avatar';
         
-        // Bot avatar using Chatbot_Avatar.jpg from the parallel /images folder
+        // Bot avatar using Chatbot_Avatar.png from the parallel /images folder
         const img = document.createElement('img');
-        img.src = '../images/Chatbot_Avatar.jpg';
+        img.src = '../images/Chatbot_Avatar.png';
         img.alt = 'Bot';
         img.style.width = '100%';
         img.style.height = '100%';
