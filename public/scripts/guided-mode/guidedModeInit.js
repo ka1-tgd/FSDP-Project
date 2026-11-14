@@ -1,6 +1,7 @@
 // Import guidances
 import { paynowSentGuidance } from "./pages/paynowSentGuidance.js";
 import { transferAmountGuidance } from "./pages/transferAmountGuidance.js";
+import { paynowReviewGuidance } from "./pages/paynowReviewGuidance.js";
 
 // Import message creation and removal functions
 import {
@@ -10,7 +11,8 @@ import {
 // Connect page identifier to guidance message
 const pageGuidance = {
     paynowSent: paynowSentGuidance,
-    transferAmount: transferAmountGuidance
+    transferAmount: transferAmountGuidance,
+    paynowReview: paynowReviewGuidance
 }
 
 // Function to initialize Guided Mode on the current page
