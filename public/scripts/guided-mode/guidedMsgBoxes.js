@@ -73,11 +73,15 @@ export function createMessageBoxes(guidanceSteps) {
         chatContainer.hidden = true;
 
         // Placeholder for chatbot integration
-        const chatPlaceholder = document.createElement("p");
-        chatPlaceholder.textContent =
-            "Your virtual assistant will appear here.";
+        const chatIframe = document.createElement("iframe");
+        chatIframe.src = "http://localhost:3000/html/aiChatbot.html"; // Points straight to your Express server chatbot route
+        chatIframe.style.width = "100%";
+        chatIframe.style.height = "240px";       // Adjust height to fit nicely inside the popup box
+        chatIframe.style.border = "none";
+        chatIframe.style.borderRadius = "12px";
+        chatIframe.style.marginTop = "10px";
 
-        chatContainer.appendChild(chatPlaceholder);
+        chatContainer.appendChild(chatIframe);
 
         // Show chat when button is clicked
         chatButton.addEventListener("click", () => {
