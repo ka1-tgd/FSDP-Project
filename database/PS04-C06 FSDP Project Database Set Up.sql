@@ -26,6 +26,15 @@ create table Users (
 	constraint UQ_Users_PhoneNo unique (PhoneNo)
 );
 
+create table UserLogin (
+	UserID varchar(50) not null,
+	PasswordHash varchar(255) not null,
+	NRIC char(9) not null,
+	constraint PK_UserLogin primary key (UserID),
+	constraint FK_UserLogin_NRIC foreign key (NRIC) references Users(NRIC),
+	constraint UQ_UserLogin_NRIC unique (NRIC)
+);
+
 create table Account (
 	AccNo varchar(50) not null,
 	NRIC char(9) not null,
@@ -60,7 +69,6 @@ create table Faqs (
     answer VARCHAR(MAX) NOT NULL,
     keywords VARCHAR(MAX)
 );
-go
 
 -- Create saved contacts table
 CREATE TABLE dbo.SavedContacts (
@@ -81,6 +89,7 @@ CREATE TABLE dbo.SavedContacts (
     CONSTRAINT UQ_SavedContacts_Recipient
         UNIQUE (OwnerNRIC, RecipientType, RecipientIdentifier)
 );
+go
 
 -- Insert sample data
 insert into Users (NRIC, Name, PhoneNo)
@@ -90,6 +99,14 @@ insert into Users (NRIC, Name, PhoneNo)
 	('S1122334C', 'Albert Parke', '11223344'),
 	('S5566778D', 'Ben Ng', '55667788'),
 	('S1111111E', 'Crystal Lim', '96969696');
+
+insert into UserLogin (UserID, PasswordHash, NRIC)
+	values
+	('john123', '$2b$10$s/K3qL.J0FmV0tQuuKz3I.wuG6FX3S7smHcAoI2EQaDT4Uw5D.m/2', 'S1234567A'),
+	('emily123', '$2b$10$I4O4MUecU..PpevIzEXdt.MBAdOjKNa48AFYfybyk2wSbCm7Onb2y', 'S7654321B'),
+	('albert123', '$2b$10$bkCNS1GKKp6Plr0IQSittOd4J95LNzWqwQ7d7KZ9AgyuprW/qyLGy', 'S1122334C'),
+	('ben123', '$2b$10$FHF8Yd2yNeluwZ0ujPHaGejM4FRgNZTuNPsuQ.r0u7qeLVdNpvSGq', 'S5566778D'),
+	('crystal123', '$2b$10$/dORlIfZDR3ApQKXlwIyxeIkycPfoGMbljkjTI7em.h1mCAMfc8Wm', 'S1111111E');
 
 insert into Account (AccNo, NRIC, Balance, AccType, UEN)
 	values
@@ -132,16 +149,9 @@ You may turn on money transfer guide mode if you need step-by-step guidance. Wou
 		'reset PIN, card PIN, change PIN, change card PIN, debit card PIN, credit card PIN, card password, I forgot my card PIN, how do I change it?, How can I set a new PIN for my debit card?, How do I reset my card PIN?'
 	),
 	(
-		'How to turn on money transfer guide mode?',
-		'You can enable guide mode to get step-by-step overlays while making a transfer by following these steps:
-
-1. Tap on "More" icon form the bottom navigation bar.
-2. Select "Profile & App Settings".
-3. Tap on "Guide mode".
-4. Click on the button in the Enable Guided Mode box to turn it on.
-
-You can also enable the Text-to-Speech feature there if you need audio guidance.',
-		'guide mode, transfer guide, step by step transfer, turn on guide, enable guidance, transfer assistant, How do I turn on guide mode for transfers?, Can I get step-by-step help when sending money?, Where to turn on the transfer guide mode?'
+		'What is a UEN?',
+		'A UEN (Unique Entity Number) is the standard identification number issued to businesses, companies, and organizations in Singapore. You will need a UEN when making corporate PayNow transfers to merchants, companies, or institutions via the app.',
+		'UEN, Unique Entity Number, what is UEN, business UEN, company UEN, corporate paynow, business paynow, what does UEN stand for'
 	);
 
 -- Insert sample saved contacts
