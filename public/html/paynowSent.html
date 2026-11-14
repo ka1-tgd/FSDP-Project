@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,16 +8,16 @@
 
     <title>OCBC PayNow - Choose Recipient</title>
 
-    <!-- Existing PayNow CSS -->
+    <!-- PayNow CSS -->
     <link rel="stylesheet" href="../css/paynow.css">
 
-    <!-- Guided Mode -->
+    <!-- Guided Mode CSS -->
     <link rel="stylesheet" href="../css/guided-mode.css">
 
     <!-- Voice Assistance CSS -->
     <link rel="stylesheet" href="../css/voiceAssistance.css">
 
-    <!-- Existing PayNow JS -->
+    <!-- PayNow JS -->
     <script src="../scripts/paynow_sent.js" defer></script>
 
     <!-- Guided Mode JS -->
@@ -24,17 +25,20 @@
 
     <!-- Voice Assistance JS -->
     <script src="../scripts/voiceAssistance.js" defer></script>
+    <script src="../scripts/errorPopup.js" defer></script>
 </head>
-
 
 <body data-page="paynowSent">
     <main class="phone-screen paynow-page">
 
         <!-- Header -->
         <header class="header">
-            <a href="ocbcHome.html" class="back-button" aria-label="Go back">
+            <a href="ocbcHome.html"
+               class="back-button"
+               aria-label="Go back">
                 ‹
             </a>
+
             <h1>PayNow</h1>
         </header>
 
@@ -46,84 +50,120 @@
             <div class="progress-bar"></div>
         </div>
 
+        <!-- Main content -->
         <section class="content">
 
             <!-- Step information -->
-            <div class="step-row">
+            <div class="step-heading">
                 <p class="step-title">
                     <span>Step 1 of 4</span> · Choose who to pay
                 </p>
 
-                <button type="button" class="ask-button" id="askBtn">
-                    Ask OCBC
+                <button
+                    type="button"
+                    class="guided-help-button"
+                    id="guidedHelpBtn"
+                    aria-label="Show guidance"
+                    aria-expanded="false">
+                    ?
                 </button>
             </div>
-            
+
             <!-- Payment options -->
             <div class="payment-types">
-                <button type="button" class="payment-option" data-type="nric">
-                    <img src="../images/nric-icon.png"
-                    class="payment-icon" alt="">
+
+                <button
+                    type="button"
+                    class="payment-option"
+                    data-type="nric">
+
+                    <img
+                        src="../images/nric-icon.png"
+                        class="payment-icon"
+                        alt="">
+
                     <span>NRIC/FIN</span>
                 </button>
-                
-                <button type="button" class="payment-option" data-type="uen">
-                    <img src="../images/uen-icon.png"
-                    class="payment-icon" alt="">
+
+                <button
+                    type="button"
+                    class="payment-option"
+                    data-type="uen">
+
+                    <img
+                        src="../images/uen-icon.png"
+                        class="payment-icon"
+                        alt="">
+
                     <span>UEN/VPA</span>
                 </button>
+
             </div>
 
             <!-- Search -->
             <div class="search-section">
-                <label for="searchInput">Who are you sending to?</label>
+                <label for="searchInput">
+                    Who are you sending to?
+                </label>
 
                 <div class="search-box">
                     <span class="search-icon">⌕</span>
+
                     <input
                         type="search"
                         id="searchInput"
                         placeholder="Search by name or mobile number"
                         autocomplete="off"
-                    >
+                        aria-label="Open recipient search"
+                        readonly>
                 </div>
             </div>
 
-            <!-- Recent / Contacts -->
+            <!-- Recent and Contacts -->
             <div class="tabs">
-                <button type="button" class="tab active" data-tab="recent">
+
+                <button
+                    type="button"
+                    class="tab active"
+                    data-tab="recent">
                     Recent
                 </button>
-                <button type="button" class="tab" data-tab="contacts">
+
+                <button
+                    type="button"
+                    class="tab"
+                    data-tab="contacts">
                     Contacts
                 </button>
+
             </div>
 
             <!-- Database recipients -->
-            <div class="recipient-content" id="recipientContent" aria-live="polite">
-                 <!-- No recent transfers message -->
-                  <div class="empty-state" id="emptyRecentState">
-                    <img
-                    src="../images/paynow-no-recent-icon.png"
-                    alt=""
-                    class="empty-state-icon">
+            <div
+                class="recipient-content"
+                id="recipientContent"
+                aria-live="polite">
 
-                    <h3>No recent PayNow transfers</h3>
-                    
-                    <p>Your 10 most recent payees will be shown here.</p>
+                <!-- Default recent state -->
+                <div class="empty-state" id="emptyRecentState">
+
+                    <img
+                        src="../images/paynow-no-recent-icon.png"
+                        alt=""
+                        class="empty-state-icon">
+
+                    <h3 class="empty-title">
+                        No recent PayNow transfers
+                    </h3>
+
+                    <p class="empty-subtitle">
+                        Your 10 most recent payees will be shown here.
+                    </p>
+
                 </div>
             </div>
 
         </section>
-
-        <!-- Bottom button -->
-        <div class="bottom-section">
-            <div class="button-container">
-                <button type="button" class="help-button" id="helpBtn">
-                    Need help?
-                </button>
-            </div>
-        </div>
 
     </main>
 </body>

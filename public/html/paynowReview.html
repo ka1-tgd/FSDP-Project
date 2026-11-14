@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OCBC PayNow - Review Payment</title>
+
+    <link rel="stylesheet" href="../css/paynow.css">
+
+    <link rel="stylesheet" href="../css/voiceAssistance.css">
+    <script src="../scripts/voiceAssistance.js" defer></script>
+
+    <link rel="stylesheet" href="../css/guided-mode.css">
+    <script type="module" src="../scripts/guidedModeApp.js"></script>
+
+    <script src="../scripts/paynowReview.js" defer></script>
+    <script src="../scripts/errorPopup.js" defer></script>
+</head>
+
+<body data-page="paynowReview">
+
+    <main class="phone-screen paynow-page review-page">
+
+        <!-- Header -->
+        <header class="header">
+
+            <button
+                type="button"
+                class="back-button"
+                onclick="window.location.href='transferamount.html'"
+                aria-label="Go back">
+                ‹
+            </button>
+
+            <h1>PayNow</h1>
+
+        </header>
+
+        <!-- Progress -->
+        <div class="progress-container">
+            <div class="progress-bar active"></div>
+            <div class="progress-bar active"></div>
+            <div class="progress-bar active"></div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Review Content -->
+        <section class="content review-content">
+
+            <div class="review-heading">
+                <div class="step-heading">
+                    <p class="step-title">
+                        <span>Step 3 of 4</span> · Review and confirm
+                    </p>
+
+                    <button
+                        type="button"
+                        class="guided-help-button"
+                        id="guidedHelpBtn"
+                        aria-label="Show guidance"
+                        aria-expanded="false">
+                        ?
+                    </button>
+                </div>
+
+                <p class="review-instruction">
+                    Please check all details before proceeding.
+                </p>
+
+            </div>
+
+            <!-- Transfer Amount -->
+            <div class="review-amount-section">
+
+                <p>You're sending</p>
+
+                <div class="review-amount">
+                    <span class="currency">SGD</span>
+                    <strong id="reviewAmount">0.00</strong>
+                </div>
+
+            </div>
+
+            <!-- Transfer Details -->
+            <div class="review-details">
+
+                <!-- From -->
+                <div class="review-account">
+
+                    <p class="review-label">From</p>
+
+                    <h3 id="reviewSenderType">
+                        Savings Account
+                    </h3>
+
+                    <p id="reviewSenderNumber">
+                    </p>
+
+                </div>
+
+                <div class="review-divider"></div>
+
+                <!-- To -->
+                <div class="review-account">
+
+                    <p class="review-label">To</p>
+
+                    <h3 id="reviewRecipientName">
+                    </h3>
+
+                    <p id="reviewRecipientInfo">
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Warning -->
+            <div class="review-warning">
+
+                <span class="warning-icon">⚠</span>
+
+                <p>
+                    Transfers cannot be reversed once sent.
+                    Please check carefully.
+                </p>
+
+            </div>
+
+            <!-- Error / Status -->
+            <p
+                id="transferStatus"
+                class="transfer-status"
+                aria-live="polite">
+            </p>
+
+        </section>
+
+        <!-- Slide to Pay -->
+        <div class="review-bottom">
+
+            <p class="review-reminder">
+                Please check that all details are correct
+                before proceeding.
+            </p>
+
+            <div
+                class="slide-to-pay"
+                id="slideToPay"
+                role="group"
+                aria-label="Slide to pay">
+
+                <button
+                    type="button"
+                    class="slide-handle"
+                    id="slideHandle"
+                    aria-label="Confirm and pay">
+
+                    ››
+
+                </button>
+
+                <span id="slideText">
+                    Slide to pay
+                </span>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

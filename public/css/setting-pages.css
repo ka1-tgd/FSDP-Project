@@ -23,18 +23,12 @@ body {
 
 /* Header styles */
 .header {
-    height: 163px;
-    position: relative;
+    height: 59px;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    padding-top: 78px;
-
-    background: linear-gradient(
-        110deg,
-        #fceaea 0%,
-        #fffafa 100%
-    );
+    align-items: center;
+    background: #e82013;
+    color: #FFFFFF;;
 }
 
 .header h2 {
@@ -44,7 +38,7 @@ body {
 .back-button {
     position: absolute;
     left: 27px;
-    top: 88px;
+    top: 11px;
 
     background: none;
     border: none;
@@ -52,7 +46,7 @@ body {
     font-size: 43px;
     line-height: 30px;
     cursor: pointer;
-    color: #171717;
+    color: #FFFFFF;
 }
 
 /* Toggle boxes */

@@ -1,21 +1,21 @@
 /* Main guidance box */
 .guided-message {
     background-color: #b3a6fc;
-    border-left: 4px solid #6146ff;
-    border-radius: 8px;
+    color: #3c28ad;
+    border-left: 5px solid #3c28ad;
+    border-radius: 12px;
 
-    padding: 12px 16px;
-    margin: 12px 0 5px;
+    padding: 7px 13px;
+    margin: 15px 0 5px;
 
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.5;
-    color: #6146ff;
 }
 
 /* Tips title */
 .guided-message > strong {
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
     font-size: 14px;
 }
 
@@ -27,6 +27,128 @@
 /* Note outside the box */
 .guided-note {
     font-size: 11px;
-    color: #6146ff;
+    font-weight: bold;
+    color: #3c28ad;
     margin: 4px 0 12px;
+    line-height: 1.4;
+}
+
+
+/* Heading and question mark */
+.step-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.guided-help-button {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #6040ff;
+    border-radius: 50%;
+
+    background-color: white;
+    color: #6040ff;
+
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Popup */
+.step-heading {
+    position: relative;
+}
+
+.guided-popup {
+    display: none;
+
+    position: absolute;
+    top: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: min(350px);
+    box-sizing: border-box;
+    max-height: 70vh;
+    overflow-y: auto;
+
+    z-index: 100;
+
+    padding: 20px;
+
+    background-color: #ded8ff;
+    color: #5040c8;
+
+    border: 1px solid #c5baff;
+    border-radius: 16px;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.guided-popup.show {
+    display: block;
+}
+
+.guided-popup > strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.guided-popup p {
+    margin: 6px 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.guided-popup .guided-note {
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* Chat button */
+.guided-chat-button {
+    width: 100%;
+    padding: 10px;
+
+    margin-top: 12px;
+
+    background-color: #6040ff;
+    color: white;
+
+    border: none;
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.guided-chat-button:hover {
+    background-color: #4d32d6;
+}
+
+/* Chat container */
+.guided-chat-container {
+    margin-top: 10px;
+    padding: 0px 10px;
+
+    background-color: white;
+    color: #333;
+
+    border-radius: 10px;
+    border: 1px solid #c5baff;
+
+    min-height: 100px;
+}
+
+.guided-chat-container[hidden] {
+    display: none;
 }

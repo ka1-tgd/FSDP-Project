@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>OCBC PayNow - Search Recipient</title>
+
+    <link rel="stylesheet" href="../css/paynow.css">
+    <link rel="stylesheet" href="../css/paynowSearch.css">
+
+    <script src="../scripts/paynowSearch.js" defer></script>
+</head>
+
+<body>
+    <main class="phone-screen search-page">
+
+        <!-- Search header -->
+        <header class="recipient-search-header">
+            <div class="recipient-search-box">
+                <span class="recipient-search-icon">⌕</span>
+
+                <input
+                    type="search"
+                    id="recipientSearchInput"
+                    placeholder="Search by NRIC/FIN"
+                    autocomplete="off"
+                    aria-label="Search recipient">
+            </div>
+
+            <a href="paynowSent.html"
+               class="search-cancel">
+                Cancel
+            </a>
+        </header>
+
+        <!-- Search results -->
+        <section class="search-results"
+                 id="searchResults"
+                 aria-live="polite">
+        </section>
+
+    </main>
+</body>
+</html>

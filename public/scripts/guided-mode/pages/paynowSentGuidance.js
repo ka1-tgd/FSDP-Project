@@ -1,14 +1,6 @@
 export const paynowSentGuidance = [
     {
-        target: ".tabs",
-        
-        position: "afterend",
-
-        condition: () => {
-            return document.querySelector(
-                '.tab[data-tab="recent"]'
-            )?.classList.contains("active");
-        },
+        target: "#guidedHelpBtn",
 
         title: "Tips:",
 
