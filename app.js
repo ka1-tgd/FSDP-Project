@@ -4,6 +4,7 @@ const mssql = require("mssql");
 const dotenv = require("dotenv");
 const path = require("path");
 const crypto = require("crypto");
+const cors = require("cors");
 
 // Load env variables
 dotenv.config();
@@ -14,6 +15,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
+app.use(cors({
+    origin: "https://ka1-tgd.github.io"
+}));
 app.use(express.json()); // Parse JSON req bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded req bodies
 

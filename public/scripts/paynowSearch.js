@@ -1,5 +1,5 @@
 
-const API_URL = "/api";
+const API_URL = "https://fsdp-project.onrender.com/api";
 
 // Search elements
 const searchInput = document.getElementById("recipientSearchInput");
