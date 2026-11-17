@@ -18,6 +18,12 @@ const port = process.env.PORT || 3000;
 app.use(cors({
     origin: "https://ka1-tgd.github.io",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    optionsSuccessStatus: 204
+}));
+app.options("*", cors({
+    origin: "https://ka1-tgd.github.io",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
 app.use(express.json()); // Parse JSON req bodies
