@@ -476,7 +476,7 @@ app.get("/api/chatbot", (req, res) => {
 app.post("/api/chatbot", chatbotController.handleChat);
 
 // Start server
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
     console.log(`Server running on port ${port}`);
 });
 
