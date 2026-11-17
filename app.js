@@ -16,7 +16,9 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-    origin: "https://ka1-tgd.github.io"
+    origin: "https://ka1-tgd.github.io",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
 }));
 app.use(express.json()); // Parse JSON req bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded req bodies
