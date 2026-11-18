@@ -18,6 +18,7 @@ An educational banking web application prototype focused on making the PayNow tr
 - Database: Microsoft SQL Server, `mssql` package
 - Authentication: `bcryptjs`, JSON Web Tokens (`jsonwebtoken`)
 - Chatbot: `@google/genai`, SQL Server FAQ data
+- Deployment: GitHub Pages, Render (backend)
 
 ## Requirements
 
