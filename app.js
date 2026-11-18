@@ -15,17 +15,15 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors({
-    origin: "https://ka1-tgd.github.io",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    optionsSuccessStatus: 204
-}));
-app.options("*", cors({
-    origin: "https://ka1-tgd.github.io",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
-}));
+// Log every incoming request
+app.use((req, res, next) => {
+    console.log("REQUEST RECEIVED:", req.method, req.path);
+    console.log("ORIGIN:", req.headers.origin);
+    next();
+});
+
+// Temporary simplified CORS configuration
+app.use(cors());
 app.use(express.json()); // Parse JSON req bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded req bodies
 
