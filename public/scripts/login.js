@@ -1,4 +1,4 @@
-const API_URL = 'https://fsdp-project.onrender.com/api';
+const API_URL = 'http://localhost:3000/api';
 const HOME_PAGE = 'ocbcHome.html'; // change to the page shown after login
 
 const landingScreen = document.getElementById('landingScreen');

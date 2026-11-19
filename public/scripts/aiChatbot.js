@@ -21,7 +21,7 @@ async function sendMessage() {
 
     try {
         // 3. Call your working backend endpoint
-        const response = await fetch('https://fsdp-project.onrender.com/api/chatbot', {
+        const response = await fetch('http://localhost:3000/api/chatbot', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

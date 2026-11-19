@@ -15,8 +15,8 @@ async function loadRecipients() {
     const currentRequest = ++requestId;
 
     const apiUrl = activeTab === "recent"
-        ? "https://fsdp-project.onrender.com/api/paynow/recent"
-        : "https://fsdp-project.onrender.com/api/paynow/contacts";
+        ? "http://localhost:3000/api/paynow/recent"
+        : "http://localhost:3000/api/paynow/contacts";
 
     recipientContent.textContent = "Loading recipients...";
 

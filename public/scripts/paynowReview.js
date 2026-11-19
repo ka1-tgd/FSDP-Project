@@ -1,5 +1,5 @@
 
-const API_URL = "https://fsdp-project.onrender.com/api";
+const API_URL = "http://localhost:3000/api";
 
 // Elements
 const reviewAmount = document.getElementById("reviewAmount");
