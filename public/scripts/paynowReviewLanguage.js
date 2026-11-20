@@ -152,7 +152,6 @@
         }
     }
 
-    // Translate dynamically updated account names.
     function translateAccount() {
         const element = document.getElementById("reviewSenderType");
         if (!element) return;
@@ -171,7 +170,6 @@
         }
     }
 
-    // Translate slider and processing messages.
     const statusKeys = {
         "Slide to pay": "slide",
         "Processing...": "processing",
@@ -188,11 +186,15 @@
         const key = statusKeys[original];
 
         if (key) {
-            element.textContent = t(key);
+            const translated = t(key);
+
+            // Prevent repeated MutationObserver updates.
+            if (element.textContent !== translated) {
+                element.textContent = translated;
+            }
         }
     }
 
-    // Translate known error popup messages.
     const errorTranslations = {
         "Transfer details unavailable": {
             zh: "无法获取转账资料",
@@ -227,7 +229,7 @@
         "Account unavailable": {
             zh: "账户暂时无法使用",
             ms: "Akaun tidak tersedia",
-            ta: "கணக்கு கிடைக்கவில்லை"
+            ta: "கணக்கு தற்காலிகமாக கிடைக்கவில்லை"
         },
         "Invalid recipient": {
             zh: "收款人无效",
