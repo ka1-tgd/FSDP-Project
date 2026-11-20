@@ -7,8 +7,10 @@
     <title>OCBC Home</title>
     <!-- Your existing stylesheet first (reset, body, .phone-screen, .hidden) -->
     <link rel="stylesheet" href="../css/paynow.css">
-    <!-- Home page styles second -->
+    <!-- home page styles second -->
     <link rel="stylesheet" href="../css/ocbcHome.css">
+    <!-- script -->
+    <script src="../scripts/ocbcHome.js" defer></script>
 </head>
 <body>
 
@@ -78,10 +80,10 @@
                     <span></span>
                     <span></span>
                 </div>
-                <h2>Savings Account</h2>
-                <p class="card-number">1234-7890-2345</p>
-                <p class="card-balance-label">Available Balance</p>
-                <p class="card-balance">SGD 12,000.00</p>
+                <h2 id="accountType"></h2>
+<p class="card-number" id="accountNumber"></p>
+<p class="card-balance-label">Available Balance</p>
+<p class="card-balance" id="accountBalance"></p>
                 <a href="#" class="view-details">view details</a>
             </div>
         </div>
@@ -100,40 +102,9 @@
 
         <!-- Recent transactions -->
         <div class="transactions">
-            <h3>Recent transactions</h3>
-
-            <button class="transaction-row" type="button">
-                <img src="../images/7-eleven.png" alt="" class="transaction-icon">
-                <div class="transaction-info">
-                    <h4>7-Eleven</h4>
-                    <p>26 Oct 2026</p>
-                </div>
-                <span class="amount negative">-$10.40</span>
-                <span class="chevron">&#8250;</span>
-            </button>
-
-            <button class="transaction-row" type="button">
-                <img src="../images/john.png" alt="" class="transaction-icon">
-                <div class="transaction-info">
-                    <h4>John</h4>
-                    <p>25 Oct 2026</p>
-                </div>
-                <span class="amount positive">+$24.01</span>
-                <span class="chevron">&#8250;</span>
-            </button>
-
-            <button class="transaction-row" type="button">
-                <img src="../images/foodpanda.jpg" alt="" class="transaction-icon">
-                <div class="transaction-info">
-                    <h4>Foodpanda</h4>
-                    <p>24 Oct 2026</p>
-                </div>
-                <span class="amount negative">-$13.00</span>
-                <span class="chevron">&#8250;</span>
-            </button>
-        </div>
-
-    </div>
+    <h3>Recent transactions</h3>
+    <div id="transactionList"></div>
+</div>
 
     <!-- Bottom navigation -->
     <nav class="bottom-nav">

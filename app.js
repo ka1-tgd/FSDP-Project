@@ -34,6 +34,7 @@ const userLoginMiddleware = require("./backend/middleware/userloginMiddle");
 const chatbotController = require("./backend/controllers/chatbotController");
 const transferAmountController = require("./backend/controllers/transferamountcon");
 const userLoginController = require("./backend/controllers/userloginController");
+const ocbcHomeController = require("./backend/controllers/ocbcHomeController");
 
 // Serve static files from public
 app.use(express.static(path.join(__dirname, "public")));
@@ -463,6 +464,13 @@ app.post(
   "/api/auth/login",
   userLoginMiddleware.validateLogin,
   userLoginController.login
+);
+
+// Home page data (login required)
+app.get(
+  "/api/home",
+  userLoginMiddleware.verifyToken,
+  ocbcHomeController.getHome
 );
 
 // Transfer (login required)
