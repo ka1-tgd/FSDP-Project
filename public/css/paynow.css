@@ -1217,25 +1217,6 @@ hr {
 }
 
 
-/* Keep Slide to Pay handle positioned correctly */
-.review-page .slide-to-pay {
-    position: relative;
-    touch-action: pan-y;
-}
-
-.review-page .slide-handle {
-    position: absolute;
-    left: 5px;
-    right: auto;
-    touch-action: none;
-    cursor: grab;
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-.review-page .slide-handle:active {
-    cursor: grabbing;
-}
 
 
 

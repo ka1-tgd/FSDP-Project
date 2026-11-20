@@ -14,29 +14,28 @@
     try {
         settings = {
             ...defaults,
-            ...JSON.parse(
-                localStorage.getItem(STORAGE_KEY) || "{}"
-            )
+            ...JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}")
         };
     } catch {
-        settings = defaults;
+        settings = { ...defaults };
     }
 
     if (settings.useDevice) return;
 
+    // Accessibility settings
     const scale = Math.max(
-        0.8,
-        Math.min(1.4, Number(settings.textSize) / 100 || 1)
+        0.9,
+        Math.min(1.25, Number(settings.textSize) / 100 || 1)
     );
 
     const letterSpacing = Math.max(
         0,
-        Math.min(3, Number(settings.letterSpacing) || 0)
+        Math.min(0.5, Number(settings.letterSpacing) || 0)
     );
 
     const lineSpacing = Math.max(
-        1,
-        Math.min(2, Number(settings.lineSpacing) || 1.4)
+        1.2,
+        Math.min(1.8, Number(settings.lineSpacing) || 1.4)
     );
 
     const originalSizes = new WeakMap();
@@ -46,23 +45,25 @@
 
         if (!root) return;
 
+        // Only change elements marked as important text
         const elements = root.querySelectorAll(
-            "h1, h2, h3, h4, h5, h6, p, span, a, button, " +
-            "label, summary, input, textarea, select, li, td, th"
+            "[data-accessible-text]"
         );
 
         elements.forEach(element => {
 
+            // Protect interactive controls and navigation
             if (
                 element.closest("[data-no-text-scaling]") ||
-                element.closest(".bottom-nav")
+                element.closest(".bottom-nav") ||
+                element.closest(".slide-to-pay")
             ) {
                 return;
             }
 
-            // Remember original font size before changing it
             if (!originalSizes.has(element)) {
                 const computed = window.getComputedStyle(element);
+
                 originalSizes.set(
                     element,
                     parseFloat(computed.fontSize)
@@ -73,49 +74,44 @@
 
             if (!Number.isFinite(originalSize)) return;
 
+            // Change font size
             element.style.fontSize =
                 `${originalSize * scale}px`;
 
+            // Change letter spacing
             element.style.letterSpacing =
                 `${letterSpacing}px`;
 
+            // Change line spacing
             element.style.lineHeight =
                 String(lineSpacing);
         });
     }
 
-    // Apply once the page is ready
-    if (document.readyState === "loading") {
-        document.addEventListener(
-            "DOMContentLoaded",
-            applySettings
-        );
-    } else {
+    function initialise() {
         applySettings();
-    }
 
-    // Also apply to content added later by JavaScript
-    const observer = new MutationObserver(() => {
-        applySettings();
-    });
-
-    const startObserver = () => {
         const root = document.querySelector(".phone-screen");
 
-        if (root) {
-            observer.observe(root, {
-                childList: true,
-                subtree: true
-            });
-        }
-    };
+        if (!root) return;
+
+        // Apply settings to dynamically added content
+        const observer = new MutationObserver(() => {
+            applySettings();
+        });
+
+        observer.observe(root, {
+            childList: true,
+            subtree: true
+        });
+    }
 
     if (document.readyState === "loading") {
         document.addEventListener(
             "DOMContentLoaded",
-            startObserver
+            initialise
         );
     } else {
-        startObserver();
+        initialise();
     }
 })();

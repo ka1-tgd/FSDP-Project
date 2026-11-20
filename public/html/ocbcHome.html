@@ -97,13 +97,13 @@
                     <span></span>
                 </div>
 
-                <h2 id="accountType"></h2>
-                <p class="card-number" id="accountNumber"></p>
-
+                <h2 id="accountType" data-accessible-text></h2>
+                <p class="card-number" id="accountNumber" data-accessible-text></p>
                 <p class="card-balance-label"
-                   data-i18n="availableBalance">Available Balance</p>
+                data-i18n="availableBalance"
+                data-accessible-text>Available Balance</p>
+                <p class="card-balance" id="accountBalance" data-accessible-text></p>
 
-                <p class="card-balance" id="accountBalance"></p>
 
                 <a href="#" class="view-details"
                    data-i18n="viewDetails">view details</a>
@@ -114,14 +114,14 @@
         <div class="feature-cards">
             <button class="feature-card goals" type="button">
                 <h3 data-i18n="savingsGoals">SAVINGS GOALS</h3>
-                <p data-i18n="viewGoals">View/manage goals</p>
+                <p data-i18n="viewGoals" data-accessible-text>View/manage goals</p>
             </button>
-
             <button class="feature-card insights" type="button">
                 <h3 data-i18n="moneyInsights">MONEY INSIGHTS</h3>
-                <p data-i18n="takeControl">Take control</p>
+                <p data-i18n="takeControl" data-accessible-text>Take control</p>
             </button>
         </div>
+
 
         <!-- Recent transactions -->
         <div class="transactions">

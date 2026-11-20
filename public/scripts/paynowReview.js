@@ -191,6 +191,8 @@ async function submitTransfer() {
             );
         }
 
+        console.log("PayNow API response:", result);
+
         // Check transaction reference
         if (!result.transRef) {
 
@@ -233,6 +235,7 @@ async function submitTransfer() {
         slideHandle.disabled = true;
 
         // Navigate to Step 4
+        console.log("Navigating to Transfer Success...");
         setTimeout(() => {
             window.location.href = "transferSuccess.html";
         }, 800);
@@ -298,8 +301,6 @@ async function submitTransfer() {
 
 
 // Slider pointer events
-
-﻿// Slider pointer events
 
 slideHandle.style.touchAction = "none";
 
