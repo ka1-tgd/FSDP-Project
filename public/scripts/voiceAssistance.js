@@ -1,5 +1,9 @@
 
- // Voice Assistance for Guided Tips popups.
+/* ========================================
+   OCBC Guided Tips Voice Assistance
+   Four Languages + Resume After Speed Change
+   ======================================== */
+
 (function () {
     "use strict";
 
@@ -11,18 +15,84 @@
 
     const speeds = [0.5, 1, 1.5];
 
+    const languageCodes = {
+        en: "en-SG",
+        zh: "zh-CN",
+        ms: "ms-MY",
+        ta: "ta-IN"
+    };
+
+    const labels = {
+        en: {
+            play: "Read tips aloud",
+            pause: "Pause reading",
+            resume: "Resume reading",
+            replay: "Replay tips",
+            slower: "Decrease reading speed",
+            faster: "Increase reading speed"
+        },
+
+        zh: {
+            play: "朗读提示",
+            pause: "暂停朗读",
+            resume: "继续朗读",
+            replay: "重新朗读",
+            slower: "降低朗读速度",
+            faster: "提高朗读速度"
+        },
+
+        ms: {
+            play: "Baca petua dengan kuat",
+            pause: "Jeda bacaan",
+            resume: "Sambung bacaan",
+            replay: "Baca semula",
+            slower: "Kurangkan kelajuan bacaan",
+            faster: "Tingkatkan kelajuan bacaan"
+        },
+
+        ta: {
+            play: "உதவிக்குறிப்புகளைப் படிக்கவும்",
+            pause: "வாசிப்பை இடைநிறுத்தவும்",
+            resume: "வாசிப்பைத் தொடரவும்",
+            replay: "மீண்டும் படிக்கவும்",
+            slower: "வாசிப்பு வேகத்தைக் குறைக்கவும்",
+            faster: "வாசிப்பு வேகத்தை அதிகரிக்கவும்"
+        }
+    };
+
     let activePopup = null;
     let activeSpeech = null;
+
     let fullText = "";
     let startOffset = 0;
     let lastBoundary = 0;
+
     let state = "ready";
     let speechToken = 0;
     let availableVoices = [];
 
-    // Save and load reading speed
+    /* ========================================
+       Language
+       ======================================== */
+
+    function getLanguage() {
+        const saved =
+            localStorage.getItem("preferredLanguage") || "en";
+
+        return languageCodes[saved] ? saved : "en";
+    }
+
+    function getLabels() {
+        return labels[getLanguage()];
+    }
+
+    /* ========================================
+       Reading Speed
+       ======================================== */
+
     function savedSpeed() {
         const value = Number(localStorage.getItem("ttsSpeed"));
+
         return speeds.includes(value) ? value : 1;
     }
 
@@ -30,62 +100,45 @@
         return speed.toFixed(1) + "x";
     }
 
-    // Load available browser voices
+    /* ========================================
+       Browser Voices
+       ======================================== */
+
     function loadVoices() {
         if (!supported) return;
+
         availableVoices = synth.getVoices();
     }
 
-    // Choose the most natural English voice available
     function chooseVoice() {
         loadVoices();
 
-        const englishVoices = availableVoices.filter(
-            voice => voice.lang.toLowerCase().startsWith("en")
+        const language = getLanguage();
+        const preferredCode = languageCodes[language];
+        const prefix = preferredCode.split("-")[0].toLowerCase();
+
+        const matching = availableVoices.filter(voice =>
+            voice.lang.toLowerCase().startsWith(prefix)
         );
 
-        if (!englishVoices.length) return null;
-
-        // Preferred natural English voices
-        const preferredNames = [
-            "Microsoft Jenny Online (Natural)",
-            "Microsoft Aria Online (Natural)",
-            "Microsoft Sonia Online (Natural)",
-            "Microsoft Jenny",
-            "Microsoft Aria",
-            "Microsoft Sonia",
-            "Google UK English Female",
-            "Google US English"
-        ];
-
-        // Find a preferred voice
-        for (const name of preferredNames) {
-            const voice = englishVoices.find(v =>
-                v.name.toLowerCase().includes(name.toLowerCase())
+        if (matching.length === 0) {
+            console.warn(
+                "Voice Assistance: No matching voice for",
+                preferredCode
             );
 
-            if (voice) return voice;
+            return null;
         }
 
-        // Find another natural or neural voice
-        const naturalVoice = englishVoices.find(v =>
-            /natural|neural|online/i.test(v.name)
-        );
-
-        if (naturalVoice) return naturalVoice;
-
-        // Fall back to standard English voices
         return (
-            englishVoices.find(
-                v => v.lang.toLowerCase() === "en-sg"
+            matching.find(voice =>
+                voice.lang.toLowerCase() ===
+                preferredCode.toLowerCase()
             ) ||
-            englishVoices.find(
-                v => v.lang.toLowerCase() === "en-gb"
+            matching.find(voice =>
+                /natural|neural|online/i.test(voice.name)
             ) ||
-            englishVoices.find(
-                v => v.lang.toLowerCase() === "en-us"
-            ) ||
-            englishVoices[0]
+            matching[0]
         );
     }
 
@@ -97,10 +150,14 @@
         }
     }
 
-    // Update buttons and speed display
+    /* ========================================
+       Update Voice Controls
+       ======================================== */
+
     function updateControls() {
         document.querySelectorAll(".guided-voice-controls")
-            .forEach(controls => {
+            .forEach(function (controls) {
+
                 const popup = controls.closest(".guided-popup");
                 const isActive = popup === activePopup;
 
@@ -124,27 +181,35 @@
                     ".guided-voice-speed-value"
                 );
 
+                const text = getLabels();
+
                 if (play) {
-                    const isSpeaking =
+                    const speaking =
                         isActive && state === "speaking";
 
-                    const isPaused =
+                    const paused =
                         isActive && state === "paused";
 
-                    play.textContent = isSpeaking ? "⏸" : "▶";
+                    play.textContent = speaking ? "⏸" : "▶";
 
-                    const label = isSpeaking
-                        ? "Pause reading"
-                        : isPaused
-                            ? "Resume reading"
-                            : "Read tips aloud";
+                    const label = speaking
+                        ? text.pause
+                        : paused
+                            ? text.resume
+                            : text.play;
 
-                    play.setAttribute("aria-label", label);
                     play.title = label;
+                    play.setAttribute("aria-label", label);
                     play.disabled = !supported;
                 }
 
                 if (replayButton) {
+                    replayButton.title = text.replay;
+                    replayButton.setAttribute(
+                        "aria-label",
+                        text.replay
+                    );
+
                     replayButton.disabled = !supported;
                 }
 
@@ -154,18 +219,33 @@
                 }
 
                 if (minus) {
+                    minus.title = text.slower;
+                    minus.setAttribute(
+                        "aria-label",
+                        text.slower
+                    );
+
                     minus.disabled =
                         savedSpeed() <= speeds[0];
                 }
 
                 if (plus) {
+                    plus.title = text.faster;
+                    plus.setAttribute(
+                        "aria-label",
+                        text.faster
+                    );
+
                     plus.disabled =
                         savedSpeed() >= speeds[speeds.length - 1];
                 }
             });
     }
 
-    // Stop speech and reset state
+    /* ========================================
+       Stop and Reset Speech
+       ======================================== */
+
     function stop() {
         speechToken++;
 
@@ -175,16 +255,21 @@
 
         activePopup = null;
         activeSpeech = null;
+
         fullText = "";
         startOffset = 0;
         lastBoundary = 0;
+
         state = "ready";
 
         updateControls();
     }
 
-    // Start reading from a specific position
-    function readFrom(position) {
+    /* ========================================
+       Start Reading From Position
+       ======================================== */
+
+    function readText(position = 0, pauseAfterStart = false) {
         if (!supported || !activePopup || !fullText) return;
 
         speechToken++;
@@ -216,18 +301,21 @@
             utterance.voice = selectedVoice;
             utterance.lang = selectedVoice.lang;
         } else {
-            utterance.lang = "en-SG";
+            utterance.lang = languageCodes[getLanguage()];
         }
 
         utterance.rate = savedSpeed();
         utterance.pitch = 1;
         utterance.volume = 1;
 
-        utterance.onboundary = event => {
+        /* Track current reading position */
+        utterance.onboundary = function (event) {
             if (
                 token !== speechToken ||
                 activeSpeech !== utterance
-            ) return;
+            ) {
+                return;
+            }
 
             if (typeof event.charIndex === "number") {
                 lastBoundary = Math.min(
@@ -237,7 +325,24 @@
             }
         };
 
-        utterance.onend = () => {
+        /* Keep paused state after speed change */
+        utterance.onstart = function () {
+            if (
+                token !== speechToken ||
+                activeSpeech !== utterance
+            ) {
+                return;
+            }
+
+            if (pauseAfterStart) {
+                synth.pause();
+                state = "paused";
+                updateControls();
+            }
+        };
+
+        /* Speech finished */
+        utterance.onend = function () {
             if (
                 token === speechToken &&
                 activeSpeech === utterance
@@ -246,11 +351,14 @@
             }
         };
 
-        utterance.onerror = event => {
+        /* Speech error */
+        utterance.onerror = function (event) {
             if (
                 token !== speechToken ||
                 activeSpeech !== utterance
-            ) return;
+            ) {
+                return;
+            }
 
             if (
                 event.error !== "canceled" &&
@@ -265,13 +373,16 @@
             stop();
         };
 
-        state = "speaking";
+        state = pauseAfterStart ? "paused" : "speaking";
         updateControls();
 
         synth.speak(utterance);
     }
 
-    // Get text from Guided Tips
+    /* ========================================
+       Get Guided Tips Text
+       ======================================== */
+
     function getTipsText(popup) {
         const content = popup.querySelector(
             ".guided-voice-text"
@@ -282,12 +393,16 @@
             : "";
     }
 
-    // Play, Pause or Resume
+    /* ========================================
+       Play / Pause / Resume
+       ======================================== */
+
     function playOrPause(popup) {
         if (!supported) return;
 
         if (activePopup === popup && state === "speaking") {
             synth.pause();
+
             state = "paused";
             updateControls();
             return;
@@ -295,6 +410,7 @@
 
         if (activePopup === popup && state === "paused") {
             synth.resume();
+
             state = "speaking";
             updateControls();
             return;
@@ -305,10 +421,13 @@
         activePopup = popup;
         fullText = getTipsText(popup);
 
-        readFrom(0);
+        readText(0);
     }
 
-    // Replay from the beginning
+    /* ========================================
+       Replay From Beginning
+       ======================================== */
+
     function replay(popup) {
         if (!supported) return;
 
@@ -317,10 +436,13 @@
         activePopup = popup;
         fullText = getTipsText(popup);
 
-        readFrom(0);
+        readText(0);
     }
 
-    // Increase or decrease reading speed
+    /* ========================================
+       Change Speed Without Restarting
+       ======================================== */
+
     function changeSpeed(popup, direction) {
         const currentIndex = speeds.indexOf(savedSpeed());
 
@@ -334,6 +456,8 @@
 
         const newSpeed = speeds[nextIndex];
 
+        if (newSpeed === savedSpeed()) return;
+
         localStorage.setItem(
             "ttsSpeed",
             String(newSpeed)
@@ -341,32 +465,19 @@
 
         if (activePopup === popup && state !== "ready") {
             const wasPaused = state === "paused";
+
             const resumePosition = lastBoundary;
 
-            readFrom(resumePosition);
-
-            if (wasPaused && activeSpeech) {
-                const utterance = activeSpeech;
-                const originalOnStart = utterance.onstart;
-
-                utterance.onstart = event => {
-                    if (originalOnStart) {
-                        originalOnStart(event);
-                    }
-
-                    if (activeSpeech === utterance) {
-                        synth.pause();
-                        state = "paused";
-                        updateControls();
-                    }
-                };
-            }
+            readText(resumePosition, wasPaused);
         }
 
         updateControls();
     }
 
-    // Attach button events
+    /* ========================================
+       Attach Voice Button Events
+       ======================================== */
+
     function attach(popup) {
         if (popup.dataset.voiceAttached === "true") return;
 
@@ -396,22 +507,22 @@
 
         popup.dataset.voiceAttached = "true";
 
-        play.addEventListener("click", event => {
+        play.addEventListener("click", function (event) {
             event.stopPropagation();
             playOrPause(popup);
         });
 
-        replayButton.addEventListener("click", event => {
+        replayButton.addEventListener("click", function (event) {
             event.stopPropagation();
             replay(popup);
         });
 
-        minus.addEventListener("click", event => {
+        minus.addEventListener("click", function (event) {
             event.stopPropagation();
             changeSpeed(popup, -1);
         });
 
-        plus.addEventListener("click", event => {
+        plus.addEventListener("click", function (event) {
             event.stopPropagation();
             changeSpeed(popup, 1);
         });
@@ -419,9 +530,13 @@
         updateControls();
     }
 
-    // Find new popups and stop speech when closed
+    /* ========================================
+       Find Popups and Stop When Closed
+       ======================================== */
+
     function scan() {
-        document.querySelectorAll(".guided-popup").forEach(attach);
+        document.querySelectorAll(".guided-popup")
+            .forEach(attach);
 
         if (
             activePopup &&
@@ -433,6 +548,10 @@
             stop();
         }
     }
+
+    /* ========================================
+       Initialization
+       ======================================== */
 
     const observer = new MutationObserver(scan);
 

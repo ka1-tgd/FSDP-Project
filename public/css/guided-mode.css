@@ -1,34 +1,54 @@
 
 /* ========================================
-   OCBC Guided Tips - Original Popup Design
+   OCBC Guided Tips
    ======================================== */
 
 /* Help question mark */
 .guided-help-button {
     position: relative;
     z-index: 10;
-    border: 1px solid #D71920;
-    background: #FFFFFF;
-    color: #D71920;
-    border-radius: 50%;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
     width: 24px;
     height: 24px;
+
+    padding: 0;
+
+    border: 1px solid #D71920;
+    border-radius: 50%;
+
+    background: #FFFFFF;
+    color: #D71920;
+
     font-size: 14px;
     font-weight: 600;
+    line-height: 1;
+
     cursor: pointer;
     pointer-events: auto;
 }
 
-/* Guided Tips popup */
+/* ========================================
+   Guided Tips Popup
+   ======================================== */
+
 .guided-popup {
     display: none;
-    position: absolute;
-    top: calc(100% + 12px);
+
+    /* Keep popup inside the visible screen */
+    position: fixed;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
 
     width: min(350px, 90vw);
-    max-height: 70vh;
+    max-height: 70dvh;
+
+    overflow-x: hidden;
     overflow-y: auto;
 
     padding: 18px;
@@ -39,6 +59,7 @@
 
     border: 1px solid #F1D5D8;
     border-radius: 12px;
+
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
 
     font-size: 13px;
@@ -56,19 +77,28 @@
     opacity: 1;
 }
 
-/* Popup title */
+/* ========================================
+   Popup Headings
+   ======================================== */
+
 .guided-popup h3,
 .guided-popup h4 {
     margin: 0 0 10px;
+
     color: #A50D18;
+
     font-size: 16px;
     font-weight: 700;
     line-height: 1.4;
 }
 
-/* Popup content */
+/* ========================================
+   Popup Content
+   ======================================== */
+
 .guided-popup p {
     margin: 0 0 10px;
+
     font-size: 13px;
     line-height: 1.5;
 }
@@ -77,9 +107,12 @@
 .guided-message {
     background: #FFF0F0;
     color: #681A24;
+
     border-left: 4px solid #D71920;
-    padding: 10px 12px;
     border-radius: 6px;
+
+    padding: 10px 12px;
+
     font-size: 13px;
     line-height: 1.5;
 }
@@ -87,12 +120,17 @@
 /* Guidance notes */
 .guided-note {
     color: #A50D18;
+
     font-size: 12px;
     line-height: 1.5;
+
     margin-top: 10px;
 }
 
-/* Voice Assistance heading */
+/* ========================================
+   Voice Assistance Header
+   ======================================== */
+
 .guided-voice-header {
     margin-bottom: 10px;
 }
@@ -102,63 +140,99 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+
     gap: 8px;
     margin: 10px 0;
 }
 
-/* Play and Replay */
+/* ========================================
+   Play and Replay Buttons
+   ======================================== */
+
 .guided-voice-play,
 .guided-voice-replay {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
     width: 36px;
     height: 36px;
+
+    padding: 0;
+
     border: none;
     border-radius: 8px;
+
     background: #D71920;
     color: #FFFFFF;
+
     font-size: 16px;
+
     cursor: pointer;
 }
 
-/* Speed control */
+/* ========================================
+   Reading Speed Controls
+   ======================================== */
+
 .guided-voice-speed-control {
     display: flex;
     align-items: center;
+
     gap: 6px;
     padding: 4px 8px;
+
     border: 1px solid #F0B5BB;
     border-radius: 8px;
+
     background: #FFFFFF;
 }
 
+/* Minus and Plus */
 .guided-voice-minus,
 .guided-voice-plus {
     border: none;
     background: transparent;
+
     color: #A50D18;
+
     font-size: 18px;
     cursor: pointer;
 }
 
+/* Current speed */
 .guided-voice-speed-value {
     color: #A50D18;
+
     font-size: 13px;
     font-weight: 600;
+
     white-space: nowrap;
 }
 
-/* Guided Tips text */
+/* ========================================
+   Guided Tips Text
+   ======================================== */
+
 .guided-voice-text {
+    margin-top: 10px;
+
+    color: #333333;
+
     font-size: 13px;
     line-height: 1.6;
-    color: #333333;
-    margin-top: 10px;
 }
 
-/* Chatbot button */
+/* ========================================
+   Chatbot Button
+   ======================================== */
+
 .guided-chat-button {
     display: block;
+
     width: 100%;
     margin-top: 12px;
+
     padding: 10px 12px;
 
     background: #D71920;
@@ -169,15 +243,44 @@
 
     font-size: 13px;
     font-weight: 600;
+
     cursor: pointer;
 }
 
-/* Chatbot iframe */
+/* ========================================
+   Chatbot Container
+   ======================================== */
+
 .guided-chat-container[hidden] {
     display: none;
 }
 
-/* Keep buttons clickable */
+/* ========================================
+   Keep Buttons Clickable
+   ======================================== */
+
 .guided-popup button {
     pointer-events: auto;
+}
+
+/* ========================================
+   Small Screen Adjustment
+   ======================================== */
+
+@media (max-width: 380px) {
+    .guided-popup {
+        width: min(330px, 92vw);
+        padding: 14px;
+        max-height: 75dvh;
+    }
+
+    .guided-voice-controls {
+        gap: 6px;
+    }
+
+    .guided-voice-play,
+    .guided-voice-replay {
+        width: 32px;
+        height: 32px;
+    }
 }

@@ -1,94 +1,155 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ask OCBC Bot</title>
-    <!-- Matching your teammates' stylesheet order -->
+
     <link rel="stylesheet" href="../css/paynow.css">
     <link rel="stylesheet" href="../css/aiChatbot.css">
 </head>
+
 <body data-page="aiChatbot">
 
     <div class="phone-screen chatbot-page">
 
-        <!-- Top bar matching ocbcHome.html -->
         <div class="top-bar">
             <button class="token-button" type="button">
-                <img src="../images/ocbc-token.png" alt="" class="token-icon">
-                OCBC Tokens
+                <img src="../images/ocbc-token.png"
+                     alt=""
+                     class="token-icon">
+                <span id="tokenText">OCBC Tokens</span>
             </button>
-            <button class="logout-link" type="button">logout</button>
+
+            <button class="logout-link"
+                    type="button"
+                    id="logoutText">
+                logout
+            </button>
         </div>
 
-        <!-- Header matching your teammates' design -->
         <header class="header">
-            <a href="paynowSent.html" onclick="if (document.referrer) { history.back(); return false; }" class="back-button" aria-label="Go back">‹</a>
-            <h1>Ask OCBC Bot</h1>
+            <a href="paynowSent.html"
+               onclick="if (document.referrer) { history.back(); return false; }"
+               class="back-button"
+               id="chatBackButton"
+               aria-label="Go back">‹</a>
+
+            <h1 id="chatPageTitle">Ask OCBC Bot</h1>
         </header>
 
-        <!-- Chat Container -->
         <div class="chat-container" id="chatContainer">
 
-            <!-- Initial Bot Greeting -->
             <div class="message-row bot-row">
                 <div class="avatar bot-avatar">
-                    <img src="../images/Chatbot_Avatar.png" alt="Bot" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                    <img src="../images/Chatbot_Avatar.png"
+                         alt="Bot"
+                         style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
                 </div>
-                <div class="chat-bubble bot-bubble"><p>Hi! I'm OCBC Assist.<br>How can I help you today?</p><div class="quick-chips">
-                        <button type="button" class="chip" onclick="sendPreset('How to transfer money?')">How to transfer money?</button>
-                        <button type="button" class="chip" onclick="sendPreset('What is a UEN?')">What is a UEN??</button>
-                        <button type="button" class="chip" onclick="sendPreset('How to reset credit card PIN?')">How to reset credit card PIN?</button>
-                        <!--<button type="button" class="chip">Talk to a customer agent</button> --></div></div>
+
+                <div class="chat-bubble bot-bubble">
+                    <p id="chatGreeting">
+                        Hi! I'm OCBC Assist.
+                        How can I help you today?
+                    </p>
+
+                    <div class="quick-chips">
+                        <button type="button"
+                                class="chip"
+                                data-preset="transfer">
+                            How to transfer money?
+                        </button>
+
+                        <button type="button"
+                                class="chip"
+                                data-preset="uen">
+                            What is a UEN?
+                        </button>
+
+                        <button type="button"
+                                class="chip"
+                                data-preset="pin">
+                            How to reset credit card PIN?
+                        </button>
+                    </div>
+                </div>
             </div>
+
         </div>
 
-        <!-- Bottom Input Bar -->
         <div class="chat-input-section">
             <div class="input-pill-box">
-                <input 
-                    type="text" 
-                    id="messageInput" 
-                    placeholder="Type a message" 
+
+                <input
+                    type="text"
+                    id="messageInput"
+                    placeholder="Type a message"
                     autocomplete="off"
-                    onkeydown="if(event.key === 'Enter') sendMessage()"
-                >
-                <button type="button" class="send-icon-btn" onclick="sendMessage()" aria-label="Send">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    onkeydown="if(event.key === 'Enter') sendMessage()">
+
+                <button type="button"
+                        class="send-icon-btn"
+                        onclick="sendMessage()"
+                        aria-label="Send">
+
+                    <svg width="20"
+                         height="20"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="#555"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
                         <line x1="22" y1="2" x2="11" y2="13"></line>
                         <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                     </svg>
+
                 </button>
             </div>
         </div>
 
-        <!-- Bottom Navigation matching ocbcHome.html -->
         <nav class="bottom-nav">
-            <a href="ocbcHome.html" class="nav-item">
-                <img src="../images/house-red.png" alt="" class="nav-icon">
-                <span>Home</span>
-            </a>
-            <a href="plan.html" class="nav-item">
-                <img src="../images/plan.png" alt="" class="nav-icon">
-                <span>Plan</span>
-            </a>
-            <a href="paynowSent.html" class="nav-item">
-                <img src="../images/pay-transfer.png" alt="" class="nav-icon">
-                <span>Pay &amp; Transfer</span>
-            </a>
-            <a href="rewards.html" class="nav-item">
-                <img src="../images/gift.png" alt="" class="nav-icon">
-                <span>Rewards</span>
-            </a>
-            <a href="more.html" class="nav-item">
-                <img src="../images/more.png" alt="" class="nav-icon">
-                <span>More</span>
-            </a>
-        </nav>
 
+            <a href="ocbcHome.html" class="nav-item">
+                <img src="../images/house-red.png"
+                     alt=""
+                     class="nav-icon">
+                <span data-nav="home">Home</span>
+            </a>
+
+            <a href="plan.html" class="nav-item">
+                <img src="../images/plan.png"
+                     alt=""
+                     class="nav-icon">
+                <span data-nav="plan">Plan</span>
+            </a>
+
+            <a href="paynowSent.html" class="nav-item">
+                <img src="../images/pay-transfer.png"
+                     alt=""
+                     class="nav-icon">
+                <span data-nav="pay">Pay &amp; Transfer</span>
+            </a>
+
+            <a href="rewards.html" class="nav-item">
+                <img src="../images/gift.png"
+                     alt=""
+                     class="nav-icon">
+                <span data-nav="rewards">Rewards</span>
+            </a>
+
+            <a href="more.html" class="nav-item">
+                <img src="../images/more.png"
+                     alt=""
+                     class="nav-icon">
+                <span data-nav="more">More</span>
+            </a>
+
+        </nav>
     </div>
 
-    <!-- Frontend JavaScript Logic -->
     <script src="../scripts/aiChatbot.js"></script>
 </body>
 </html>

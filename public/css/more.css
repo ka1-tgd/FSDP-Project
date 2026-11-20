@@ -645,50 +645,55 @@
 }
 
 
+
 /* ===================================
-   FINAL MORE PAGE BOTTOM NAVIGATION
+   MORE PAGE NAV - MATCH HOME PAGE
    =================================== */
 
 .more-page .bottom-nav {
+    flex-shrink: 0;
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: space-around;
+
     width: 100%;
     box-sizing: border-box;
-    flex-shrink: 0;
     padding: 8px 4px 14px;
-    background: #ffffff;
-    border-top: 1px solid #dddddd;
+
+    border-top: 1px solid #333333;
+    background-color: #ffffff;
 }
 
 .more-page .bottom-nav .nav-item {
     display: flex;
-    flex: 1;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 3px;
+
+    flex: 1;
     min-width: 0;
     padding: 0;
     margin: 0;
+
     border: none;
-    background: transparent;
+    background: none;
+
+    color: #000000;
+    font-size: 11px;
     text-decoration: none;
-    color: #222222;
     text-align: center;
 }
 
 .more-page .bottom-nav .nav-item .nav-icon {
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     object-fit: contain;
     flex-shrink: 0;
 }
 
 .more-page .bottom-nav .nav-item span {
     font-size: 11px;
-    font-weight: 400;
     line-height: 1.2;
     overflow-wrap: anywhere;
 }
@@ -704,7 +709,6 @@
 .more-page .bottom-nav .nav-item:not(.active) img {
     filter: grayscale(1) brightness(0.3);
 }
-
 /* Match More icon size with Home Page */
 .more-page .bottom-nav .nav-item.active .nav-icon {
     width: 40px;

@@ -17,6 +17,9 @@
     <!-- Voice Assistance CSS -->
     <link rel="stylesheet" href="../css/voiceAssistance.css">
 
+    <!-- Language JS -->
+    <script src="../scripts/paynowStep1Language.js" defer></script>
+
     <!-- PayNow JS -->
     <script src="../scripts/paynow_sent.js" defer></script>
 
@@ -25,21 +28,27 @@
 
     <!-- Voice Assistance JS -->
     <script src="../scripts/voiceAssistance.js" defer></script>
+
+    <!-- Error Popup JS -->
     <script src="../scripts/errorPopup.js" defer></script>
 </head>
 
 <body data-page="paynowSent">
+
     <main class="phone-screen paynow-page">
 
         <!-- Header -->
         <header class="header">
+
             <a href="ocbcHome.html"
                class="back-button"
-               aria-label="Go back">
+               aria-label="Go back"
+               data-i18n-aria="goBack">
                 ‹
             </a>
 
             <h1>PayNow</h1>
+
         </header>
 
         <!-- Progress bar -->
@@ -55,8 +64,13 @@
 
             <!-- Step information -->
             <div class="step-heading">
+
                 <p class="step-title">
-                    <span>Step 1 of 4</span> · Choose who to pay
+                    <span data-i18n="step">Step 1 of 4</span>
+                    ·
+                    <span data-i18n="chooseRecipient">
+                        Choose who to pay
+                    </span>
                 </p>
 
                 <button
@@ -64,9 +78,11 @@
                     class="guided-help-button"
                     id="guidedHelpBtn"
                     aria-label="Show guidance"
+                    data-i18n-aria="showGuidance"
                     aria-expanded="false">
                     ?
                 </button>
+
             </div>
 
             <!-- Payment options -->
@@ -102,21 +118,29 @@
 
             <!-- Search -->
             <div class="search-section">
-                <label for="searchInput">
+
+                <label
+                    for="searchInput"
+                    data-i18n="whoToPay">
                     Who are you sending to?
                 </label>
 
                 <div class="search-box">
+
                     <span class="search-icon">⌕</span>
 
                     <input
                         type="search"
                         id="searchInput"
                         placeholder="Search by name or mobile number"
+                        data-i18n-placeholder="searchPlaceholder"
                         autocomplete="off"
                         aria-label="Open recipient search"
+                        data-i18n-aria="openSearch"
                         readonly>
+
                 </div>
+
             </div>
 
             <!-- Recent and Contacts -->
@@ -125,14 +149,16 @@
                 <button
                     type="button"
                     class="tab active"
-                    data-tab="recent">
+                    data-tab="recent"
+                    data-i18n="recent">
                     Recent
                 </button>
 
                 <button
                     type="button"
                     class="tab"
-                    data-tab="contacts">
+                    data-tab="contacts"
+                    data-i18n="contacts">
                     Contacts
                 </button>
 
@@ -145,27 +171,37 @@
                 aria-live="polite">
 
                 <!-- Default recent state -->
-                <div class="empty-state" id="emptyRecentState">
+                <div
+                    class="empty-state"
+                    id="emptyRecentState">
 
                     <img
                         src="../images/paynow-no-recent-icon.png"
                         alt=""
                         class="empty-state-icon">
 
-                    <h3 class="empty-title">
+                    <h3
+                        class="empty-title"
+                        data-i18n="noRecent">
                         No recent PayNow transfers
                     </h3>
 
-                    <p class="empty-subtitle">
+                    <p
+                        class="empty-subtitle"
+                        data-i18n="recentDescription">
                         Your 10 most recent payees will be shown here.
                     </p>
 
                 </div>
+
             </div>
 
-        </section>
+               </section>
 
     </main>
-<script src="../scripts/accessibility.js"></script>
+
+    <!-- Accessibility JS -->
+    <script src="../scripts/accessibility.js"></script>
+
 </body>
 </html>

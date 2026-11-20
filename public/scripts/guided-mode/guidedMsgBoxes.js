@@ -1,14 +1,70 @@
 
- // Remove existing Guided Mode message boxes.
+/* ========================================
+   Guided Message Boxes - Multilingual
+   ======================================== */
+
+const guidedTranslations = {
+    en: {
+        readAloud: "Read tips aloud",
+        replay: "Replay tips",
+        decreaseSpeed: "Decrease reading speed",
+        increaseSpeed: "Increase reading speed",
+        chatbot: "Chat with an AI Assistant"
+    },
+
+    zh: {
+        readAloud: "朗读提示",
+        replay: "重新朗读",
+        decreaseSpeed: "降低朗读速度",
+        increaseSpeed: "提高朗读速度",
+        chatbot: "与 AI 助手聊天"
+    },
+
+    ms: {
+        readAloud: "Baca petua dengan kuat",
+        replay: "Baca semula petua",
+        decreaseSpeed: "Kurangkan kelajuan bacaan",
+        increaseSpeed: "Tingkatkan kelajuan bacaan",
+        chatbot: "Berbual dengan Pembantu AI"
+    },
+
+    ta: {
+        readAloud: "உதவிக்குறிப்புகளை உரக்கப் படிக்கவும்",
+        replay: "மீண்டும் படிக்கவும்",
+        decreaseSpeed: "வாசிப்பு வேகத்தைக் குறைக்கவும்",
+        increaseSpeed: "வாசிப்பு வேகத்தை அதிகரிக்கவும்",
+        chatbot: "AI உதவியாளருடன் உரையாடுங்கள்"
+    }
+};
+
+function getGuidedLanguage() {
+    const language = localStorage.getItem("preferredLanguage") || "en";
+
+    return guidedTranslations[language] ? language : "en";
+}
+
+function getGuidedText() {
+    return guidedTranslations[getGuidedLanguage()];
+}
+
+/* ========================================
+   Remove Existing Popups
+   ======================================== */
+
 export function removeMessageBoxes() {
     document.querySelectorAll(".guided-popup").forEach(popup => {
         popup.remove();
     });
 }
 
-// Create a Guided Tips popup for each matching step.
+/* ========================================
+   Create Guided Popups
+   ======================================== */
+
 export function createMessageBoxes(guidanceSteps) {
     removeMessageBoxes();
+
+    const languageText = getGuidedText();
 
     guidanceSteps.forEach(step => {
         if (step.condition && !step.condition()) return;
@@ -17,10 +73,14 @@ export function createMessageBoxes(guidanceSteps) {
 
         if (!target) return;
 
+        /* Create Popup */
         const popup = document.createElement("div");
         popup.classList.add("guided-popup");
 
-        // Heading with Voice Assistance controls
+        /* ========================================
+           Header
+           ======================================== */
+
         const header = document.createElement("div");
         header.className = "guided-voice-header";
 
@@ -29,65 +89,66 @@ export function createMessageBoxes(guidanceSteps) {
 
         header.appendChild(title);
 
-        // Voice Assistance controls
+        /* ========================================
+           Voice Controls
+           ======================================== */
+
         const controls = document.createElement("div");
         controls.className = "guided-voice-controls";
 
-        // Speaker / Pause / Resume
+        /* Play */
         const play = document.createElement("button");
         play.type = "button";
         play.className = "guided-voice-play";
         play.textContent = "🔊";
-        play.title = "Read tips aloud";
-        play.setAttribute("aria-label", "Read tips aloud");
+        play.title = languageText.readAloud;
+        play.setAttribute("aria-label", languageText.readAloud);
 
-        // Replay
+        /* Replay */
         const replay = document.createElement("button");
         replay.type = "button";
         replay.className = "guided-voice-replay";
         replay.textContent = "↻";
-        replay.title = "Replay tips";
-        replay.setAttribute("aria-label", "Replay tips");
+        replay.title = languageText.replay;
+        replay.setAttribute("aria-label", languageText.replay);
 
-        // Reading speed - Plus / Minus buttons
+        /* Speed Control */
         const speedControl = document.createElement("div");
         speedControl.className = "guided-voice-speed-control";
 
-        // Minus button
+        /* Minus */
         const minus = document.createElement("button");
         minus.type = "button";
         minus.className = "guided-voice-minus";
         minus.textContent = "−";
-        minus.title = "Decrease reading speed";
-        minus.setAttribute(
-            "aria-label",
-            "Decrease reading speed"
-        );
+        minus.title = languageText.decreaseSpeed;
+        minus.setAttribute("aria-label", languageText.decreaseSpeed);
 
-        // Current speed
+        /* Speed Value */
         const speedValue = document.createElement("span");
         speedValue.className = "guided-voice-speed-value";
         speedValue.textContent = "1.0x";
         speedValue.setAttribute("aria-live", "polite");
 
-        // Plus button
+        /* Plus */
         const plus = document.createElement("button");
         plus.type = "button";
         plus.className = "guided-voice-plus";
         plus.textContent = "+";
-        plus.title = "Increase reading speed";
-        plus.setAttribute(
-            "aria-label",
-            "Increase reading speed"
-        );
+        plus.title = languageText.increaseSpeed;
+        plus.setAttribute("aria-label", languageText.increaseSpeed);
 
         speedControl.append(minus, speedValue, plus);
 
         controls.append(play, replay, speedControl);
+
         header.appendChild(controls);
         popup.appendChild(header);
 
-        // Tips content to be read aloud
+        /* ========================================
+           Guided Tips Text
+           ======================================== */
+
         const tipsText = document.createElement("div");
         tipsText.className = "guided-voice-text";
 
@@ -103,7 +164,7 @@ export function createMessageBoxes(guidanceSteps) {
             tipsText.appendChild(paragraph);
         });
 
-        // Smaller note
+        /* Note */
         if (step.note) {
             const note = document.createElement("p");
             note.className = "guided-note";
@@ -114,39 +175,41 @@ export function createMessageBoxes(guidanceSteps) {
 
         popup.appendChild(tipsText);
 
-        // Insert popup
+        /* ========================================
+           Insert Popup
+           ======================================== */
+
         target.insertAdjacentElement("afterend", popup);
 
-        // Toggle popup visibility
+        /* Toggle Popup */
         target.addEventListener("click", () => {
             const isOpen = popup.classList.toggle("show");
 
-            target.setAttribute(
-                "aria-expanded",
-                String(isOpen)
-            );
+            target.setAttribute("aria-expanded", String(isOpen));
         });
 
-        // Prevent clicks inside the popup from
-        // triggering parent click handlers.
-        popup.addEventListener("click", (event) => {
+        /* Prevent Popup Click Propagation */
+        popup.addEventListener("click", event => {
             event.stopPropagation();
         });
 
-        // Chatbot button
+        /* ========================================
+           Chatbot Button
+           ======================================== */
+
         const chatButton = document.createElement("button");
         chatButton.type = "button";
         chatButton.className = "guided-chat-button";
-        chatButton.textContent = "Chat with an AI Assistant";
+        chatButton.textContent = languageText.chatbot;
 
-        // Chatbot container
+        /* Chatbot Container */
         const chatContainer = document.createElement("div");
         chatContainer.className = "guided-chat-container";
         chatContainer.hidden = true;
 
-        // Chatbot iframe
         const chatIframe = document.createElement("iframe");
-        chatIframe.href = "/html/aiChatbot.html";
+
+        chatIframe.src = "/html/aiChatbot.html";
         chatIframe.title = "OCBC AI Assistant";
 
         chatIframe.style.width = "100%";
@@ -157,12 +220,11 @@ export function createMessageBoxes(guidanceSteps) {
 
         chatContainer.appendChild(chatIframe);
 
-        // Toggle chatbot
+        /* Open Chatbot Page */
         chatButton.addEventListener("click", () => {
-            window.location.href = "../../html/aiChatbot.html"
+            window.location.href = "../../html/aiChatbot.html";
         });
 
-        // Add chatbot to popup
         popup.append(chatButton, chatContainer);
     });
 }
