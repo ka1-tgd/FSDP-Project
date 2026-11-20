@@ -152,6 +152,19 @@ You may turn on money transfer guide mode if you need step-by-step guidance. Wou
 		'What is a UEN?',
 		'A UEN (Unique Entity Number) is the standard identification number issued to businesses, companies, and organizations in Singapore. You will need a UEN when making corporate PayNow transfers to merchants, companies, or institutions via the app.',
 		'UEN, Unique Entity Number, what is UEN, business UEN, company UEN, corporate paynow, business paynow, what does UEN stand for'
+	),
+	(
+		'How to change language settings?',
+		'You can change your preferred language in the app by following these steps:
+
+1. Tap on "More" in the bottom navigation bar.
+2. Open "Profile and app settings".
+3. Tap on "Change language".
+4. Select your preferred language.
+5. Tap on "Confirm Language" to save your choice.
+
+Your app display and menus will update right away, let me know if you need help finding any other settings!',
+		'change language, language settings, app language, switch language, set language, language preference, how do I change the language?, can I use another language?, where is language setting, bahasa, chinese, malay, tamil'
 	);
 
 -- Insert sample saved contacts
