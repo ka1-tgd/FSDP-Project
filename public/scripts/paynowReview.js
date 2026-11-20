@@ -1,4 +1,3 @@
-
 const API_URL = "http://localhost:3000/api";
 
 // Elements
@@ -299,30 +298,37 @@ async function submitTransfer() {
 
 
 // Slider pointer events
-slideHandle.addEventListener("pointerdown", event => {
 
-    if (
-        isProcessing ||
-        !transferDetails ||
-        slideHandle.disabled
-    ) return;
+﻿// Slider pointer events
+
+slideHandle.style.touchAction = "none";
+
+slideHandle.addEventListener("pointerdown", event => {
+    if (isProcessing || !transferDetails || slideHandle.disabled) {
+        return;
+    }
+
+    event.preventDefault();
 
     isDragging = true;
     startX = event.clientX;
+    currentX = 0;
 
     slideHandle.setPointerCapture(event.pointerId);
 });
 
-
 slideHandle.addEventListener("pointermove", event => {
-
     if (!isDragging || isProcessing) return;
+
+    event.preventDefault();
 
     const containerWidth = slideToPay.clientWidth;
     const handleWidth = slideHandle.offsetWidth;
 
-    const maxDistance =
-        containerWidth - handleWidth - 10;
+    const maxDistance = Math.max(
+        0,
+        containerWidth - handleWidth - 10
+    );
 
     currentX = Math.max(
         0,
@@ -332,32 +338,28 @@ slideHandle.addEventListener("pointermove", event => {
     slideHandle.style.left = `${5 + currentX}px`;
 });
 
-
-slideHandle.addEventListener("pointerup", async () => {
-
+slideHandle.addEventListener("pointerup", async event => {
     if (!isDragging || isProcessing) return;
 
+    event.preventDefault();
     isDragging = false;
 
     const containerWidth = slideToPay.clientWidth;
     const handleWidth = slideHandle.offsetWidth;
 
-    const maxDistance =
-        containerWidth - handleWidth - 10;
+    const maxDistance = Math.max(
+        0,
+        containerWidth - handleWidth - 10
+    );
 
-    if (currentX >= maxDistance * 0.85) {
-
+    if (maxDistance > 0 && currentX >= maxDistance * 0.85) {
         await submitTransfer();
-
     } else {
-
         resetSlider();
     }
 });
 
-
 slideHandle.addEventListener("pointercancel", () => {
-
     isDragging = false;
 
     if (!isProcessing) {
@@ -365,8 +367,9 @@ slideHandle.addEventListener("pointercancel", () => {
     }
 });
 
-
 // Initial loading
+resetSlider();
+
 if (!sessionStorage.getItem("token")) {
     window.location.href = "login.html";
 } else {

@@ -54,8 +54,8 @@
         elements.forEach(element => {
 
             if (
-                element.closest("svg") ||
-                element.closest("[data-no-text-scaling]")
+                element.closest("[data-no-text-scaling]") ||
+                element.closest(".bottom-nav")
             ) {
                 return;
             }
