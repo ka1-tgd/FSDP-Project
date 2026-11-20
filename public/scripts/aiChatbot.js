@@ -178,6 +178,39 @@ function sendPreset(text) {
 }
 
 /* ========================================
+   Chat History (localStorage)
+   ======================================== */
+
+const CHAT_STORAGE_KEY = "ocbc_chatbot_history_v1";
+
+function loadChatHistory() {
+    try {
+        const saved = localStorage.getItem(CHAT_STORAGE_KEY);
+        return saved ? JSON.parse(saved) : [];
+    } catch (err) {
+        console.error("Failed to load chat history:", err);
+        return [];
+    }
+}
+
+function saveMessageToHistory(text, sender) {
+    try {
+        const history = loadChatHistory();
+        history.push({ text, sender });
+        localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(history));
+    } catch (err) {
+        console.error("Failed to save chat history:", err);
+    }
+}
+
+function restoreChatHistory() {
+    const history = loadChatHistory();
+    history.forEach(function(msg) {
+        appendMessage(msg.text, msg.sender, false);
+    });
+}
+
+/* ========================================
    Send Message to Backend
    ======================================== */
 
@@ -186,10 +219,10 @@ async function sendMessage() {
 
     if (!text) return;
 
-    appendMessage(text, "user");
+    appendMessage(text, "user", true);
     messageInput.value = "";
 
-    const loadingId = appendMessage(chatT("thinking"), "bot");
+    const loadingId = appendMessage(chatT("thinking"), "bot", false);
 
     try {
         const response = await fetch(
@@ -215,7 +248,7 @@ async function sendMessage() {
         removeMessage(loadingId);
 
         if (data.success) {
-            appendMessage(data.reply, "bot");
+            appendMessage(data.reply, "bot", true);
         } else {
             appendMessage(chatT("error"), "bot");
         }
@@ -233,7 +266,7 @@ async function sendMessage() {
    Append Chat Message
    ======================================== */
 
-function appendMessage(text, sender) {
+function appendMessage(text, sender, save = true) {
     const messageId = "msg-" + Date.now() + Math.random();
 
     const row = document.createElement("div");
@@ -276,6 +309,10 @@ function appendMessage(text, sender) {
 
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
+    if (save) {
+        saveMessageToHistory(text, sender);
+    }
+
     return messageId;
 }
 
@@ -296,3 +333,4 @@ function removeMessage(id) {
    ======================================== */
 
 translateChatbotPage();
+restoreChatHistory();
