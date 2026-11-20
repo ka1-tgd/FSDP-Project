@@ -12,6 +12,21 @@
 
     <div class="phone-screen chatbot-page">
 
+        <!-- Top bar matching ocbcHome.html -->
+        <div class="top-bar">
+            <button class="token-button" type="button">
+                <img src="../images/ocbc-token.png" alt="" class="token-icon">
+                OCBC Tokens
+            </button>
+            <button class="logout-link" type="button">logout</button>
+        </div>
+
+        <!-- Header matching your teammates' design -->
+        <header class="header">
+            <a href="paynowSent.html" onclick="if (document.referrer) { history.back(); return false; }" class="back-button" aria-label="Go back">‹</a>
+            <h1>Ask OCBC Bot</h1>
+        </header>
+
         <!-- Chat Container -->
         <div class="chat-container" id="chatContainer">
 
@@ -46,6 +61,31 @@
                 </button>
             </div>
         </div>
+
+        <!-- Bottom Navigation matching ocbcHome.html -->
+        <nav class="bottom-nav">
+            <a href="ocbcHome.html" class="nav-item">
+                <img src="../images/house-red.png" alt="" class="nav-icon">
+                <span>Home</span>
+            </a>
+            <a href="plan.html" class="nav-item">
+                <img src="../images/plan.png" alt="" class="nav-icon">
+                <span>Plan</span>
+            </a>
+            <a href="paynowSent.html" class="nav-item">
+                <img src="../images/pay-transfer.png" alt="" class="nav-icon">
+                <span>Pay &amp; Transfer</span>
+            </a>
+            <a href="rewards.html" class="nav-item">
+                <img src="../images/gift.png" alt="" class="nav-icon">
+                <span>Rewards</span>
+            </a>
+            <a href="more.html" class="nav-item">
+                <img src="../images/more.png" alt="" class="nav-icon">
+                <span>More</span>
+            </a>
+        </nav>
+
     </div>
 
     <!-- Frontend JavaScript Logic -->
