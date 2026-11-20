@@ -43,37 +43,13 @@
 
             <div class="message-row bot-row">
                 <div class="avatar bot-avatar">
-                    <img src="../images/Chatbot_Avatar.png"
-                         alt="Bot"
-                         style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                    <img src="../images/Chatbot_Avatar.png" alt="Bot" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                 </div>
-
-                <div class="chat-bubble bot-bubble">
-                    <p id="chatGreeting">
-                        Hi! I'm OCBC Assist.
-                        How can I help you today?
-                    </p>
-
-                    <div class="quick-chips">
-                        <button type="button"
-                                class="chip"
-                                data-preset="transfer">
-                            How to transfer money?
-                        </button>
-
-                        <button type="button"
-                                class="chip"
-                                data-preset="uen">
-                            What is a UEN?
-                        </button>
-
-                        <button type="button"
-                                class="chip"
-                                data-preset="pin">
-                            How to reset credit card PIN?
-                        </button>
-                    </div>
-                </div>
+                <div class="chat-bubble bot-bubble"><p>Hi! I'm OCBC Assist.<br>How can I help you today?</p><div class="quick-chips">
+                        <button type="button" class="chip" onclick="sendPreset('How to transfer money?')">How to transfer money?</button>
+                        <button type="button" class="chip" onclick="sendPreset('What is a UEN?')">What is a UEN??</button>
+                        <button type="button" class="chip" onclick="sendPreset('How to reset credit card PIN?')">How to reset credit card PIN?</button>
+                        <!--<button type="button" class="chip">Talk to a customer agent</button> --></div></div>
             </div>
 
         </div>
