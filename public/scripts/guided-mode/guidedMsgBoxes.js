@@ -118,7 +118,7 @@ export function createMessageBoxes(guidanceSteps) {
 
         // Chatbot iframe
         const chatIframe = document.createElement("iframe");
-        chatIframe.src = "/html/aiChatbot.html";
+        chatIframe.href = "/html/aiChatbot.html";
         chatIframe.title = "OCBC AI Assistant";
 
         chatIframe.style.width = "100%";
@@ -131,11 +131,7 @@ export function createMessageBoxes(guidanceSteps) {
 
         // Toggle chatbot
         chatButton.addEventListener("click", () => {
-            chatContainer.hidden = !chatContainer.hidden;
-
-            chatButton.textContent = chatContainer.hidden
-                ? "Chat with an AI Assistant"
-                : "Close chat";
+            window.location.href = "../../html/aiChatbot.html"
         });
 
         // Add chatbot to popup
