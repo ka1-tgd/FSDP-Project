@@ -1,6 +1,6 @@
 const ocbcHomeModel = require("../models/ocbcHomeModel");
 
-const RECENT_LIMIT = 5;
+const RECENT_LIMIT = 3;
 
 // Home page data for the logged-in user (req.user comes from verifyToken)
 async function getHome(req, res) {
