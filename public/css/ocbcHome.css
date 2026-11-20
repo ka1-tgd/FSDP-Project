@@ -79,6 +79,10 @@
 
     padding-top: 46px;
     padding-bottom: 12px;
+    
+}
+.home-scroll::-webkit-scrollbar {
+    display: none;
 }
 
 
