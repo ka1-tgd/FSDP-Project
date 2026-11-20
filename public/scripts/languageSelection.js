@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
             personalDetails: "Update personal details",
             loginDetails: "Manage login details",
             oneToken: "Manage OCBC OneToken",
-            textSize: "Change text size",
+            textSize: "Change text & spacing",
             appTheme: "Change app theme",
             notifications: "Manage notifications",
             oneView: "Manage Your Financial OneView",
