@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Change Text Size</title>
+
+    <link rel="stylesheet" href="../css/paynow.css">
+    <link rel="stylesheet" href="../css/changeTextSize.css">
+
+    <script src="../scripts/changeTextSize.js" defer></script>
+</head>
+<body>
+
+<main class="phone-screen text-settings-page">
+
+    <header class="text-settings-header">
+        <a href="more.html" class="settings-back" aria-label="Back">
+            &#8249;
+        </a>
+        <h1>Change text size</h1>
+    </header>
+
+    <section class="text-settings-content">
+
+        <h2>Personalise your reading experience</h2>
+        <p class="settings-description">
+            Adjust how text appears throughout the app
+            to make reading more comfortable.
+        </p>
+
+        <div class="device-setting">
+            <div>
+                <h3>Use device's current text size</h3>
+                <p>Use the browser's default text settings</p>
+            </div>
+
+            <label class="switch">
+                <input type="checkbox" id="deviceTextSize">
+                <span class="switch-slider"></span>
+            </label>
+        </div>
+
+        <div class="settings-sliders" id="settingsSliders">
+
+            <div class="slider-group">
+                <div class="slider-heading">
+                    <label for="textSizeSlider">Text size</label>
+                    <span id="textSizeValue">100%</span>
+                </div>
+
+                <input type="range"
+                       id="textSizeSlider"
+                       min="80"
+                       max="140"
+                       value="100"
+                       step="5">
+
+                <div class="slider-labels">
+                    <span>Smaller</span>
+                    <span>Larger</span>
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-heading">
+                    <label for="letterSpacingSlider">Letter spacing</label>
+                    <span id="letterSpacingValue">0px</span>
+                </div>
+
+                <input type="range"
+                       id="letterSpacingSlider"
+                       min="0"
+                       max="3"
+                       value="0"
+                       step="0.5">
+
+                <div class="slider-labels">
+                    <span>Normal</span>
+                    <span>Wider</span>
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-heading">
+                    <label for="lineSpacingSlider">Line spacing</label>
+                    <span id="lineSpacingValue">1.4</span>
+                </div>
+
+                <input type="range"
+                       id="lineSpacingSlider"
+                       min="1"
+                       max="2"
+                       value="1.4"
+                       step="0.1">
+
+                <div class="slider-labels">
+                    <span>Compact</span>
+                    <span>Spacious</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="preview-section">
+            <h3>Preview</h3>
+
+            <div class="preview-box">
+                <h4 id="previewHeading">Your banking experience</h4>
+
+                <p id="previewText">
+                    Manage your accounts, transfer money and
+                    view your transactions easily. Adjust these
+                    settings to make your banking experience
+                    more comfortable.
+                </p>
+            </div>
+        </div>
+
+        <button type="button"
+                id="resetSettings"
+                class="reset-button">
+            Reset to default
+        </button>
+
+    </section>
+
+    <div class="settings-bottom">
+        <button type="button"
+                id="saveSettings"
+                class="save-button">
+            Save changes
+        </button>
+    </div>
+
+</main>
+
+</body>
+</html>
