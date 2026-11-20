@@ -226,3 +226,40 @@
     font-weight: bold;
     cursor: pointer;
 }
+
+
+/* Make preview responsive */
+.preview-box {
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.preview-box h4,
+.preview-box p {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+/* Allow settings page to scroll */
+.text-settings-content {
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+}
+
+/* Disabled sliders */
+.settings-sliders.disabled {
+    opacity: 0.4;
+}
+
+/* Only one reset button */
+.reset-button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 24px 0;
+}

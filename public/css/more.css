@@ -711,3 +711,8 @@
     height: 40px;
     object-fit: contain;
 }
+
+/* Hide decorative images in Savings Goals and Money Insights */
+.more-page .banner-art {
+    display: none;
+}

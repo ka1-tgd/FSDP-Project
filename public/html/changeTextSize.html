@@ -11,26 +11,36 @@
 
     <script src="../scripts/changeTextSize.js" defer></script>
 </head>
+
 <body>
 
 <main class="phone-screen text-settings-page">
 
+    <!-- Header -->
     <header class="text-settings-header">
-        <a href="more.html" class="settings-back" aria-label="Back">
+        <a href="more.html"
+           class="settings-back"
+           aria-label="Back to More">
             &#8249;
         </a>
+
         <h1>Change text &amp; spacing</h1>
     </header>
 
+    <!-- Scrollable content -->
     <section class="text-settings-content">
 
-        <h2>Personalise your reading experience</h2>
+        <h2>Text size and spacing</h2>
+
         <p class="settings-description">
-            Adjust how text appears throughout the app
-            to make reading more comfortable.
+            Adjust the text size, letter spacing and line spacing
+            in your OCBC app for a better reading experience.
+            Preview your changes below before saving.
         </p>
 
+        <!-- Device text size -->
         <div class="device-setting">
+
             <div>
                 <h3>Use device's current text size</h3>
                 <p>Use the browser's default text settings</p>
@@ -40,101 +50,134 @@
                 <input type="checkbox" id="deviceTextSize">
                 <span class="switch-slider"></span>
             </label>
+
         </div>
 
+        <!-- Sliders -->
         <div class="settings-sliders" id="settingsSliders">
 
+            <!-- Text size -->
             <div class="slider-group">
+
                 <div class="slider-heading">
                     <label for="textSizeSlider">Text size</label>
                     <span id="textSizeValue">100%</span>
                 </div>
 
-                <input type="range"
-                       id="textSizeSlider"
-                       min="80"
-                       max="140"
-                       value="100"
-                       step="5">
+                <input
+                    type="range"
+                    id="textSizeSlider"
+                    min="90"
+                    max="115"
+                    step="5"
+                    value="100"
+                >
 
                 <div class="slider-labels">
                     <span>Smaller</span>
                     <span>Larger</span>
                 </div>
+
             </div>
 
+            <!-- Letter spacing -->
             <div class="slider-group">
+
                 <div class="slider-heading">
-                    <label for="letterSpacingSlider">Letter spacing</label>
+                    <label for="letterSpacingSlider">
+                        Letter spacing
+                    </label>
                     <span id="letterSpacingValue">0px</span>
                 </div>
 
-                <input type="range"
-                       id="letterSpacingSlider"
-                       min="0"
-                       max="3"
-                       value="0"
-                       step="0.5">
+                <input
+                    type="range"
+                    id="letterSpacingSlider"
+                    min="0"
+                    max="0.5"
+                    step="0.1"
+                    value="0"
+                >
 
                 <div class="slider-labels">
-                    <span>Normal</span>
+                    <span>Default</span>
                     <span>Wider</span>
                 </div>
+
             </div>
 
+            <!-- Line spacing -->
             <div class="slider-group">
+
                 <div class="slider-heading">
-                    <label for="lineSpacingSlider">Line spacing</label>
+                    <label for="lineSpacingSlider">
+                        Line spacing
+                    </label>
                     <span id="lineSpacingValue">1.4</span>
                 </div>
 
-                <input type="range"
-                       id="lineSpacingSlider"
-                       min="1"
-                       max="2"
-                       value="1.4"
-                       step="0.1">
+                <input
+                    type="range"
+                    id="lineSpacingSlider"
+                    min="1.2"
+                    max="1.6"
+                    step="0.1"
+                    value="1.4"
+                >
 
                 <div class="slider-labels">
                     <span>Compact</span>
-                    <span>Spacious</span>
+                    <span>More space</span>
                 </div>
+
             </div>
 
         </div>
 
+        <!-- Live preview -->
         <div class="preview-section">
+
             <h3>Preview</h3>
 
             <div class="preview-box">
-                <h4 id="previewHeading">Your banking experience</h4>
+
+                <h4 id="previewHeading">
+                    Your banking experience
+                </h4>
 
                 <p id="previewText">
-                    Manage your accounts, transfer money and
-                    view your transactions easily. Adjust these
-                    settings to make your banking experience
-                    more comfortable.
+                    Manage your accounts, transfer money and view
+                    your transactions easily. Adjust these settings
+                    to make your banking experience more comfortable.
                 </p>
+
             </div>
+
         </div>
 
-        <button type="button"
-                id="resetSettings"
-                class="reset-button">
+        <!-- Only one reset button -->
+        <button
+            type="button"
+            id="resetSettings"
+            class="reset-button">
             Reset to default
         </button>
 
     </section>
 
+    <!-- Save button -->
     <div class="settings-bottom">
-        <button type="button"
-                id="saveSettings"
-                class="save-button">
+
+        <button
+            type="button"
+            id="saveSettings"
+            class="save-button">
             Save changes
         </button>
+
     </div>
 
 </main>
-<script src="../scripts/accessibility.js"></script>
+
 </body>
 </html>

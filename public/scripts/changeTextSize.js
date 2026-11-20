@@ -8,7 +8,9 @@ const defaultSettings = {
     lineSpacing: 1.4
 };
 
+// Get elements
 const deviceToggle = document.getElementById("deviceTextSize");
+
 const textSizeSlider = document.getElementById("textSizeSlider");
 const letterSpacingSlider = document.getElementById("letterSpacingSlider");
 const lineSpacingSlider = document.getElementById("lineSpacingSlider");
@@ -17,29 +19,42 @@ const textSizeValue = document.getElementById("textSizeValue");
 const letterSpacingValue = document.getElementById("letterSpacingValue");
 const lineSpacingValue = document.getElementById("lineSpacingValue");
 
-const previewHeading = document.getElementById("previewHeading");
-const previewText = document.getElementById("previewText");
 const settingsSliders = document.getElementById("settingsSliders");
 
-function getSettings() {
+const previewHeading = document.getElementById("previewHeading");
+const previewText = document.getElementById("previewText");
+
+const resetButton = document.getElementById("resetSettings");
+const saveButton = document.getElementById("saveSettings");
+
+// Restrict values to safe limits
+function clamp(value, min, max, fallback) {
+    const number = Number(value);
+    return Number.isFinite(number)
+        ? Math.min(max, Math.max(min, number))
+        : fallback;
+}
+
+// Read saved settings
+function getSavedSettings() {
     try {
         const saved = JSON.parse(
             localStorage.getItem(STORAGE_KEY) || "{}"
         );
 
         return {
-            ...defaultSettings,
-            ...saved
+            useDevice: saved.useDevice === true,
+            textSize: clamp(saved.textSize, 90, 115, 100),
+            letterSpacing: clamp(saved.letterSpacing, 0, 0.5, 0),
+            lineSpacing: clamp(saved.lineSpacing, 1.2, 1.6, 1.4)
         };
     } catch {
         return { ...defaultSettings };
     }
 }
 
-// Load saved preferences
-function loadSettings() {
-    const settings = getSettings();
-
+// Load values into sliders
+function setControls(settings) {
     deviceToggle.checked = settings.useDevice;
     textSizeSlider.value = settings.textSize;
     letterSpacingSlider.value = settings.letterSpacing;
@@ -48,80 +63,86 @@ function loadSettings() {
     updatePreview();
 }
 
-// Update preview as sliders move
+// Update live preview
 function updatePreview() {
     const useDevice = deviceToggle.checked;
 
-    const size = useDevice
+    const textSize = useDevice
         ? 100
         : Number(textSizeSlider.value);
 
-    const letter = useDevice
+    const letterSpacing = useDevice
         ? 0
         : Number(letterSpacingSlider.value);
 
-    const line = useDevice
+    const lineSpacing = useDevice
         ? 1.4
         : Number(lineSpacingSlider.value);
 
-    textSizeValue.textContent = `${textSizeSlider.value}%`;
-    letterSpacingValue.textContent = `${letterSpacingSlider.value}px`;
-    lineSpacingValue.textContent = lineSpacingSlider.value;
+    // Update displayed values
+    textSizeValue.textContent = `${textSize}%`;
+    letterSpacingValue.textContent =
+        `${letterSpacing.toFixed(1)}px`;
+    lineSpacingValue.textContent =
+        lineSpacing.toFixed(1);
 
+    // Disable sliders when using default device settings
     settingsSliders.classList.toggle("disabled", useDevice);
 
-    [textSizeSlider, letterSpacingSlider, lineSpacingSlider]
-        .forEach(slider => {
-            slider.disabled = useDevice;
-        });
+    textSizeSlider.disabled = useDevice;
+    letterSpacingSlider.disabled = useDevice;
+    lineSpacingSlider.disabled = useDevice;
 
-    // Live preview
-    previewHeading.style.fontSize = `${16 * size / 100}px`;
-    previewText.style.fontSize = `${13 * size / 100}px`;
+    // Update preview font size
+    previewHeading.style.fontSize =
+        `${16 * textSize / 100}px`;
 
-    previewHeading.style.letterSpacing = `${letter}px`;
-    previewText.style.letterSpacing = `${letter}px`;
+    previewText.style.fontSize =
+        `${13 * textSize / 100}px`;
 
-    previewHeading.style.lineHeight = String(line);
-    previewText.style.lineHeight = String(line);
+    // Update preview letter spacing
+    previewHeading.style.letterSpacing =
+        `${letterSpacing}px`;
+
+    previewText.style.letterSpacing =
+        `${letterSpacing}px`;
+
+    // Update preview line spacing
+    previewHeading.style.lineHeight =
+        String(lineSpacing);
+
+    previewText.style.lineHeight =
+        String(lineSpacing);
 }
 
-// Slider listeners
+// Live updates when moving sliders
 textSizeSlider.addEventListener("input", updatePreview);
 letterSpacingSlider.addEventListener("input", updatePreview);
 lineSpacingSlider.addEventListener("input", updatePreview);
+
 deviceToggle.addEventListener("change", updatePreview);
 
-// Save settings
-document.getElementById("saveSettings")
-    .addEventListener("click", () => {
+// Reset to defaults
+resetButton.addEventListener("click", () => {
+    setControls(defaultSettings);
+});
 
-        const settings = {
-            useDevice: deviceToggle.checked,
-            textSize: Number(textSizeSlider.value),
-            letterSpacing: Number(letterSpacingSlider.value),
-            lineSpacing: Number(lineSpacingSlider.value)
-        };
+// Save changes
+saveButton.addEventListener("click", () => {
+    const settings = {
+        useDevice: deviceToggle.checked,
+        textSize: Number(textSizeSlider.value),
+        letterSpacing: Number(letterSpacingSlider.value),
+        lineSpacing: Number(lineSpacingSlider.value)
+    };
 
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(settings)
-        );
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(settings)
+    );
 
-        window.location.href = "more.html";
-    });
+    window.location.href = "more.html";
+});
 
-// Reset settings
-document.getElementById("resetSettings")
-    .addEventListener("click", () => {
-
-        deviceToggle.checked = false;
-        textSizeSlider.value = 100;
-        letterSpacingSlider.value = 0;
-        lineSpacingSlider.value = 1.4;
-
-        updatePreview();
-    });
-
-// Initial load
-loadSettings();
+// Load preferences on page opening
+setControls(getSavedSettings());
