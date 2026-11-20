@@ -1,148 +1,204 @@
 
-const STORAGE_KEY = "ocbcTextSettings";
+(function () {
+    const STORAGE_KEY = "ocbcTextSettings";
 
-const defaultSettings = {
-    useDevice: false,
-    textSize: 100,
-    letterSpacing: 0,
-    lineSpacing: 1.4
-};
+    // Default settings
+    const defaults = {
+        useDevice: false,
+        textSize: 100,
+        letterSpacing: 0,
+        lineSpacing: 1.4
+    };
 
-// Get elements
-const deviceToggle = document.getElementById("deviceTextSize");
+    // Get elements
+    const textSizeSlider =
+        document.getElementById("textSizeSlider");
 
-const textSizeSlider = document.getElementById("textSizeSlider");
-const letterSpacingSlider = document.getElementById("letterSpacingSlider");
-const lineSpacingSlider = document.getElementById("lineSpacingSlider");
+    const letterSpacingSlider =
+        document.getElementById("letterSpacingSlider");
 
-const textSizeValue = document.getElementById("textSizeValue");
-const letterSpacingValue = document.getElementById("letterSpacingValue");
-const lineSpacingValue = document.getElementById("lineSpacingValue");
+    const lineSpacingSlider =
+        document.getElementById("lineSpacingSlider");
 
-const settingsSliders = document.getElementById("settingsSliders");
+    const textSizeValue =
+        document.getElementById("textSizeValue");
 
-const previewHeading = document.getElementById("previewHeading");
-const previewText = document.getElementById("previewText");
+    const letterSpacingValue =
+        document.getElementById("letterSpacingValue");
 
-const resetButton = document.getElementById("resetSettings");
-const saveButton = document.getElementById("saveSettings");
+    const lineSpacingValue =
+        document.getElementById("lineSpacingValue");
 
-// Restrict values to safe limits
-function clamp(value, min, max, fallback) {
-    const number = Number(value);
-    return Number.isFinite(number)
-        ? Math.min(max, Math.max(min, number))
-        : fallback;
-}
+    const deviceTextSize =
+        document.getElementById("deviceTextSize");
 
-// Read saved settings
-function getSavedSettings() {
+    const settingsSliders =
+        document.getElementById("settingsSliders");
+
+    const previewHeading =
+        document.getElementById("previewHeading");
+
+    const previewText =
+        document.getElementById("previewText");
+
+    const saveButton =
+        document.getElementById("saveSettings");
+
+    const resetButton =
+        document.getElementById("resetSettings");
+
+    // Limit values to allowed ranges
+    function clamp(value, min, max, fallback) {
+        const number = Number(value);
+
+        if (!Number.isFinite(number)) {
+            return fallback;
+        }
+
+        return Math.max(min, Math.min(max, number));
+    }
+
+    // Load saved settings
+    let settings = { ...defaults };
+
     try {
         const saved = JSON.parse(
             localStorage.getItem(STORAGE_KEY) || "{}"
         );
 
-        return {
-            useDevice: saved.useDevice === true,
-            textSize: clamp(saved.textSize, 90, 115, 100),
-            letterSpacing: clamp(saved.letterSpacing, 0, 0.5, 0),
-            lineSpacing: clamp(saved.lineSpacing, 1.2, 1.6, 1.4)
+        settings = {
+            ...defaults,
+            ...saved
         };
-    } catch {
-        return { ...defaultSettings };
+
+    } catch (error) {
+        console.error("Unable to load text settings:", error);
     }
-}
 
-// Load values into sliders
-function setControls(settings) {
-    deviceToggle.checked = settings.useDevice;
-    textSizeSlider.value = settings.textSize;
-    letterSpacingSlider.value = settings.letterSpacing;
-    lineSpacingSlider.value = settings.lineSpacing;
-
-    updatePreview();
-}
-
-// Update live preview
-function updatePreview() {
-    const useDevice = deviceToggle.checked;
-
-    const textSize = useDevice
-        ? 100
-        : Number(textSizeSlider.value);
-
-    const letterSpacing = useDevice
-        ? 0
-        : Number(letterSpacingSlider.value);
-
-    const lineSpacing = useDevice
-        ? 1.4
-        : Number(lineSpacingSlider.value);
-
-    // Update displayed values
-    textSizeValue.textContent = `${textSize}%`;
-    letterSpacingValue.textContent =
-        `${letterSpacing.toFixed(1)}px`;
-    lineSpacingValue.textContent =
-        lineSpacing.toFixed(1);
-
-    // Disable sliders when using default device settings
-    settingsSliders.classList.toggle("disabled", useDevice);
-
-    textSizeSlider.disabled = useDevice;
-    letterSpacingSlider.disabled = useDevice;
-    lineSpacingSlider.disabled = useDevice;
-
-    // Update preview font size
-    previewHeading.style.fontSize =
-        `${16 * textSize / 100}px`;
-
-    previewText.style.fontSize =
-        `${13 * textSize / 100}px`;
-
-    // Update preview letter spacing
-    previewHeading.style.letterSpacing =
-        `${letterSpacing}px`;
-
-    previewText.style.letterSpacing =
-        `${letterSpacing}px`;
-
-    // Update preview line spacing
-    previewHeading.style.lineHeight =
-        String(lineSpacing);
-
-    previewText.style.lineHeight =
-        String(lineSpacing);
-}
-
-// Live updates when moving sliders
-textSizeSlider.addEventListener("input", updatePreview);
-letterSpacingSlider.addEventListener("input", updatePreview);
-lineSpacingSlider.addEventListener("input", updatePreview);
-
-deviceToggle.addEventListener("change", updatePreview);
-
-// Reset to defaults
-resetButton.addEventListener("click", () => {
-    setControls(defaultSettings);
-});
-
-// Save changes
-saveButton.addEventListener("click", () => {
-    const settings = {
-        useDevice: deviceToggle.checked,
-        textSize: Number(textSizeSlider.value),
-        letterSpacing: Number(letterSpacingSlider.value),
-        lineSpacing: Number(lineSpacingSlider.value)
-    };
-
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(settings)
+    // Load values into sliders
+    textSizeSlider.value = clamp(
+        settings.textSize, 90, 115, 100
     );
 
-    window.location.href = "more.html";
-});
+    letterSpacingSlider.value = clamp(
+        settings.letterSpacing, 0, 2, 0
+    );
 
-// Load preferences on page opening
-setControls(getSavedSettings());
+    lineSpacingSlider.value = clamp(
+        settings.lineSpacing, 1, 1.5, 1.4
+    );
+
+    deviceTextSize.checked = Boolean(settings.useDevice);
+
+    // Update labels and preview
+    function updatePreview() {
+        const textSize = Number(textSizeSlider.value);
+        const letterSpacing =
+            Number(letterSpacingSlider.value);
+        const lineSpacing =
+            Number(lineSpacingSlider.value);
+
+        // Display current values
+        textSizeValue.textContent = `${textSize}%`;
+
+        letterSpacingValue.textContent =
+            `${letterSpacing.toFixed(1)}px`;
+
+        lineSpacingValue.textContent =
+            lineSpacing.toFixed(1);
+
+        // Disable sliders when using device settings
+        const useDevice = deviceTextSize.checked;
+
+        textSizeSlider.disabled = useDevice;
+        letterSpacingSlider.disabled = useDevice;
+        lineSpacingSlider.disabled = useDevice;
+
+        settingsSliders.style.opacity =
+            useDevice ? "0.5" : "1";
+
+        // Preview heading
+        previewHeading.style.fontSize = useDevice
+            ? ""
+            : `${20 * textSize / 100}px`;
+
+        // Preview paragraph
+        previewText.style.fontSize = useDevice
+            ? ""
+            : `${16 * textSize / 100}px`;
+
+        // Letter spacing
+        previewHeading.style.letterSpacing = useDevice
+            ? ""
+            : `${letterSpacing}px`;
+
+        previewText.style.letterSpacing = useDevice
+            ? ""
+            : `${letterSpacing}px`;
+
+        // Line spacing
+        previewHeading.style.lineHeight = useDevice
+            ? ""
+            : String(lineSpacing);
+
+        previewText.style.lineHeight = useDevice
+            ? ""
+            : String(lineSpacing);
+    }
+
+    // Live preview when sliders change
+    [
+        textSizeSlider,
+        letterSpacingSlider,
+        lineSpacingSlider
+    ].forEach(slider => {
+        slider.addEventListener("input", updatePreview);
+    });
+
+    // Device settings toggle
+    deviceTextSize.addEventListener(
+        "change",
+        updatePreview
+    );
+
+    // Reset to default
+    resetButton.addEventListener("click", () => {
+        textSizeSlider.value = defaults.textSize;
+        letterSpacingSlider.value = defaults.letterSpacing;
+        lineSpacingSlider.value = defaults.lineSpacing;
+
+        deviceTextSize.checked = defaults.useDevice;
+
+        updatePreview();
+    });
+
+    // Save settings
+    saveButton.addEventListener("click", () => {
+        const newSettings = {
+            useDevice: deviceTextSize.checked,
+
+            textSize: clamp(
+                textSizeSlider.value, 90, 115, 100
+            ),
+
+            letterSpacing: clamp(
+                letterSpacingSlider.value, 0, 2, 0
+            ),
+
+            lineSpacing: clamp(
+                lineSpacingSlider.value, 1, 1.5, 1.4
+            )
+        };
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(newSettings)
+        );
+
+        // Return to More page
+        window.location.href = "more.html";
+    });
+
+    // Show existing saved settings
+    updatePreview();
+})();

@@ -22,22 +22,21 @@
 
     if (settings.useDevice) return;
 
-    // Accessibility settings
-    const scale = Math.max(
-        0.9,
-        Math.min(1.25, Number(settings.textSize) / 100 || 1)
-    );
+    // Text size: 80% to 140%
+const scale = Math.max(
+    0.9,
+    Math.min(1.15, Number(settings.textSize) / 100 || 1)
+);
 
-    const letterSpacing = Math.max(
-        0,
-        Math.min(0.5, Number(settings.letterSpacing) || 0)
-    );
+const letterSpacing = Math.max(
+    0,
+    Math.min(2, Number(settings.letterSpacing) || 0)
+);
 
-    const lineSpacing = Math.max(
-        1.2,
-        Math.min(1.8, Number(settings.lineSpacing) || 1.4)
-    );
-
+const lineSpacing = Math.max(
+    1,
+    Math.min(1.5, Number(settings.lineSpacing) || 1.4)
+);
     const originalSizes = new WeakMap();
 
     function applySettings() {
@@ -45,22 +44,23 @@
 
         if (!root) return;
 
-        // Only change elements marked as important text
         const elements = root.querySelectorAll(
-            "[data-accessible-text]"
+            "h1, h2, h3, h4, h5, h6, p, span, a, button, " +
+            "label, summary, input, textarea, select, li, td, th"
         );
 
         elements.forEach(element => {
 
-            // Protect interactive controls and navigation
+            // Protect Slide to Pay and explicitly excluded areas
             if (
+                element.closest(".slide-to-pay") ||
                 element.closest("[data-no-text-scaling]") ||
-                element.closest(".bottom-nav") ||
-                element.closest(".slide-to-pay")
+                element.closest(".quick-actions")
             ) {
                 return;
             }
 
+            // Store the original font size
             if (!originalSizes.has(element)) {
                 const computed = window.getComputedStyle(element);
 
@@ -74,15 +74,15 @@
 
             if (!Number.isFinite(originalSize)) return;
 
-            // Change font size
+            // Apply text size
             element.style.fontSize =
                 `${originalSize * scale}px`;
 
-            // Change letter spacing
+            // Apply letter spacing
             element.style.letterSpacing =
                 `${letterSpacing}px`;
 
-            // Change line spacing
+            // Apply line spacing
             element.style.lineHeight =
                 String(lineSpacing);
         });
@@ -95,7 +95,7 @@
 
         if (!root) return;
 
-        // Apply settings to dynamically added content
+        // Handle content added dynamically
         const observer = new MutationObserver(() => {
             applySettings();
         });
