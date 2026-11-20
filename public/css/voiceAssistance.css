@@ -1,5 +1,5 @@
 
-/* Voice Assistance inside the purple Guided Tips popup */
+/* Voice Assistance - OCBC Red Theme */
 
 .guided-popup .guided-voice-header {
     display: flex;
@@ -12,70 +12,133 @@
 
 .guided-popup .guided-voice-header > strong {
     font-size: 16px;
+    color: #A50D18;
 }
 
+/* Voice controls */
 .guided-popup .guided-voice-controls {
     display: flex;
     align-items: center;
+    flex-wrap: nowrap;
     gap: 5px;
+    max-width: 100%;
 }
 
-/* Speaker and Replay Buttons */
+/* Play and Replay buttons */
 .guided-popup .guided-voice-play,
 .guided-popup .guided-voice-replay {
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
 
     width: 32px;
     height: 32px;
     padding: 0;
 
-    background: #6040FF;
+    background: #D71920;
     color: #FFFFFF;
 
-    border: 1px solid #6040FF;
+    border: 1px solid #D71920;
     border-radius: 8px;
 
-    font-size: 18px;
+    font-family: inherit;
+    font-size: 17px;
+    line-height: 1;
+
     cursor: pointer;
+    pointer-events: auto;
 }
 
-/* Speed Dropdown */
-.guided-popup .guided-voice-speed {
-    width: 61px;
+/* Plus / Minus speed control */
+.guided-popup .guided-voice-speed-control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 3px;
+
     height: 32px;
-    padding: 3px;
+    padding: 0 4px;
 
-    border: 1px solid #6040FF;
+    background: #FFFFFF;
+    border: 1px solid #E9B6BB;
     border-radius: 8px;
+    box-sizing: border-box;
+}
 
-    background: #6040FF;
-    color: #FFFFFF;
+/* Minus and Plus buttons */
+.guided-popup .guided-voice-minus,
+.guided-popup .guided-voice-plus {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+
+    width: 23px;
+    height: 26px;
+    padding: 0;
+
+    background: transparent;
+    color: #B5141B;
+    border: none;
+    border-radius: 5px;
+
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1;
+
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* Current reading speed */
+.guided-popup .guided-voice-speed-value {
+    display: inline-block;
+    min-width: 34px;
+
+    color: #A50D18;
+    text-align: center;
+    white-space: nowrap;
 
     font-size: 12px;
-    cursor: pointer;
+    font-weight: bold;
+    line-height: 1;
 }
 
-/* Hover Effect */
+/* Hover effects */
 .guided-popup .guided-voice-play:hover,
-.guided-popup .guided-voice-replay:hover,
-.guided-popup .guided-voice-speed:hover {
-    background: #4B2EE6;
-    border-color: #4B2EE6;
+.guided-popup .guided-voice-replay:hover {
+    background: #A50D18;
+    border-color: #A50D18;
 }
 
-/* Keyboard Focus */
+.guided-popup .guided-voice-minus:hover,
+.guided-popup .guided-voice-plus:hover {
+    background: #FFE1E3;
+}
+
+/* Keyboard accessibility */
 .guided-popup .guided-voice-play:focus-visible,
 .guided-popup .guided-voice-replay:focus-visible,
-.guided-popup .guided-voice-speed:focus-visible {
-    outline: 2px solid #5040c8;
+.guided-popup .guided-voice-minus:focus-visible,
+.guided-popup .guided-voice-plus:focus-visible {
+    outline: 2px solid #D71920;
     outline-offset: 2px;
 }
 
-/* Disabled Buttons */
+/* Disabled buttons */
 .guided-popup .guided-voice-play:disabled,
-.guided-popup .guided-voice-replay:disabled {
-    opacity: 0.45;
+.guided-popup .guided-voice-replay:disabled,
+.guided-popup .guided-voice-minus:disabled,
+.guided-popup .guided-voice-plus:disabled {
+    opacity: 0.4;
     cursor: not-allowed;
+}
+
+/* Keep voice buttons above overlapping elements */
+.guided-popup .guided-voice-controls {
+    position: relative;
+    z-index: 1;
 }

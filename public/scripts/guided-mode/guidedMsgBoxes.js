@@ -1,5 +1,5 @@
 
-// Remove existing Guided Mode message boxes.
+ // Remove existing Guided Mode message boxes.
 export function removeMessageBoxes() {
     document.querySelectorAll(".guided-popup").forEach(popup => {
         popup.remove();
@@ -49,19 +49,41 @@ export function createMessageBoxes(guidanceSteps) {
         replay.title = "Replay tips";
         replay.setAttribute("aria-label", "Replay tips");
 
-        // Reading speed
-        const speed = document.createElement("select");
-        speed.className = "guided-voice-speed";
-        speed.setAttribute("aria-label", "Reading speed");
+        // Reading speed - Plus / Minus buttons
+        const speedControl = document.createElement("div");
+        speedControl.className = "guided-voice-speed-control";
 
-        ["0.5", "1", "1.5"].forEach(value => {
-            const option = document.createElement("option");
-            option.value = value;
-            option.textContent = value + "×";
-            speed.appendChild(option);
-        });
+        // Minus button
+        const minus = document.createElement("button");
+        minus.type = "button";
+        minus.className = "guided-voice-minus";
+        minus.textContent = "−";
+        minus.title = "Decrease reading speed";
+        minus.setAttribute(
+            "aria-label",
+            "Decrease reading speed"
+        );
 
-        controls.append(play, replay, speed);
+        // Current speed
+        const speedValue = document.createElement("span");
+        speedValue.className = "guided-voice-speed-value";
+        speedValue.textContent = "1.0x";
+        speedValue.setAttribute("aria-live", "polite");
+
+        // Plus button
+        const plus = document.createElement("button");
+        plus.type = "button";
+        plus.className = "guided-voice-plus";
+        plus.textContent = "+";
+        plus.title = "Increase reading speed";
+        plus.setAttribute(
+            "aria-label",
+            "Increase reading speed"
+        );
+
+        speedControl.append(minus, speedValue, plus);
+
+        controls.append(play, replay, speedControl);
         header.appendChild(controls);
         popup.appendChild(header);
 
@@ -103,6 +125,12 @@ export function createMessageBoxes(guidanceSteps) {
                 "aria-expanded",
                 String(isOpen)
             );
+        });
+
+        // Prevent clicks inside the popup from
+        // triggering parent click handlers.
+        popup.addEventListener("click", (event) => {
+            event.stopPropagation();
         });
 
         // Chatbot button

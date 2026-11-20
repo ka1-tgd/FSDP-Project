@@ -1,154 +1,288 @@
-/* Main guidance box */
-.guided-message {
-    background-color: #b3a6fc;
-    color: #3c28ad;
-    border-left: 5px solid #3c28ad;
-    border-radius: 12px;
 
-    padding: 7px 13px;
-    margin: 15px 0 5px;
+/* =========================================
+   OCBC Guided Mode - Guided Tips Popup
+   ========================================= */
 
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-/* Tips title */
-.guided-message > strong {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 14px;
-}
-
-/* Individual tips */
-.guided-message p {
-    margin: 4px 0;
-}
-
-/* Note outside the box */
-.guided-note {
-    font-size: 11px;
-    font-weight: bold;
-    color: #3c28ad;
-    margin: 4px 0 12px;
-    line-height: 1.4;
-}
-
-
-/* Heading and question mark */
-.step-heading {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
+/* Help question mark */
 .guided-help-button {
-    width: 22px;
-    height: 22px;
-    border: 2px solid #6040ff;
-    border-radius: 50%;
+    position: relative;
+    z-index: 10;
 
-    background-color: white;
-    color: #6040ff;
-
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
+
+    width: 24px;
+    height: 24px;
+
+    border: 1px solid #D71920;
+    border-radius: 50%;
+
+    background: #FFFFFF;
+    color: #D71920;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    pointer-events: auto;
 }
 
-/* Popup */
-.step-heading {
-    position: relative;
-}
+/* =========================================
+   Guided Tips Popup
+   ========================================= */
 
 .guided-popup {
     display: none;
 
-    position: absolute;
-    top: calc(100% + 12px);
+    /* Position popup in the screen centre */
+    position: fixed;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
 
-    width: min(350px);
-    box-sizing: border-box;
+    width: min(350px, 90vw);
     max-height: 70vh;
     overflow-y: auto;
 
-    z-index: 100;
+    padding: 18px;
+    box-sizing: border-box;
 
-    padding: 20px;
+    background: #FFFFFF;
+    color: #333333;
 
-    background-color: #ded8ff;
-    color: #5040c8;
+    border: 1px solid #F1D5D8;
+    border-radius: 12px;
 
-    border: 1px solid #c5baff;
-    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: left;
+
+    z-index: 9999;
+    pointer-events: auto;
 }
 
+/* Show popup */
 .guided-popup.show {
     display: block;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
 }
 
-.guided-popup > strong {
-    display: block;
-    margin-bottom: 8px;
+/* =========================================
+   Popup Title
+   ========================================= */
+
+.guided-popup h3,
+.guided-popup h4 {
+    margin: 0 0 10px;
+
+    color: #A50D18;
     font-size: 16px;
-}
-
-.guided-popup p {
-    margin: 6px 0;
-    font-size: 14px;
+    font-weight: 700;
     line-height: 1.4;
 }
 
-.guided-popup .guided-note {
-    margin-top: 10px;
-    font-style: italic;
+/* =========================================
+   Guided Message
+   ========================================= */
+
+.guided-message {
+    padding: 10px 12px;
+
+    background-color: #FFF0F0;
+    color: #681A24;
+
+    border-left: 4px solid #D71920;
+    border-radius: 6px;
+
+    font-size: 13px;
+    line-height: 1.5;
 }
 
-/* Chat button */
-.guided-chat-button {
-    width: 100%;
-    padding: 10px;
+/* Guidance notes */
+.guided-note {
+    margin-top: 10px;
 
-    margin-top: 12px;
+    color: #A50D18;
+    font-size: 12px;
+    line-height: 1.5;
+}
 
-    background-color: #6040ff;
-    color: white;
+/* Popup paragraphs */
+.guided-popup p {
+    margin: 0 0 10px;
 
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* =========================================
+   Voice Assistance
+   ========================================= */
+
+/* Voice heading */
+.guided-voice-header {
+    margin-bottom: 10px;
+}
+
+/* Voice controls */
+.guided-voice-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 8px;
+    margin: 10px 0;
+}
+
+/* Play and Replay buttons */
+.guided-voice-play,
+.guided-voice-replay {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+
+    padding: 0;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
 
-    font-size: 14px;
-    font-weight: bold;
+    background-color: #D71920;
+    color: #FFFFFF;
+
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Hover effect */
+.guided-voice-play:hover,
+.guided-voice-replay:hover {
+    background-color: #A50D18;
+}
+
+/* =========================================
+   Speed Control
+   ========================================= */
+
+.guided-voice-speed-control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+    padding: 4px 8px;
+
+    border: 1px solid #F0B5BB;
+    border-radius: 8px;
+
+    background-color: #FFFFFF;
+}
+
+/* Minus and Plus */
+.guided-voice-minus,
+.guided-voice-plus {
+    border: none;
+    background: transparent;
+
+    color: #A50D18;
+    font-size: 18px;
+    font-weight: 700;
 
     cursor: pointer;
 }
 
-.guided-chat-button:hover {
-    background-color: #4d32d6;
+/* Speed value */
+.guided-voice-speed-value {
+    min-width: 36px;
+
+    color: #A50D18;
+    font-size: 13px;
+    font-weight: 600;
+
+    text-align: center;
+    white-space: nowrap;
 }
 
-/* Chat container */
-.guided-chat-container {
+/* =========================================
+   Voice Text
+   ========================================= */
+
+.guided-voice-text {
     margin-top: 10px;
-    padding: 0px 10px;
 
-    background-color: white;
-    color: #333;
-
-    border-radius: 10px;
-    border: 1px solid #c5baff;
-
-    min-height: 100px;
+    color: #333333;
+    font-size: 13px;
+    line-height: 1.6;
 }
+
+/* =========================================
+   Chatbot Button
+   ========================================= */
+
+.guided-chat-button {
+    display: block;
+
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px 12px;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: #D71920;
+    color: #FFFFFF;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-align: center;
+    cursor: pointer;
+}
+
+.guided-chat-button:hover {
+    background-color: #A50D18;
+}
+
+/* =========================================
+   Chatbot Container
+   ========================================= */
 
 .guided-chat-container[hidden] {
     display: none;
+}
+
+/* =========================================
+   Click Fix
+   ========================================= */
+
+.guided-popup button {
+    pointer-events: auto;
+}
+
+/* =========================================
+   Mobile Responsive
+   ========================================= */
+
+@media (max-width: 480px) {
+    .guided-popup {
+        width: min(350px, 90vw);
+        max-height: 75vh;
+        padding: 14px;
+    }
+
+    .guided-voice-controls {
+        gap: 6px;
+    }
+
+    .guided-voice-play,
+    .guided-voice-replay {
+        width: 34px;
+        height: 34px;
+    }
 }
