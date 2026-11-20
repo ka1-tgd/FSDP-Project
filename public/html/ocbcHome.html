@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OCBC Home</title>
-    <!-- Your existing stylesheet first (reset, body, .phone-screen, .hidden) -->
+
     <link rel="stylesheet" href="../css/paynow.css">
-    <!-- home page styles second -->
     <link rel="stylesheet" href="../css/ocbcHome.css">
-    <!-- script -->
+
+    <!-- Load translations before Home JavaScript -->
+    <script src="../scripts/homeLanguage.js" defer></script>
     <script src="../scripts/ocbcHome.js" defer></script>
 </head>
 <body>
@@ -20,9 +21,10 @@
     <div class="top-bar">
         <button class="token-button" type="button">
             <img src="../images/ocbc-token.png" alt="" class="token-icon">
-            OCBC Tokens
+            <span data-i18n="ocbcTokens">OCBC Tokens</span>
         </button>
-        <button class="logout-link" type="button">logout</button>
+        <button class="logout-link" type="button"
+                data-i18n="logout">logout</button>
     </div>
 
     <!-- Scrollable area -->
@@ -30,7 +32,9 @@
 
         <!-- Hero banner -->
         <div class="hero">
-            <img src="../images/ocbc-banner.png" alt="Together, lifting everyone we serve" class="hero-image">
+            <img src="../images/ocbc-banner.png"
+                 alt="Together, lifting everyone we serve"
+                 class="hero-image">
         </div>
 
         <!-- Quick actions -->
@@ -40,36 +44,48 @@
                     <img src="../images/paynow.png" alt="" class="action-icon">
                     <span>PayNow</span>
                 </a>
+
                 <button class="action-item" type="button">
                     <img src="../images/scan-and-pay.png" alt="" class="action-icon">
-                    <span>Scan &amp; Pay</span>
+                    <span data-i18n="scanPay">Scan &amp; Pay</span>
                 </button>
+
                 <button class="action-item" type="button">
                     <img src="../images/foreign-exchange.png" alt="" class="action-icon">
-                    <span>Foreign Exchange</span>
+                    <span data-i18n="foreignExchange">Foreign Exchange</span>
                 </button>
             </div>
+
             <div class="action-divider"></div>
+
             <button class="action-item" type="button">
                 <img src="../images/Gear-icon.png" alt="" class="action-icon">
-                <span>Customise</span>
+                <span data-i18n="customise">Customise</span>
             </button>
         </div>
 
         <!-- Eye toggle + tabs -->
         <div class="account-tabs">
-            <button class="eye-toggle" type="button" aria-label="Show or hide balance">
-                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+            <button class="eye-toggle" type="button"
+                    aria-label="Show or hide balance"
+                    data-i18n-aria="balanceToggle">
+                <svg viewBox="0 0 24 24" width="22" height="22"
+                     aria-hidden="true">
                     <path d="M12 5C6.5 5 2.7 9 1 12c1.7 3 5.5 7 11 7s9.3-4 11-7c-1.7-3-5.500-7-11-7z" fill="#fff"/>
                     <circle cx="12" cy="12" r="4.200" fill="#111"/>
                     <circle cx="13.300" cy="10.800" r="1.200" fill="#fff"/>
                 </svg>
             </button>
+
             <div class="tab-divider"></div>
+
             <div class="pill-tabs">
-                <button class="pill active" type="button">Accounts</button>
-                <button class="pill" type="button">Cards</button>
-                <button class="pill" type="button">Investment</button>
+                <button class="pill active" type="button"
+                        data-i18n="accounts">Accounts</button>
+                <button class="pill" type="button"
+                        data-i18n="cards">Cards</button>
+                <button class="pill" type="button"
+                        data-i18n="investment">Investment</button>
             </div>
         </div>
 
@@ -80,53 +96,66 @@
                     <span></span>
                     <span></span>
                 </div>
+
                 <h2 id="accountType"></h2>
-<p class="card-number" id="accountNumber"></p>
-<p class="card-balance-label">Available Balance</p>
-<p class="card-balance" id="accountBalance"></p>
-                <a href="#" class="view-details">view details</a>
+                <p class="card-number" id="accountNumber"></p>
+
+                <p class="card-balance-label"
+                   data-i18n="availableBalance">Available Balance</p>
+
+                <p class="card-balance" id="accountBalance"></p>
+
+                <a href="#" class="view-details"
+                   data-i18n="viewDetails">view details</a>
             </div>
         </div>
 
         <!-- Savings goals / Money insights -->
         <div class="feature-cards">
             <button class="feature-card goals" type="button">
-                <h3>SAVINGS GOALS</h3>
-                <p>View/manage goals</p>
+                <h3 data-i18n="savingsGoals">SAVINGS GOALS</h3>
+                <p data-i18n="viewGoals">View/manage goals</p>
             </button>
+
             <button class="feature-card insights" type="button">
-                <h3>MONEY INSIGHTS</h3>
-                <p>Take control</p>
+                <h3 data-i18n="moneyInsights">MONEY INSIGHTS</h3>
+                <p data-i18n="takeControl">Take control</p>
             </button>
         </div>
 
         <!-- Recent transactions -->
         <div class="transactions">
-    <h3>Recent transactions</h3>
-    <div id="transactionList"></div>
-</div>
+            <h3 data-i18n="recentTransactions">Recent transactions</h3>
+            <div id="transactionList"></div>
+        </div>
+
+    </div>
 
     <!-- Bottom navigation -->
     <nav class="bottom-nav">
         <button class="nav-item active" type="button">
             <img src="../images/house-red.png" alt="" class="nav-icon">
-            <span>Home</span>
+            <span data-i18n="home">Home</span>
         </button>
+
         <button class="nav-item" type="button">
             <img src="../images/plan.png" alt="" class="nav-icon">
-            <span>Plan</span>
+            <span data-i18n="plan">Plan</span>
         </button>
+
         <button class="nav-item" type="button">
             <img src="../images/pay-transfer.png" alt="" class="nav-icon">
-            <span>Pay &amp; Transfer</span>
+            <span data-i18n="payTransfer">Pay &amp; Transfer</span>
         </button>
+
         <button class="nav-item" type="button">
             <img src="../images/gift.png" alt="" class="nav-icon">
-            <span>Rewards</span>
+            <span data-i18n="rewards">Rewards</span>
         </button>
+
         <a href="more.html" class="nav-item">
             <img src="../images/more.png" alt="" class="nav-icon">
-            <span>More</span>
+            <span data-i18n="more">More</span>
         </a>
     </nav>
 

@@ -38,7 +38,6 @@
         </div>
     </header>
 
-
     <!-- Scrollable content -->
     <section class="more-scroll">
 
@@ -73,7 +72,6 @@
 
             </div>
         </section>
-
 
         <!-- Apply -->
         <section class="more-apply">
@@ -115,12 +113,11 @@
             </div>
         </section>
 
-
         <!-- Services -->
         <h3 class="services-heading">Services</h3>
 
         <!-- Card services -->
-         <details class="more-section">
+        <details class="more-section">
             <summary>Card services</summary>
             <div class="section-content">
                 <a href="#">Manage cards</a>
@@ -143,7 +140,6 @@
 
         </details>
 
-
         <!-- Investment -->
         <details class="more-section">
 
@@ -158,7 +154,6 @@
             </div>
 
         </details>
-
 
         <!-- Payments -->
         <details class="more-section">
@@ -175,7 +170,6 @@
 
         </details>
 
-
         <!-- Profile and app settings -->
         <details class="more-section" open>
 
@@ -186,7 +180,6 @@
             <div class="settings-grid">
 
                 <!-- Row 1 -->
-
                 <a href="#" class="setting-item">
                     <i data-lucide="user-round-cog"></i>
                     <span>Update personal<br>details</span>
@@ -202,9 +195,7 @@
                     <span>Manage OCBC<br>OneToken</span>
                 </a>
 
-
                 <!-- Row 2 -->
-
                 <a href="#" class="setting-item">
                     <i data-lucide="type"></i>
                     <span>Change text size</span>
@@ -220,9 +211,7 @@
                     <span>Manage<br>notifications</span>
                 </a>
 
-
                 <!-- Row 3 -->
-
                 <a href="#" class="setting-item">
                     <i data-lucide="landmark"></i>
                     <span>Manage Your<br>Financial OneView</span>
@@ -233,35 +222,22 @@
                     <span>Secured mailbox</span>
                 </a>
 
-                <a href="#" class="setting-item">
+                <!-- Language Selection -->
+                <a href="#" class="setting-item"
+                   id="change-language-btn">
                     <i data-lucide="globe"></i>
                     <span>Change language</span>
                 </a>
 
-
                 <!-- Row 4 -->
-
                 <a href="#" class="setting-item">
                     <i data-lucide="clipboard-list"></i>
                     <span>Quick Sync</span>
                 </a>
 
-                <a href="#"
-                   class="setting-item">
-                    <i data-lucide="volume-2"></i>
-                    <span>Text-to-Speech</span>
-                </a>
-
-                <a href="#"
-                   class="setting-item">
-                    <i data-lucide="contact-round"></i>
-                    <span>Guided mode</span>
-                </a>
-
             </div>
 
         </details>
-
 
         <!-- Need more help -->
         <section class="more-help">
@@ -271,9 +247,7 @@
             <a href="#" class="hotline">
 
                 <span class="hotline-icon">☎</span>
-
                 <span>Hotline</span>
-
                 <span class="hotline-arrow">›</span>
 
             </a>
@@ -282,75 +256,113 @@
 
     </section>
 
+   
 
-    <!-- Bottom navigation -->
-    <nav class="bottom-nav">
+<!-- Bottom navigation -->
+<nav class="bottom-nav">
 
-        <!-- Home -->
-        <a href="ocbcHome.html" class="nav-item">
+    <a href="ocbcHome.html" class="nav-item">
+        <img src="../images/house.png"
+             alt="" class="nav-icon">
+        <span>Home</span>
+    </a>
 
-            <img src="../images/house.png"
-                 alt="" class="nav-icon home-icon">
+    <button class="nav-item" type="button">
+        <img src="../images/plan.png"
+             alt="" class="nav-icon">
+        <span>Plan</span>
+    </button>
 
-            <span>Home</span>
+    <button class="nav-item" type="button">
+        <img src="../images/pay-transfer.png"
+             alt="" class="nav-icon">
+        <span>Pay &amp; Transfer</span>
+    </button>
 
-        </a>
+    <button class="nav-item" type="button">
+        <img src="../images/gift.png"
+             alt="" class="nav-icon">
+        <span>Rewards</span>
+    </button>
 
+    <a href="more.html" class="nav-item active">
+        <img src="../images/more-red.png"
+             alt="" class="nav-icon">
+        <span>More</span>
+    </a>
 
-        <!-- Plan -->
-        <a href="#" class="nav-item">
-
-            <img src="../images/plan.png"
-                 alt="" class="nav-icon">
-
-            <span>Plan</span>
-
-        </a>
-
-
-        <!-- Pay and Transfer -->
-        <a href="#" class="nav-item">
-
-            <img src="../images/pay-transfer.png"
-                 alt="" class="nav-transfer-icon">
-
-            <span>Pay &amp; Transfer</span>
-
-        </a>
-
-
-        <!-- Rewards -->
-        <a href="#" class="nav-item">
-
-            <img src="../images/gift.png"
-                 alt="" class="nav-icon">
-
-            <span>Rewards</span>
-
-        </a>
-
-
-        <!-- More - Active -->
-        <a href="more.html" class="nav-item active">
-
-            <img src="../images/more-red.png"
-                 alt="" class="nav-icon">
-
-            <span>More</span>
-
-        </a>
-
-    </nav>
+</nav>
 
 </main>
 
 
-<!-- Lucide icons -->
-<script src="https://unpkg.com/lucide@latest"></script>
+<!-- Language Selection Popup -->
+<div id="language-modal" class="language-modal" hidden>
 
+    <div class="language-modal-box"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="language-title"
+         aria-describedby="language-description">
+
+        <button type="button"
+                id="close-language-modal"
+                class="language-close"
+                aria-label="Close language selection">
+            &times;
+        </button>
+
+        <div class="language-modal-heading">
+            <i data-lucide="globe"></i>
+            <h2 id="language-title">Select Language</h2>
+        </div>
+
+        <p id="language-description">
+            Choose your preferred language.
+        </p>
+
+        <div class="language-options">
+
+            <label class="language-option">
+                <input type="radio" name="language" value="en">
+                <span>English</span>
+            </label>
+
+            <label class="language-option">
+                <input type="radio" name="language" value="zh">
+                <span>中文 Chinese</span>
+            </label>
+
+            <label class="language-option">
+                <input type="radio" name="language" value="ms">
+                <span>Bahasa Melayu</span>
+            </label>
+
+            <label class="language-option">
+                <input type="radio" name="language" value="ta">
+                <span>தமிழ் Tamil</span>
+            </label>
+
+        </div>
+
+        <button type="button"
+                id="confirm-language"
+                class="language-confirm">
+            Confirm Language
+        </button>
+
+    </div>
+
+</div>
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
 <script>
     lucide.createIcons();
 </script>
+
+<!-- Language Selection -->
+<script src="../scripts/languageSelection.js"></script>
 
 </body>
 </html>

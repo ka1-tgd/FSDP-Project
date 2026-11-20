@@ -365,3 +365,349 @@
     height: 40px;
     object-fit: contain;
 }
+
+
+/* ========================================
+   Language Selection Popup
+   Added without changing existing More UI
+   ======================================== */
+
+.language-modal[hidden] {
+    display: none !important;
+}
+
+.language-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+    box-sizing: border-box;
+
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.language-modal-box {
+    position: relative;
+
+    width: 100%;
+    max-width: 380px;
+    max-height: 85vh;
+    overflow-y: auto;
+
+    padding: 26px 22px;
+    box-sizing: border-box;
+
+    background: #ffffff;
+    border-radius: 18px;
+
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+
+    font-family: Arial, sans-serif;
+    text-align: left;
+}
+
+/* Heading */
+
+.language-modal-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 10px;
+}
+
+.language-modal-heading svg {
+    width: 23px;
+    height: 23px;
+    color: #d71920;
+}
+
+.language-modal-box h2 {
+    margin: 0;
+
+    color: #a50d18;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.language-modal-box p {
+    margin: 0 0 20px;
+
+    color: #666666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Close button */
+
+.language-close {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    background: transparent;
+
+    color: #777777;
+    font-size: 28px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+/* Language options */
+
+.language-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    margin-bottom: 22px;
+}
+
+.language-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 13px 14px;
+
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+
+    background: #ffffff;
+    color: #333333;
+
+    font-size: 15px;
+    line-height: 1.5;
+
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.language-option:hover {
+    border-color: #d71920;
+    background: #fff8f8;
+}
+
+.language-option:has(input:checked) {
+    border-color: #d71920;
+    background: #fff0f1;
+}
+
+.language-option input {
+    width: 18px;
+    height: 18px;
+
+    margin: 0;
+    accent-color: #d71920;
+
+    cursor: pointer;
+}
+
+/* Confirm button */
+
+.language-confirm {
+    display: block;
+
+    width: 100%;
+    padding: 13px 16px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #d71920;
+    color: #ffffff;
+
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+
+    text-align: center;
+    cursor: pointer;
+}
+
+.language-confirm:hover {
+    background: #a50d18;
+}
+
+.language-confirm:focus-visible,
+.language-close:focus-visible,
+.language-option:focus-within {
+    outline: 2px solid #d71920;
+    outline-offset: 2px;
+}
+
+/* Mobile */
+
+@media (max-width: 480px) {
+    .language-modal {
+        padding: 16px;
+    }
+
+    .language-modal-box {
+        padding: 24px 18px;
+    }
+
+    .language-modal-box h2 {
+        font-size: 19px;
+    }
+}
+
+/* ===================================
+   MORE PAGE - TEXT SIZE IMPROVEMENTS
+   =================================== */
+
+/* Main section headings */
+.more-page .more-features h3,
+.more-page .more-apply h3,
+.more-page .services-heading,
+.more-page .more-help h3 {
+    font-size: 17px;
+}
+
+/* Feature banner titles */
+.more-page .feature-banner h4 {
+    font-size: 14px;
+}
+
+/* Feature banner descriptions */
+.more-page .feature-banner p {
+    font-size: 13px;
+}
+
+/* Apply category labels */
+.more-page .apply-item p {
+    font-size: 13px;
+}
+
+/* Service accordion headings */
+.more-page .more-section > summary {
+    font-size: 15px;
+}
+
+/* Service links */
+.more-page .section-content a {
+    font-size: 14px;
+}
+
+/* Profile & app settings labels */
+.more-page .setting-item span {
+    font-size: 13px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+/* Help section */
+.more-page .hotline {
+    font-size: 15px;
+}
+
+/* ===================================
+   MORE PAGE - BOTTOM NAVIGATION
+   =================================== */
+
+/* Match Home Page navigation sizing */
+.more-page .bottom-nav {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Navigation labels */
+.more-page .bottom-nav .nav-item span {
+    font-size: 11px;
+    line-height: 1.2;
+}
+
+/* Navigation icons */
+.more-page .bottom-nav .nav-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+/* Allow longer translated labels to fit */
+.more-page .bottom-nav .nav-item {
+    min-width: 0;
+    text-align: center;
+}
+
+.more-page .bottom-nav .nav-item span {
+    overflow-wrap: anywhere;
+}
+
+
+/* ===================================
+   FINAL MORE PAGE BOTTOM NAVIGATION
+   =================================== */
+
+.more-page .bottom-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    padding: 8px 4px 14px;
+    background: #ffffff;
+    border-top: 1px solid #dddddd;
+}
+
+.more-page .bottom-nav .nav-item {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: transparent;
+    text-decoration: none;
+    color: #222222;
+    text-align: center;
+}
+
+.more-page .bottom-nav .nav-item .nav-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.more-page .bottom-nav .nav-item span {
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.more-page .bottom-nav .nav-item.active {
+    color: #e52525;
+}
+
+.more-page .bottom-nav .nav-item.active img {
+    filter: none;
+}
+
+.more-page .bottom-nav .nav-item:not(.active) img {
+    filter: grayscale(1) brightness(0.3);
+}
+
+/* Match More icon size with Home Page */
+.more-page .bottom-nav .nav-item.active .nav-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
