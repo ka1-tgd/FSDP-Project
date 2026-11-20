@@ -1,4 +1,3 @@
-
 /* ========================================
    OCBC AI Chatbot - Four Languages
    ======================================== */
@@ -16,6 +15,7 @@ const chatbotTranslations = {
         transfer: "How to transfer money?",
         uen: "What is a UEN?",
         pin: "How to reset credit card PIN?",
+        language: "How to change language settings?",
         placeholder: "Type a message",
         send: "Send",
         thinking: "Thinking...",
@@ -37,6 +37,7 @@ const chatbotTranslations = {
         transfer: "如何转账？",
         uen: "什么是 UEN？",
         pin: "如何重设信用卡密码？",
+        language: "如何更改语言设置？",
         placeholder: "输入消息",
         send: "发送",
         thinking: "正在思考……",
@@ -58,6 +59,7 @@ const chatbotTranslations = {
         transfer: "Bagaimana cara memindahkan wang?",
         uen: "Apakah itu UEN?",
         pin: "Bagaimana cara menetapkan semula PIN kad kredit?",
+        language: "Bagaimana cara menukar tetapan bahasa?",
         placeholder: "Taip mesej",
         send: "Hantar",
         thinking: "Sedang berfikir...",
@@ -79,6 +81,7 @@ const chatbotTranslations = {
         transfer: "பணத்தை எவ்வாறு மாற்றுவது?",
         uen: "UEN என்றால் என்ன?",
         pin: "கிரெடிட் கார்டு PIN-ஐ எவ்வாறு மாற்றுவது?",
+        language: "மொழி அமைப்புகளை எவ்வாறு மாற்றுவது?",
         placeholder: "செய்தியை உள்ளிடவும்",
         send: "அனுப்பு",
         thinking: "சிந்திக்கிறது...",
