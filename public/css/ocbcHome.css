@@ -333,7 +333,7 @@
 .feature-card h3 {
     position: relative;
     z-index: 1;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: bold;
     color: #000000;
 }
@@ -341,7 +341,7 @@
 .feature-card p {
     position: relative;
     z-index: 1;
-    font-size: 10px;
+    font-size: 12px;
     color: #0a9ad6;
 }
 
